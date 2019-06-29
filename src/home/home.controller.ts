@@ -1,4 +1,6 @@
-import { Controller, Get, Req, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post, HttpCode, Body } from '@nestjs/common';
+import { Observable, of } from 'rxjs';
+import { PostHomeDto } from 'src/home/dto/home.dto';
 
 @Controller('home')
 export class HomeController {
@@ -7,8 +9,30 @@ export class HomeController {
         return 'Welcome to home page.';
     }
 
-    @Get(':param')
-    getWithParameters(@Param('param') param): string {
-        return `Welcome to home page with parameters, you'r parameter is ${param}.`;
+    @Get('promise')
+    async getAsyncPromice(): Promise<any[]> {
+        return [];
+    }
+
+    @Get('observable')
+    getAsyncObservable(): Observable<any[]> {
+        return of([]);
+    }
+
+    @Get(':id')
+    getWithParameters(@Param('id') id): string {
+        return `This action in home controller returns a #${id}.`;
+    }
+
+    @Post()
+    @HttpCode(401)
+    postAction(@Body() postHomeDto: PostHomeDto): PostHomeDto {
+        const valueToIncrese: number = 10;
+
+        const response: PostHomeDto = new PostHomeDto();
+        response.name = `We have added ${valueToIncrese} to value(${postHomeDto.value}) by this name -> ${postHomeDto.name}`;
+        response.value = postHomeDto.value + valueToIncrese;
+
+        return response;
     }
 }
