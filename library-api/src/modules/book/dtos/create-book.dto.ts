@@ -1,5 +1,5 @@
 export class CreateBookDto {
     readonly name: string;
-    readonly image: string;
+    readonly imageSrc: string;
     readonly authorName: string;
 }
