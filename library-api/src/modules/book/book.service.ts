@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
-import { CreateBookDto } from './dtos/create-book.book.dto';
-import { UpdateBookDto } from './dtos/update-book.book.dto';
+import { CreateBookDto } from './dtos/create-book.dto';
+import { UpdateBookDto } from './dtos/update-book.dto';
 
 @Injectable()
 export class BookService {
