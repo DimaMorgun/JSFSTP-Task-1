@@ -8,21 +8,21 @@ export class BooksController {
     constructor(private readonly booksService: BooksService) { }
 
     @Get()
-    getBookList(): Book[] {
+    getBookList(): Promise<Book[]> {
         const books = this.booksService.getBookList();
 
         return books;
     }
 
     @Get(':id')
-    getBook(@Param('id') id: string): Book {
+    getBook(@Param('id') id: string): Promise<Book> {
         const book = this.booksService.getBook(id);
 
         return book;
     }
 
     @Put()
-    createBook(@Body() createBookDto: CreateBookDto): boolean {
+    createBook(@Body() createBookDto: CreateBookDto): Promise<Book> {
         const status = this.booksService.createBook(createBookDto);
 
         return status;

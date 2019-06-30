@@ -1,48 +1,39 @@
+import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { Book } from 'src/entities/book';
 import { CreateBookDto } from './dto/create-book.dto';
-import { concat } from 'rxjs';
+import { InjectModel } from '@nestjs/mongoose';
+import * as IBook from './interfaces/book.interface';
+import * as Entity from 'src/entities/book';
 
 @Injectable()
 export class BooksService {
+    private uuidv4 = require('uuid/v4');
 
-    private books: Book[] = new Array<Book>();
+    constructor(@InjectModel('Book') private readonly bookModel: Model<IBook.Book>) { }
 
-    constructor() {
-        for (let index = 0; index < 15; index++) {
-            const book: Book = new Book();
-            book.id = index.toString();
-            book.name = `Book name ${index}`;
-            book.authorName = `Author name Henrih ${index}`;
-            book.created = new Date();
-            book.updated = new Date();
-
-            this.books.push(book);
-        }
-    }
-
-    public getBookList(): Book[] {
-        const bookList: Book[] = this.books;
+    async getBookList(): Promise<IBook.Book[]> {
+        const bookList: Promise<IBook.Book[]> = await this.bookModel.find().exec();
 
         return bookList;
     }
 
-    public getBook(id: string): Book {
-        const book: Book = this.books.find(x => x.id === id);
+    async getBook(id: string): Promise<IBook.Book> {
+        const book: Promise<IBook.Book> = await this.bookModel.find({ id }).exec();
 
         return book;
     }
 
-    public createBook(createBookDto: CreateBookDto): boolean {
-        const book: Book = new Book();
-        book.id = (createBookDto.name + createBookDto.authorName).length.toString();
+    async createBook(createBookDto: CreateBookDto): Promise<IBook.Book> {
+        const book: Entity.Book = new Entity.Book();
+        book.id = this.uuidv4();
         book.name = createBookDto.name;
         book.authorName = createBookDto.authorName;
         book.created = new Date();
         book.updated = new Date();
 
-        this.books.push(book);
+        const createdBook = new this.bookModel(book);
+        const result: Promise<IBook.Book> = await createdBook.save();
 
-        return true;
+        return result;
     }
 }
