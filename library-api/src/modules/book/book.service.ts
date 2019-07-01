@@ -31,8 +31,7 @@ export class BookService {
         createBook.updated = new Date();
         createBook.isDeleted = false;
 
-        // Type ?
-        const createdBook = new this.bookModel(createBook);
+        const createdBook: Model<Interface.Book> = new this.bookModel(createBook);
         const newBook: Interface.Book = createdBook.save();
 
         return of(newBook);
