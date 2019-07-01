@@ -5,12 +5,18 @@ import { LibraryModule } from './library/library.module';
 
 import { AppComponent } from './app.component';
 import { LayoutDefaultComponent } from './shared/layout-default/layout-default.component';
+import { NavHeaderComponent } from './shared/nav-header/nav-header.component';
+import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { FooterComponent } from './shared/footer/footer.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LayoutDefaultComponent
+    LayoutDefaultComponent,
+    NavHeaderComponent,
+    SidebarComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
