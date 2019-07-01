@@ -11,13 +11,25 @@ export class BookService {
     constructor(@Inject('BOOK_MODEL') private readonly bookModel: Model<Interface.Book>) { }
 
     public getBookById(id: string): Observable<Interface.Book> {
-        const book = this.bookModel.findById(id).exec();
+        const objectId = require('mongoose').Types.ObjectId;
+        const isValidId = objectId.isValid(id);
+
+        let book: Interface.Book = new Entity.Book();
+        if (isValidId) {
+            book = this.bookModel.findById(id).exec();
+        }
 
         return of(book);
     }
 
     public getBookList(): Observable<Interface.Book[]> {
-        const books = this.bookModel.find().exec();
+        const books: Interface.Book[] = this.bookModel.find().exec();
+
+        return of(books);
+    }
+
+    public getBookListWithPaging(skip: number, limit: number): Observable<Interface.Book[]> {
+        const books: Interface.Book[] = this.bookModel.find().skip(skip).limit(limit).exec();
 
         return of(books);
     }

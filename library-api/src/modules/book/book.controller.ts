@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Delete, Post, Put, Body } from '@nestjs/common';
+import { Controller, Get, Param, Delete, Post, Put, Body, Query } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { CreateBookDto } from './dtos/create-book.dto';
 import { UpdateBookDto } from './dtos/update-book.dto';
@@ -16,13 +16,19 @@ export class BookController {
         return book;
     }
 
+    @Get(':skip/:limit')
+    public getBookListWithPaging(@Param('skip') skip: string, @Param('limit') limit: string): Observable<Book[]> {
+        const books: Observable<Book[]> = this.bookService.getBookListWithPaging(+skip, +limit);
+
+        return books;
+    }
+
     @Get()
     public getBookList(): Observable<Book[]> {
         const books: Observable<Book[]> = this.bookService.getBookList();
 
         return books;
     }
-
     @Post()
     public createBook(@Body() createBookDto: CreateBookDto): Observable<Book> {
         const createdBook: Observable<Book> = this.bookService.createBook(createBookDto);
