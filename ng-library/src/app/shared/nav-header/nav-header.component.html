@@ -1,0 +1,18 @@
+<nav class="navbar navbar-light justify-content-between">
+    <a class="navbar-brand">
+        <img src="https://ui-ex.com/images/claptrap-drawing-easy-1.png" width="30" height="30"
+            class="d-inline-block align-top" alt="">
+        ClapTrap
+    </a>
+    <a class="link" [routerLink]="['/']">
+        Home
+    </a>
+    <a class="link" [routerLink]="['/library/book']">
+        Books
+    </a>
+
+    <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</nav>
