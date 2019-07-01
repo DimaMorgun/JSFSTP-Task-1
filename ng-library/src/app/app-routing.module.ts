@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { LayoutDefaultComponent } from './shared/layout-default/layout-default.component';
 
 const routes: Routes = [
   {
-    path: 'book',
-    loadChildren: () => import('./book/book.module').then(mod => mod.BookModule)
+    path: 'library',
+    component: LayoutDefaultComponent,
+    loadChildren: () => import('./library/library.module').then(mod => mod.LibraryModule)
   },
   {
     path: '',
-    redirectTo: '',
+    redirectTo: 'library',
     pathMatch: 'full'
   }
 ];
