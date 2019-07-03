@@ -1,10 +1,11 @@
 import * as mongoose from 'mongoose';
 import { Observable } from 'rxjs';
+import { devDBConnectionUrl } from '../common/envirounment';
 
 export const databaseProviders = [
     {
         provide: 'MONGO-DEV-CONNECTION',
         useFactory: (): Observable<typeof mongoose> =>
-            mongoose.connect('mongodb://localhost/library-dev', { useNewUrlParser: true, useFindAndModify: false }),
+            mongoose.connect(devDBConnectionUrl, { useNewUrlParser: true, useFindAndModify: false }),
     },
 ];

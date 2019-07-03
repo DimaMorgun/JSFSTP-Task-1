@@ -1,6 +1,6 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { BookModule } from './book/book.module';
-import { AppMiddleware } from './app.middleware';
+import { Middleware } from './core/common';
 import { HomeModule } from './home/home.module';
 
 @Module({
@@ -9,7 +9,7 @@ import { HomeModule } from './home/home.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(AppMiddleware)
+      .apply(Middleware)
       .forRoutes('book');
   }
 }
