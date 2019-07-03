@@ -22,6 +22,6 @@ export const bookProviders = [
     {
         provide: 'BOOK_MODEL',
         useFactory: (connection: mongoose.Connection) => connection.model('Book', BookSchema),
-        inject: ['MONGO-DEV-CONNECTION'],
+        inject: ['MONGO-CONNECTION'],
     },
 ];
