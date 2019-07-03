@@ -1,11 +1,13 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { Book, CreateBookModel, UpdateBookModel } from 'src/core/models';
 import { BookRepository } from 'src/core/repositories/book-repository';
 
 @Injectable()
 export class BookService {
-    constructor(@Inject(BookRepository) private readonly bookRepository: BookRepository) { }
+    constructor(
+        private readonly bookRepository: BookRepository,
+    ) { }
 
     async getBookById(id: string): Promise<Book> {
         const objectId = require('mongoose').Types.ObjectId;

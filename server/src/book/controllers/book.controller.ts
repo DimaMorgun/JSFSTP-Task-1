@@ -1,10 +1,12 @@
-import { Controller, Get, Param, Delete, Post, Put, Body, Inject } from '@nestjs/common';
+import { Controller, Get, Param, Delete, Post, Put, Body } from '@nestjs/common';
 import { Book, CreateBookModel, UpdateBookModel } from 'src/core/models';
 import { BookService } from 'src/core/services';
 
 @Controller('book')
 export class BookController {
-    constructor(@Inject(BookService) private readonly bookService: BookService) { }
+    constructor(
+        private readonly bookService: BookService,
+    ) { }
 
     @Get(':id')
     async getBookById(@Param('id') id: string): Promise<Book> {
@@ -26,6 +28,7 @@ export class BookController {
 
         return books;
     }
+
     @Post()
     async createBook(@Body() createBookDto: CreateBookModel): Promise<Book> {
         const createdBook: Book = await this.bookService.createBook(createBookDto);
