@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import { Observable } from 'rxjs';
-import { devDBConnectionUrl } from '../common/envirounment';
+import { devDBConnectionUrl } from '../common/environment';
 
 export const databaseProviders = [
     {

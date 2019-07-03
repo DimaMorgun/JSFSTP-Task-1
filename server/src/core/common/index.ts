@@ -1,2 +1,2 @@
-export * from './envirounment';
+export * from './environment';
 export * from './middleware';
