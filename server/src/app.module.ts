@@ -10,6 +10,6 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(Middleware)
-      .forRoutes('book');
+      .forRoutes('/');
   }
 }
