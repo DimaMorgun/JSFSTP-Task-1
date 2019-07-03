@@ -2,8 +2,17 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
+import fs = require('fs');
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const httpsOptions = {
+    key: fs.readFileSync('src/secrets/server.key'),
+    cert: fs.readFileSync('src/secrets/server.cert'),
+  };
+
+  const app = await NestFactory.create(AppModule, {
+    httpsOptions,
+  });
 
   const options = new DocumentBuilder()
     .setTitle('Library Swagger api')
