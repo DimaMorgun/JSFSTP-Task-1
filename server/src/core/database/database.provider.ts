@@ -1,11 +1,11 @@
 import * as mongoose from 'mongoose';
-import { Observable } from 'rxjs';
-import { databaseMongoConnectionUrl } from '../environment-dev/database.config';
+
+import { databaseMongoConnectionUrl } from 'src/core/common';
 
 export const databaseProviders = [
     {
         provide: 'MONGO-CONNECTION',
-        useFactory: (): Observable<typeof mongoose> =>
+        useFactory: (): Promise<typeof mongoose> =>
             mongoose.connect(databaseMongoConnectionUrl, { useNewUrlParser: true, useFindAndModify: false }),
     },
 ];

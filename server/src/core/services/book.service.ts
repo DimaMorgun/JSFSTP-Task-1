@@ -5,9 +5,7 @@ import { BookRepository } from 'src/core/repositories/book-repository';
 
 @Injectable()
 export class BookService {
-    constructor(
-        private readonly bookRepository: BookRepository,
-    ) { }
+    constructor(private readonly bookRepository: BookRepository) { }
 
     async getBookById(id: string): Promise<Book> {
         const objectId = require('mongoose').Types.ObjectId;

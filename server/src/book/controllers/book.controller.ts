@@ -1,12 +1,11 @@
 import { Controller, Get, Param, Delete, Post, Put, Body } from '@nestjs/common';
+
 import { Book, CreateBookModel, UpdateBookModel } from 'src/core/models';
 import { BookService } from 'src/core/services';
 
 @Controller('book')
 export class BookController {
-    constructor(
-        private readonly bookService: BookService,
-    ) { }
+    constructor(private readonly bookService: BookService) { }
 
     @Get(':id')
     async getBookById(@Param('id') id: string): Promise<Book> {

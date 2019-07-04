@@ -1,7 +1,8 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { BookModule } from './book/book.module';
-import { Middleware } from './core/common';
-import { HomeModule } from './home/home.module';
+
+import { BookModule } from 'src/book/book.module';
+import { Middleware } from 'src/core/common';
+import { HomeModule } from 'src/home/home.module';
 
 @Module({
   imports: [BookModule, HomeModule],

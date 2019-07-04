@@ -1,6 +1,6 @@
-import * as mongoose from 'mongoose';
+import { Connection, Document, Schema, Provider } from 'mongoose';
 
-export interface Book extends mongoose.Document {
+export interface Book extends Document {
     readonly name: string;
     readonly imageSrc: string;
     readonly authorName: string;
@@ -9,7 +9,7 @@ export interface Book extends mongoose.Document {
     readonly isDeleted: boolean;
 }
 
-export const BookSchema = new mongoose.Schema({
+export const BookSchema: Schema = new Schema({
     name: String,
     imageSrc: String,
     authorName: String,
@@ -18,10 +18,10 @@ export const BookSchema = new mongoose.Schema({
     isDeleted: Boolean,
 });
 
-export const bookProviders = [
+export const bookProviders: Provider = [
     {
         provide: 'BOOK_MODEL',
-        useFactory: (connection: mongoose.Connection) => connection.model('Book', BookSchema),
+        useFactory: (connection: Connection) => connection.model('Book', BookSchema),
         inject: ['MONGO-CONNECTION'],
     },
 ];
