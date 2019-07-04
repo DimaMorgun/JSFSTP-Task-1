@@ -1,8 +1,13 @@
 import { NestFactory } from '@nestjs/core';
+import { ExpressAdapter } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { AppModule } from './app.module';
+import { AppModule } from 'src/app.module';
+import { httpPort, httpsPort } from './core/environment-dev';
 
 import fs = require('fs');
+import express = require('express');
+import http = require('http');
+import https = require('https');
 
 async function bootstrap() {
   const httpsOptions = {
@@ -10,9 +15,11 @@ async function bootstrap() {
     cert: fs.readFileSync('src/secrets/server.cert'),
   };
 
-  const app = await NestFactory.create(AppModule, {
-    httpsOptions,
-  });
+  const server = express();
+  const app = await NestFactory.create(
+    AppModule,
+    new ExpressAdapter(server),
+  );
 
   const options = new DocumentBuilder()
     .setTitle('Library Swagger api')
@@ -21,6 +28,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
+  app.init();
+
+  http.createServer(server).listen(httpPort);
+  https.createServer(httpsOptions, server).listen(httpsPort);
 }
 bootstrap();

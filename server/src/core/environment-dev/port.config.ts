@@ -1,2 +1,2 @@
-export const httpPort = '666';
+export const httpPort = '3000';
 export const httpsPort = '443';
