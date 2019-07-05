@@ -9,6 +9,7 @@ import fs = require('fs');
 import express = require('express');
 import http = require('http');
 import https = require('https');
+import cors = require('cors');
 
 async function bootstrap() {
   const httpsOptions = {
@@ -32,6 +33,7 @@ async function bootstrap() {
   app.init();
 
   server.enable('trust proxy');
+  server.use(cors());
   server.use((req, res, next) => {
     if (req.secure) {
       next();
