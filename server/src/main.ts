@@ -31,6 +31,15 @@ async function bootstrap() {
 
   app.init();
 
+  server.enable('trust proxy');
+  server.use((req, res, next) => {
+    if (req.secure) {
+      next();
+    } else {
+      res.redirect('https://' + req.headers.host.replace(httpPort, httpsPort) + req.url);
+    }
+  });
+
   http.createServer(server).listen(httpPort);
   https.createServer(httpsOptions, server).listen(httpsPort);
 }
