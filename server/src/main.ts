@@ -3,7 +3,7 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppModule } from 'src/app.module';
-import { httpPort, httpsPort } from 'src/core/common/environment.config';
+import { httpPort, httpsPort } from 'src/core/environment/environment.config';
 
 import fs = require('fs');
 import express = require('express');

@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-import { databaseMongoConnectionUrl } from 'src/core/common';
+import { databaseMongoConnectionUrl } from 'src/core/environment/environment.config';
 
 export const databaseProviders = [
     {
