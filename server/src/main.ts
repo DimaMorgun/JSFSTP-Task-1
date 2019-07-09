@@ -3,7 +3,7 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppModule } from 'src/app.module';
-import { httpPort, httpsPort } from 'src/core/environment/environment.config';
+import { Environment } from 'src/environment/environment';
 
 import fs = require('fs');
 import express = require('express');
@@ -12,6 +12,8 @@ import https = require('https');
 import cors = require('cors');
 
 async function bootstrap() {
+  const environment: Environment = new Environment();
+
   const httpsOptions = {
     key: fs.readFileSync('src/secrets/server.key'),
     cert: fs.readFileSync('src/secrets/server.cert'),
@@ -38,11 +40,11 @@ async function bootstrap() {
     if (req.secure) {
       next();
     } else {
-      res.redirect('https://' + req.headers.host.replace(httpPort, httpsPort) + req.url);
+      res.redirect('https://' + req.headers.host.replace(environment.httpPort, environment.httpsPort) + req.url);
     }
   });
 
-  http.createServer(server).listen(httpPort);
-  https.createServer(httpsOptions, server).listen(httpsPort);
+  http.createServer(server).listen(environment.httpPort);
+  https.createServer(httpsOptions, server).listen(environment.httpsPort);
 }
 bootstrap();
