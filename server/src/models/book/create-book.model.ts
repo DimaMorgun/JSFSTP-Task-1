@@ -1,5 +1,10 @@
-export interface CreateBookModel {
-    readonly name: string;
-    readonly imageSrc: string;
-    readonly authorName: string;
+import { ApiModelProperty } from '@nestjs/swagger';
+
+export class CreateBookModel {
+    @ApiModelProperty()
+    name: string;
+    @ApiModelProperty()
+    imageSrc: string;
+    @ApiModelProperty()
+    authorName: string;
 }

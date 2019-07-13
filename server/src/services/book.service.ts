@@ -1,64 +1,69 @@
 import { Injectable } from '@nestjs/common';
 
-import { ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 
 import { BookRepository } from 'src/repositories';
 import { BookModel, CreateBookModel, UpdateBookModel } from 'src/models';
 import { BookDocument } from 'src/documents';
+import { BookMapper } from 'src/mappers/mapper.book';
 
 @Injectable()
 export class BookService {
-    constructor(private readonly bookRepository: BookRepository) { }
+    constructor(
+        private readonly bookRepository: BookRepository,
+        private readonly bookMapper: BookMapper,
+    ) { }
 
-    async getBookById(id: string): Promise<BookModel> {
-        const isValidId = ObjectId.isValid(id);
-
+    async getById(id: string): Promise<BookModel> {
         let book: BookModel = {};
+
+        const isValidId: boolean = Types.ObjectId.isValid(id);
         if (isValidId) {
-            book = await this.bookRepository.getById(id);
+            const bookDocument: BookDocument = await this.bookRepository.getById(id);
+            book = this.bookMapper.getBookModel(bookDocument);
         }
 
         return book;
     }
 
-    async getBookList(): Promise<BookModel[]> {
-        const books: BookModel[] = await this.bookRepository.getAll();
+    async getList(): Promise<BookDocument[]> {
+        const bookDocuments: BookDocument[] = await this.bookRepository.getAll();
+        // const books: BookModel[] = await this.bookMapper.getBookModels(bookDocuments);
+
+        return bookDocuments;
+    }
+
+    async getPaginated(skip: number, limit: number): Promise<BookModel[]> {
+        const bookDocuments: BookDocument[] = await this.bookRepository.getPaginated(skip, limit);
+        const books: BookModel[] = await this.bookMapper.getBookModels(bookDocuments);
 
         return books;
     }
 
-    async getBookListWithPaging(skip: number, limit: number): Promise<BookModel[]> {
-        const books: BookModel[] = await this.bookRepository.getPaginated(skip, limit);
+    async create(createBookModel: CreateBookModel): Promise<BookModel> {
+        const createBookDocument: BookDocument = this.bookMapper.getBookDocument(createBookModel);
+        const createdBookDocument: BookDocument = await this.bookRepository.create(createBookDocument);
+        const createdBook: BookModel = this.bookMapper.getBookModel(createdBookDocument);
 
-        return books;
+        return createdBook;
     }
 
-    async createBook(createBookModel: CreateBookModel): Promise<BookModel> {
-        const createBook: BookDocument = {};
-        createBook.name = createBookModel.name;
-        createBook.createdDate = new Date();
-        createBook.updatedDate = new Date();
-        createBook.isDeleted = false;
-
-        const newBook: BookModel = await this.bookRepository.create(createBook);
-
-        return newBook;
-    }
-
-    async updateBook(updateBookModel: UpdateBookModel): Promise<BookModel> {
-        const updateBook: BookDocument = {};
-        updateBook._id = updateBookModel.id;
-        updateBook.name = updateBookModel.name;
-        updateBook.updatedDate = new Date();
-        updateBook.isDeleted = false;
-
-        const updatedBook: BookModel = await this.bookRepository.update(updateBook);
+    async update(updateBookModel: UpdateBookModel): Promise<BookModel> {
+        const updateBookDocument: BookDocument = this.bookMapper.getBookDocument(updateBookModel);
+        const updatedBookDocument: BookDocument = await this.bookRepository.update(updateBookDocument);
+        const updatedBook: BookModel = this.bookMapper.getBookModel(updatedBookDocument);
 
         return updatedBook;
     }
 
-    async deleteBook(id: string): Promise<BookModel> {
-        const deletedBook: BookModel = await this.bookRepository.delete(id);
+    async delete(id: string): Promise<BookModel> {
+        let deletedBook: BookModel = {};
+
+        const isValidId: boolean = Types.ObjectId.isValid(id);
+        if (isValidId) {
+            const deletedBookDocument: BookDocument = await this.bookRepository.delete(id);
+            deletedBook = this.bookMapper.getBookModel(deletedBookDocument);
+        }
 
         return deletedBook;
     }

@@ -28,6 +28,7 @@ async function bootstrap() {
   const options = new DocumentBuilder()
     .setTitle('Library Swagger api')
     .setVersion('1.0')
+    .setSchemes('http', 'https')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
@@ -36,15 +37,13 @@ async function bootstrap() {
 
   server.enable('trust proxy');
   server.use(cors());
-  server.use((req, res, next) => {
-    if (req.secure) {
-      next();
-    } else {
-      res.redirect('https://' + req.headers.host.replace(environment.httpPort, environment.httpsPort) + req.url);
-    }
-  });
 
-  http.createServer(server).listen(environment.httpPort);
   https.createServer(httpsOptions, server).listen(environment.httpsPort);
+  http.createServer((req, res) => {
+    res.writeHead(301, {
+      Location: `https://${req.headers.host.replace(environment.httpPort, environment.httpsPort)}${req.url}`,
+    });
+    res.end();
+  }).listen(environment.httpPort);
 }
 bootstrap();

@@ -1,4 +1,4 @@
-import { Document, Schema, ObjectId } from 'mongoose';
+import { Connection, Document, Schema, Provider, ObjectId } from 'mongoose';
 
 export interface BookDocument extends Document {
     _id?: ObjectId;
@@ -14,3 +14,11 @@ export const BookSchema: Schema = new Schema({
     updatedDate: Date,
     isDeleted: Boolean,
 });
+
+export const bookProviders: Provider = [
+    {
+        provide: 'BOOK_MODEL',
+        useFactory: (connection: Connection) => connection.model('Book', BookSchema),
+        inject: ['MONGO-CONNECTION'],
+    },
+];

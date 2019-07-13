@@ -1,10 +1,12 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 
-export class UpdateBookModel {
+export class CreateUserModel {
     @ApiModelProperty()
-    readonly id: string;
+    readonly fullName: string;
     @ApiModelProperty()
-    readonly name: string;
+    readonly userName: string;
+    @ApiModelProperty()
+    readonly password: string;
     @ApiModelProperty()
     readonly imageSrc: string;
     @ApiModelProperty()

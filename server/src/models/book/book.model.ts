@@ -3,7 +3,7 @@ export interface BookModel {
     name?: string;
     imageSrc?: string;
     authorName?: string;
-    created?: Date;
-    updated?: Date;
+    createdDate?: Date;
+    updatedDate?: Date;
     isDeleted?: boolean;
 }

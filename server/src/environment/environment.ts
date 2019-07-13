@@ -25,12 +25,12 @@ export class Environment {
     }
 
     development() {
-        this.databaseMongoConnectionUrl = 'mongodb://localhost/library-dev';
+        this.databaseMongoConnectionUrl = 'mongodb://127.0.0.1:27017/library-dev';
         this.buildMode = 'Development';
     }
 
     production() {
-        this.databaseMongoConnectionUrl = 'mongodb://localhost/library-prod';
+        this.databaseMongoConnectionUrl = 'mongodb://127.0.0.1:27017/library-prod';
         this.buildMode = 'Production';
     }
 }
