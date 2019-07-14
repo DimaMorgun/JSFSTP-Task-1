@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class Environment {
-    public httpPort: string = '3000';
+    public httpPort: string = '80';
     public httpsPort: string = '443';
     public databaseProviderName: string = 'MONGO-CONNECTION';
     public databaseMongoConnectionUrl: string;

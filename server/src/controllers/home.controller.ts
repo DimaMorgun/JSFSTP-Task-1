@@ -1,8 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
+import { ApiUseTags } from '@nestjs/swagger';
 
 import { Environment } from 'src/environment/environment';
 
 @Controller('/')
+@ApiUseTags('home')
 export class HomeController {
     constructor(private readonly environment: Environment) { }
 

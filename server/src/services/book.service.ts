@@ -26,11 +26,11 @@ export class BookService {
         return book;
     }
 
-    async getList(): Promise<BookDocument[]> {
+    async getList(): Promise<BookModel[]> {
         const bookDocuments: BookDocument[] = await this.bookRepository.getAll();
-        // const books: BookModel[] = await this.bookMapper.getBookModels(bookDocuments);
+        const books: BookModel[] = await this.bookMapper.getBookModels(bookDocuments);
 
-        return bookDocuments;
+        return books;
     }
 
     async getPaginated(skip: number, limit: number): Promise<BookModel[]> {
@@ -41,7 +41,7 @@ export class BookService {
     }
 
     async create(createBookModel: CreateBookModel): Promise<BookModel> {
-        const createBookDocument: BookDocument = this.bookMapper.getBookDocument(createBookModel);
+        const createBookDocument: BookDocument = this.bookMapper.getBookDocumentFromCreateBookModel(createBookModel);
         const createdBookDocument: BookDocument = await this.bookRepository.create(createBookDocument);
         const createdBook: BookModel = this.bookMapper.getBookModel(createdBookDocument);
 
@@ -49,7 +49,7 @@ export class BookService {
     }
 
     async update(updateBookModel: UpdateBookModel): Promise<BookModel> {
-        const updateBookDocument: BookDocument = this.bookMapper.getBookDocument(updateBookModel);
+        const updateBookDocument: BookDocument = this.bookMapper.getBookDocumentFromUpdateBookModel(updateBookModel);
         const updatedBookDocument: BookDocument = await this.bookRepository.update(updateBookDocument);
         const updatedBook: BookModel = this.bookMapper.getBookModel(updatedBookDocument);
 

@@ -7,8 +7,4 @@ export class CreateUserModel {
     readonly userName: string;
     @ApiModelProperty()
     readonly password: string;
-    @ApiModelProperty()
-    readonly imageSrc: string;
-    @ApiModelProperty()
-    readonly authorName: string;
 }

@@ -1,11 +1,11 @@
-import { Controller, Get, Param, Delete, Post, Put, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Delete, Post, Put, Body } from '@nestjs/common';
 
 import { BookModel, CreateBookModel, UpdateBookModel } from 'src/models';
 import { BookService } from 'src/services';
-import { ApiUseTags, ApiImplicitBody } from '@nestjs/swagger';
+import { ApiUseTags } from '@nestjs/swagger';
 import { BookDocument } from 'src/documents';
+import { conditionalExpression } from '@babel/types';
 
-@Controller('book')
 @Controller('book')
 @ApiUseTags('book')
 export class BookController {

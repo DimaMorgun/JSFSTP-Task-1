@@ -2,9 +2,9 @@ import { ApiModelProperty } from '@nestjs/swagger';
 
 export class CreateBookModel {
     @ApiModelProperty()
-    name: string;
+    readonly name: string;
     @ApiModelProperty()
-    imageSrc: string;
+    readonly imageSrc: string;
     @ApiModelProperty()
-    authorName: string;
+    readonly authorName: string;
 }
