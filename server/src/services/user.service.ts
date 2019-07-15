@@ -1,66 +1,82 @@
 import { Injectable } from '@nestjs/common';
 
 import { Types } from 'mongoose';
+import { HexBase64Latin1Encoding, Hmac, createHmac, randomBytes } from 'crypto';
 
 import { UserRepository } from 'src/repositories';
 import { UserModel, CreateUserModel, UpdateUserModel } from 'src/models';
 import { UserDocument } from 'src/documents';
-
-import * as crypto from 'crypto';
+import { UserMapper } from 'src/mappers';
 
 @Injectable()
 export class UserService {
     private saltLength: number = 16;
     private passwordHashEncryptType: string = 'sha512';
     private stringFormat: string = 'hex';
-    private encodingAlgorithm: crypto.HexBase64Latin1Encoding = 'hex';
+    private encodingAlgorithm: HexBase64Latin1Encoding = 'hex';
 
-    constructor(private readonly userRepository: UserRepository) { }
+    constructor(
+        private readonly userRepository: UserRepository,
+        private readonly userMapper: UserMapper,
+    ) { }
 
     async getById(id: string): Promise<UserModel> {
         let user: UserModel = {};
 
         const isValidId: boolean = Types.ObjectId.isValid(id);
         if (isValidId) {
-            user = await this.userRepository.getById(id);
+            const userDocument: UserDocument = await this.userRepository.getById(id);
+            user = this.userMapper.getUserModel(userDocument);
+        }
+
+        return user;
+    }
+
+    async getByUsername(username: string): Promise<UserModel> {
+        let user: UserModel = {};
+
+        if (username) {
+            const userDocument: UserDocument = await this.userRepository.getByUsername(username);
+            user = this.userMapper.getUserModel(userDocument);
         }
 
         return user;
     }
 
     async getList(): Promise<UserModel[]> {
-        const users: UserModel[] = await this.userRepository.getAll();
+        const userDocuments: UserDocument[] = await this.userRepository.getAll();
+        const users: UserModel[] = await this.userMapper.getUserModels(userDocuments);
 
         return users;
     }
 
     async getPaginated(skip: number, limit: number): Promise<UserModel[]> {
-        const users: UserModel[] = await this.userRepository.getPaginated(skip, limit);
+        const userDocuments: UserDocument[] = await this.userRepository.getPaginated(skip, limit);
+        const users: UserModel[] = await this.userMapper.getUserModels(userDocuments);
 
         return users;
     }
 
     async create(createUserModel: CreateUserModel): Promise<UserModel> {
-        const createUser: UserDocument = {};
-        createUser.fullName = createUserModel.fullName;
-        createUser.username = createUserModel.userName;
-        createUser.createdDate = new Date();
-        createUser.updatedDate = new Date();
-        createUser.isDeleted = false;
+        const createUserDocument: UserDocument = await this.userMapper.getUserDocumentFromCreateUserModel(createUserModel);
+        createUserDocument.passwordSalt = await this.getRandomSalt();
+        createUserDocument.passwordHash = await this.getPasswordHash(createUserModel.password, createUserDocument.passwordSalt);
 
-        const newUser: UserModel = await this.userRepository.create(createUser);
+        const createdUserDocument: UserDocument = await this.userRepository.create(createUserDocument);
+        const createdUser: UserModel = this.userMapper.getUserModel(createdUserDocument);
 
-        return newUser;
+        return createdUser;
     }
 
     async update(updateUserModel: UpdateUserModel): Promise<UserModel> {
-        const updateUser: UserDocument = {};
-        updateUser._id = updateUserModel.id;
-        updateUser.fullName = updateUserModel.fullName;
-        updateUser.updatedDate = new Date();
-        updateUser.isDeleted = false;
+        const updateUserDocument: UserDocument = this.userMapper.getUserDocumentFromUpdateUserModel(updateUserModel);
+        if (updateUserModel && updateUserModel.password) {
+            updateUserDocument.passwordSalt = await this.getRandomSalt();
+            updateUserDocument.passwordHash = await this.getPasswordHash(updateUserModel.password, updateUserDocument.passwordSalt);
+        }
 
-        const updatedUser: UserModel = await this.userRepository.update(updateUser);
+        const updatedUserDocument: UserDocument = await this.userRepository.update(updateUserDocument);
+        const updatedUser: UserModel = this.userMapper.getUserModel(updatedUserDocument);
 
         return updatedUser;
     }
@@ -76,23 +92,15 @@ export class UserService {
         return deletedUser;
     }
 
-    private getRandomSalt(): string {
-        const test = crypto.randomBytes(Math.ceil(this.saltLength / 2));
-        // tslint:disable-next-line:no-console
-        console.log('Type "test"=', typeof(test));
-
-        const randomHexBytes: string = crypto.randomBytes(Math.ceil(this.saltLength / 2)).toString(this.stringFormat);
+    async getRandomSalt(): Promise<string> {
+        const randomHexBytes: string = randomBytes(Math.ceil(this.saltLength / 2)).toString(this.stringFormat);
         const randomSalt: string = randomHexBytes.slice(0, this.saltLength);
 
         return randomSalt;
     }
 
-    private getPasswordHash(password: string, salt: string): string {
-        const passwordHash = crypto.createHmac(this.passwordHashEncryptType, salt);
-        // tslint:disable-next-line:no-console
-        console.log('Type "crypto"=', typeof(crypto));
-        // tslint:disable-next-line:no-console
-        console.log('Type "passwordHash"=', typeof(passwordHash));
+    async getPasswordHash(password: string, salt: string): Promise<string> {
+        const passwordHash: Hmac = createHmac(this.passwordHashEncryptType, salt);
         passwordHash.update(password);
 
         const hashedPassword: string = passwordHash.digest(this.encodingAlgorithm);

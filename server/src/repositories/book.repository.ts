@@ -3,18 +3,14 @@ import { Injectable } from '@nestjs/common';
 import { Model, objectid } from 'mongoose';
 
 import { BookDocument, BookSchema } from 'src/documents';
-import { Environment } from 'src/environment/environment';
 
 import * as mongoose from 'mongoose';
 
 @Injectable()
 export class BookRepository {
-    private bookModel: Model<BookDocument>;
+    private readonly bookModel: Model<BookDocument>;
 
-    constructor(
-        private readonly environment: Environment,
-    ) {
-        mongoose.connect(this.environment.databaseMongoConnectionUrl, { useNewUrlParser: true, useFindAndModify: false });
+    constructor() {
         this.bookModel = mongoose.model('Book', BookSchema);
     }
 

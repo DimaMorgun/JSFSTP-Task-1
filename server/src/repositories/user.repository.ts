@@ -4,21 +4,26 @@ import { Model, objectid } from 'mongoose';
 
 import { UserSchema, UserDocument } from 'src/documents';
 
-import { Environment } from 'src/environment/environment';
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class UserRepository {
     private readonly userModel: Model<UserDocument>;
-    constructor(
-        private readonly environment: Environment,
-    ) {
-        // const mongoose = require('mongoose');
-        // this.userModel = mongoose.model('User', UserSchema);
-        // mongoose.createConnection(environment.databaseMongoConnectionUrl, { useNewUrlParser: true, useFindAndModify: false });
+
+    constructor() {
+        this.userModel = mongoose.model('User', UserSchema);
     }
 
     async getById(id: objectid): Promise<UserDocument> {
         const user: UserDocument = await this.userModel.findById(id).exec();
+
+        return user;
+    }
+
+    async getByUsername(username: string): Promise<UserDocument> {
+        const search = { username };
+
+        const user: UserDocument = await this.userModel.find(search).exec();
 
         return user;
     }

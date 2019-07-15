@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
-import { AppModule } from 'src/app.module';
+import { AppModule } from './app.module';
 import { Environment } from 'src/environment/environment';
 
 import fs = require('fs');
@@ -10,9 +10,12 @@ import express = require('express');
 import http = require('http');
 import https = require('https');
 import cors = require('cors');
+import * as mongoose from 'mongoose';
 
 async function bootstrap() {
   const environment: Environment = new Environment();
+
+  mongoose.connect(environment.databaseMongoConnectionUrl, { useNewUrlParser: true, useFindAndModify: false });
 
   const httpsOptions = {
     key: fs.readFileSync('src/secrets/server.key'),

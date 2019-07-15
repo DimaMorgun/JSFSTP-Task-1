@@ -1,15 +1,23 @@
 import { Injectable } from '@nestjs/common';
 
-// import { UserService } from 'src/services';
+import { UserService } from 'src/services';
+import { UserModel } from 'src/models';
 
 @Injectable()
 export class AuthService {
-    // constructor(private readonly userService: UserService) { }
+    constructor(
+        // private userService: UserService,
+    ) { }
 
-    async validateUser(token: string): Promise<boolean> {
-        // const result: boolean = await this.usersService.findOneByToken(token);
+    async validateUser(username: string, password: string): Promise<boolean> {
+        // const user: UserModel = await this.userService.getByUsername(username);
 
-        // return result;
-        return true;
+        // if (user) {
+        //     const hashedPassword: string = await this.userService.getPasswordHash(password, user.passwordSalt);
+
+        //     return user.passwordHash === hashedPassword;
+        // }
+
+        return false;
     }
 }

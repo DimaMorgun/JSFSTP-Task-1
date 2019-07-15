@@ -5,7 +5,7 @@ import { Types } from 'mongoose';
 import { BookRepository } from 'src/repositories';
 import { BookModel, CreateBookModel, UpdateBookModel } from 'src/models';
 import { BookDocument } from 'src/documents';
-import { BookMapper } from 'src/mappers/mapper.book';
+import { BookMapper } from 'src/mappers';
 
 @Injectable()
 export class BookService {

@@ -1,7 +1,7 @@
-import { BookDocument } from 'src/documents';
-import { BookModel, UpdateBookModel } from 'src/models';
 import { Injectable } from '@nestjs/common';
-import { CreateBookModel } from 'src/models';
+
+import { BookDocument } from 'src/documents';
+import { BookModel, CreateBookModel, UpdateBookModel } from 'src/models';
 
 @Injectable()
 export class BookMapper {

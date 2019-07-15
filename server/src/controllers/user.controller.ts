@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Delete, Post, Put, Body } from '@nestjs/common';
+import { Controller, Get, Param, Delete, Post, Put, Body, Query } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 
 import { UserModel, CreateUserModel, UpdateUserModel } from 'src/models';
@@ -12,6 +12,13 @@ export class UserController {
     @Get(':id')
     async getUserById(@Param('id') id: string): Promise<UserModel> {
         const user: UserModel = await this.userService.getById(id);
+
+        return user;
+    }
+
+    @Get()
+    async getUserByUsername(@Query('username') username: string): Promise<UserModel> {
+        const user: UserModel = await this.userService.getByUsername(username);
 
         return user;
     }

@@ -2,30 +2,35 @@ import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 
 import { Connection } from 'mongoose';
 
-import { MiddlewareRequest, HttpStrategy } from './common';
+import { MiddlewareRequest, HttpStrategy } from 'src/common';
 import { Environment } from 'src/environment/environment';
-import { UserController, HomeController, BookController } from 'src/controllers';
+import { UserController, HomeController, BookController, AuthController } from 'src/controllers';
 import { AuthService, BookService, UserService } from 'src/services';
 import { BookRepository, UserRepository } from 'src/repositories';
-import { BookMapper } from 'src/mappers';
+import { BookMapper, UserMapper } from 'src/mappers';
 
 @Module({
   imports: [],
   controllers: [
+    AuthController,
     UserController,
     HomeController,
     BookController,
   ],
   providers: [
     Connection,
-    Environment,
     HttpStrategy,
-    AuthService,
+    Environment,
+    UserMapper,
     UserService,
     UserRepository,
     BookMapper,
     BookService,
     BookRepository,
+    AuthService,
+  ],
+  exports: [
+    UserService,
   ],
 })
 export class AppModule implements NestModule {
