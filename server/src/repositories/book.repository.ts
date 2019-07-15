@@ -1,17 +1,22 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { Model, objectid } from 'mongoose';
 
-import { BookDocument } from 'src/documents';
-
+import { BookDocument, BookSchema } from 'src/documents';
 import { Environment } from 'src/environment/environment';
+
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class BookRepository {
+    private bookModel: Model<BookDocument>;
+
     constructor(
         private readonly environment: Environment,
-        @Inject('BOOK_MODEL') private readonly bookModel: Model<BookDocument>,
-    ) { }
+    ) {
+        mongoose.connect(this.environment.databaseMongoConnectionUrl, { useNewUrlParser: true, useFindAndModify: false });
+        this.bookModel = mongoose.model('Book', BookSchema);
+    }
 
     async getById(id: objectid): Promise<BookDocument> {
         const book: BookDocument = await this.bookModel.findById(id).exec();

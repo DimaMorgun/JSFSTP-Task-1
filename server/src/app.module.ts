@@ -8,13 +8,9 @@ import { UserController, HomeController, BookController } from 'src/controllers'
 import { AuthService, BookService, UserService } from 'src/services';
 import { BookRepository, UserRepository } from 'src/repositories';
 import { BookMapper } from 'src/mappers';
-import { DatabaseModule } from 'src/database/database.module';
-import { bookProviders } from './documents';
 
 @Module({
-  imports: [
-    DatabaseModule,
-  ],
+  imports: [],
   controllers: [
     UserController,
     HomeController,
@@ -27,7 +23,6 @@ import { bookProviders } from './documents';
     AuthService,
     UserService,
     UserRepository,
-    ...bookProviders,
     BookMapper,
     BookService,
     BookRepository,

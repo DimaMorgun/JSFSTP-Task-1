@@ -4,7 +4,6 @@ import { BookModel, CreateBookModel, UpdateBookModel } from 'src/models';
 import { BookService } from 'src/services';
 import { ApiUseTags } from '@nestjs/swagger';
 import { BookDocument } from 'src/documents';
-import { conditionalExpression } from '@babel/types';
 
 @Controller('book')
 @ApiUseTags('book')
