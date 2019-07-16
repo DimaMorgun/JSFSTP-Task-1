@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
 
 import { Types } from 'mongoose';
 
@@ -13,6 +13,7 @@ export class UserService {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly userMapper: UserMapper,
+        @Inject(forwardRef(() => PasswordHelper))
         private readonly paswordHelper: PasswordHelper,
     ) { }
 

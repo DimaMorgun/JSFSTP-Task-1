@@ -1,23 +1,53 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, forwardRef } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
-import { UserService } from 'src/services';
-import { UserModel } from 'src/models';
+import { UserModel, UserPayloadModel } from 'src/models';
+import { PasswordHelper } from 'src/common';
+import { UserService } from '.';
 
 @Injectable()
 export class AuthService {
     constructor(
-        // private userService: UserService,
+        @Inject(forwardRef(() => UserService))
+        private userService: UserService,
+        @Inject(forwardRef(() => PasswordHelper))
+        private readonly passwordHelper: PasswordHelper,
+        private readonly jwtService: JwtService,
     ) { }
 
     async validateUser(username: string, password: string): Promise<boolean> {
-        // const user: UserModel = await this.userService.getByUsername(username);
+        let user: UserModel = await this.userService.getByUsername(username);
 
-        // if (user) {
-        //     const hashedPassword: string = await this.userService.getPasswordHash(password, user.passwordSalt);
+        if (!user || !user.passwordSalt || !user.passwordHash) {
+            return false;
+        }
 
-        //     return user.passwordHash === hashedPassword;
-        // }
+        const passwordHash: string = await this.passwordHelper.getPasswordHash(password, user.passwordSalt);
 
-        return false;
+        return user.passwordHash === passwordHash;
+    }
+
+    async getUserPayload(username: string): Promise<UserPayloadModel> {
+        let user: UserModel = await this.userService.getByUsername(username);
+
+        if (!user) {
+            return null;
+        }
+
+        const userPayload: UserPayloadModel = {};
+        userPayload.id = user.id;
+        userPayload.username = user.username;
+        userPayload.fullName = user.fullName;
+        userPayload.createdDate = user.createdDate;
+        userPayload.updatedDate = user.updatedDate;
+        userPayload.isDeleted = user.isDeleted;
+
+        return userPayload;
+    }
+
+    async login(userPayload: UserPayloadModel) {
+        const accessToken: string = this.jwtService.sign(userPayload)
+
+        return accessToken;
     }
 }

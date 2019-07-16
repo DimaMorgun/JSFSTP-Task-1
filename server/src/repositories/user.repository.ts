@@ -23,7 +23,7 @@ export class UserRepository {
     async getByUsername(username: string): Promise<UserDocument> {
         const search = { username };
 
-        const user: UserDocument = await this.userModel.find(search).exec();
+        const user: UserDocument = await this.userModel.findOne(search).exec();
 
         return user;
     }

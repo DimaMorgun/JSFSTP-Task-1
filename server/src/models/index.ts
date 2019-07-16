@@ -5,3 +5,6 @@ export * from './book/update-book.model';
 export * from './user/user.model';
 export * from './user/create-user.model';
 export * from './user/update-user.model';
+
+export * from './auth/login.model';
+export * from './auth/user-payload.model'

@@ -16,13 +16,6 @@ export class UserController {
         return user;
     }
 
-    @Get()
-    async getUserByUsername(@Query('username') username: string): Promise<UserModel> {
-        const user: UserModel = await this.userService.getByUsername(username);
-
-        return user;
-    }
-
     @Get(':skip/:limit')
     async getUserListWithPaging(@Param('skip') skip: string, @Param('limit') limit: string): Promise<UserModel[]> {
         const users: UserModel[] = await this.userService.getPaginated(+skip, +limit);

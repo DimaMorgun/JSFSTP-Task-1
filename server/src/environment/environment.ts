@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
+import fs = require('fs');
+
 @Injectable()
 export class Environment {
     public httpPort: string = '80';
@@ -7,6 +9,7 @@ export class Environment {
     public databaseProviderName: string = 'MONGO-CONNECTION';
     public databaseMongoConnectionUrl: string;
     public buildMode;
+    public jwtSecretKey: string = fs.readFileSync('src/secrets/server.key').toString();
 
     constructor() {
         const environment = process.env.NODE_ENV || 'development';
