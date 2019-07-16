@@ -1,23 +1,19 @@
 import { Injectable } from '@nestjs/common';
 
 import { Types } from 'mongoose';
-import { HexBase64Latin1Encoding, Hmac, createHmac, randomBytes } from 'crypto';
 
 import { UserRepository } from 'src/repositories';
 import { UserModel, CreateUserModel, UpdateUserModel } from 'src/models';
 import { UserDocument } from 'src/documents';
 import { UserMapper } from 'src/mappers';
+import { PasswordHelper } from 'src/common/password.helper';
 
 @Injectable()
 export class UserService {
-    private saltLength: number = 16;
-    private passwordHashEncryptType: string = 'sha512';
-    private stringFormat: string = 'hex';
-    private encodingAlgorithm: HexBase64Latin1Encoding = 'hex';
-
     constructor(
         private readonly userRepository: UserRepository,
         private readonly userMapper: UserMapper,
+        private readonly paswordHelper: PasswordHelper,
     ) { }
 
     async getById(id: string): Promise<UserModel> {
@@ -59,8 +55,8 @@ export class UserService {
 
     async create(createUserModel: CreateUserModel): Promise<UserModel> {
         const createUserDocument: UserDocument = await this.userMapper.getUserDocumentFromCreateUserModel(createUserModel);
-        createUserDocument.passwordSalt = await this.getRandomSalt();
-        createUserDocument.passwordHash = await this.getPasswordHash(createUserModel.password, createUserDocument.passwordSalt);
+        createUserDocument.passwordSalt = await this.paswordHelper.getRandomSalt();
+        createUserDocument.passwordHash = await this.paswordHelper.getPasswordHash(createUserModel.password, createUserDocument.passwordSalt);
 
         const createdUserDocument: UserDocument = await this.userRepository.create(createUserDocument);
         const createdUser: UserModel = this.userMapper.getUserModel(createdUserDocument);
@@ -71,8 +67,8 @@ export class UserService {
     async update(updateUserModel: UpdateUserModel): Promise<UserModel> {
         const updateUserDocument: UserDocument = this.userMapper.getUserDocumentFromUpdateUserModel(updateUserModel);
         if (updateUserModel && updateUserModel.password) {
-            updateUserDocument.passwordSalt = await this.getRandomSalt();
-            updateUserDocument.passwordHash = await this.getPasswordHash(updateUserModel.password, updateUserDocument.passwordSalt);
+            updateUserDocument.passwordSalt = await this.paswordHelper.getRandomSalt();
+            updateUserDocument.passwordHash = await this.paswordHelper.getPasswordHash(updateUserModel.password, updateUserDocument.passwordSalt);
         }
 
         const updatedUserDocument: UserDocument = await this.userRepository.update(updateUserDocument);
@@ -90,21 +86,5 @@ export class UserService {
         }
 
         return deletedUser;
-    }
-
-    async getRandomSalt(): Promise<string> {
-        const randomHexBytes: string = randomBytes(Math.ceil(this.saltLength / 2)).toString(this.stringFormat);
-        const randomSalt: string = randomHexBytes.slice(0, this.saltLength);
-
-        return randomSalt;
-    }
-
-    async getPasswordHash(password: string, salt: string): Promise<string> {
-        const passwordHash: Hmac = createHmac(this.passwordHashEncryptType, salt);
-        passwordHash.update(password);
-
-        const hashedPassword: string = passwordHash.digest(this.encodingAlgorithm);
-
-        return hashedPassword;
     }
 }

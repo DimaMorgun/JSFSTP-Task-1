@@ -2,7 +2,7 @@ import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 
 import { Connection } from 'mongoose';
 
-import { MiddlewareRequest, HttpStrategy } from 'src/common';
+import { MiddlewareRequest, HttpStrategy, PasswordHelper } from 'src/common';
 import { Environment } from 'src/environment/environment';
 import { UserController, HomeController, BookController, AuthController } from 'src/controllers';
 import { AuthService, BookService, UserService } from 'src/services';
@@ -21,6 +21,7 @@ import { BookMapper, UserMapper } from 'src/mappers';
     Connection,
     HttpStrategy,
     Environment,
+    PasswordHelper,
     UserMapper,
     UserService,
     UserRepository,

@@ -1,27 +1,20 @@
 import { Injectable } from '@nestjs/common';
 
-import { HexBase64Latin1Encoding, Hmac, createHmac, randomBytes } from 'crypto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class PasswordHelper {
-    private saltLength: number = 16;
-    private passwordHashEncryptType: string = 'sha512';
-    private stringFormat: string = 'hex';
-    private encodingAlgorithm: HexBase64Latin1Encoding = 'hex';
+    private saltRounds = 10;
 
     async getRandomSalt(): Promise<string> {
-        const randomHexBytes: string = randomBytes(Math.ceil(this.saltLength / 2)).toString(this.stringFormat);
-        const randomSalt: string = randomHexBytes.slice(0, this.saltLength);
+        const salt: string = await bcrypt.genSalt(this.saltRounds);
 
-        return randomSalt;
+        return salt;
     }
 
     async getPasswordHash(password: string, salt: string): Promise<string> {
-        const passwordHash: Hmac = createHmac(this.passwordHashEncryptType, salt);
-        passwordHash.update(password);
+        const passwordHash: string = await bcrypt.hash(password, salt);
 
-        const hashedPassword: string = passwordHash.digest(this.encodingAlgorithm);
-
-        return hashedPassword;
+        return passwordHash;
     }
 }
