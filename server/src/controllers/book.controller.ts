@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Delete, Post, Put, Body } from '@nestjs/common';
+import { Controller, Get, Param, Delete, Post, Put, Body, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { BookModel, CreateBookModel, UpdateBookModel } from 'src/models';
 import { BookService } from 'src/services';
@@ -36,6 +37,12 @@ export class BookController {
         const createdBook: BookModel = await this.bookService.create(createBookModel);
 
         return createdBook;
+    }
+
+    @Post('upload')
+    @UseInterceptors(FileInterceptor('image'))
+    async uploadBookImage(@UploadedFile() image: string): Promise<any> {
+        console.log(image);
     }
 
     @Put()

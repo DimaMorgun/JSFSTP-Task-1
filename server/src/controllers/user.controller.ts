@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Delete, Post, Put, Body, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiUseTags } from '@nestjs/swagger';
+import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 
 import { UserModel, CreateUserModel, UpdateUserModel } from 'src/models';
 import { UserService } from 'src/services';
@@ -9,6 +9,7 @@ import { UserService } from 'src/services';
 @UseGuards(AuthGuard('jwt'))
 @Controller('user')
 @ApiUseTags('user')
+@ApiBearerAuth()
 export class UserController {
     constructor(private readonly userService: UserService) { }
 

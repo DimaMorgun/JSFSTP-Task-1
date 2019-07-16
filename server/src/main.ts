@@ -32,6 +32,7 @@ async function bootstrap() {
     .setTitle('Library Swagger api')
     .setVersion('1.0')
     .setSchemes('https')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
