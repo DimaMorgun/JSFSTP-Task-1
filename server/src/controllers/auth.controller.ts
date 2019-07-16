@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiUseTags } from '@nestjs/swagger';
 
 import { AuthService } from 'src/services';
-import { LoginModel, UserModel, UserPayloadModel } from 'src/models';
+import { LoginModel } from 'src/models';
 
 @Controller('auth')
 @ApiUseTags('auth')
@@ -16,9 +16,7 @@ export class AuthController {
     @UseGuards(AuthGuard('local'))
     @Post('login')
     async login(@Body() request: LoginModel): Promise<LoginModel> {
-        const userPayload: UserPayloadModel = await this.authService.getUserPayload(request.username);
-
-        request.token = await this.authService.login(userPayload);
+        request.token = await this.authService.getToken(request.username);
 
         return request;
     }

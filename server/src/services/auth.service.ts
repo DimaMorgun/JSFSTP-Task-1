@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserModel, UserPayloadModel } from 'src/models';
 import { PasswordHelper } from 'src/common';
 import { UserService } from '.';
+import { Environment } from 'src/environment/environment';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,7 @@ export class AuthService {
         @Inject(forwardRef(() => PasswordHelper))
         private readonly passwordHelper: PasswordHelper,
         private readonly jwtService: JwtService,
+        private readonly environment: Environment,
     ) { }
 
     async validateUser(username: string, password: string): Promise<boolean> {
@@ -25,6 +27,15 @@ export class AuthService {
         const passwordHash: string = await this.passwordHelper.getPasswordHash(password, user.passwordSalt);
 
         return user.passwordHash === passwordHash;
+    }
+
+    async getToken(username: string) {
+        const userPayload: UserPayloadModel = await this.getUserPayload(username);
+
+
+        const accessToken: string = await this.jwtService.sign(userPayload)
+
+        return accessToken;
     }
 
     async getUserPayload(username: string): Promise<UserPayloadModel> {
@@ -43,11 +54,5 @@ export class AuthService {
         userPayload.isDeleted = user.isDeleted;
 
         return userPayload;
-    }
-
-    async login(userPayload: UserPayloadModel) {
-        const accessToken: string = this.jwtService.sign(userPayload)
-
-        return accessToken;
     }
 }

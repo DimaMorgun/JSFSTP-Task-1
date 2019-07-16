@@ -8,8 +8,9 @@ export class Environment {
     public httpsPort: string = '443';
     public databaseProviderName: string = 'MONGO-CONNECTION';
     public databaseMongoConnectionUrl: string;
-    public buildMode;
-    public jwtSecretKey: string = fs.readFileSync('src/secrets/server.key').toString();
+    public buildMode: string;
+    public static jwtSecretKey: string = fs.readFileSync('src/secrets/jwtSecretKey.key').toString();
+    public static tokenExpireTime = 60 * 60 * 24;
 
     constructor() {
         const environment = process.env.NODE_ENV || 'development';

@@ -15,8 +15,8 @@ import { BookMapper, UserMapper } from 'src/mappers';
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: 'secretKey',
-      signOptions: { expiresIn: '60s' },
+      secret: Environment.jwtSecretKey,
+      signOptions: { expiresIn: Environment.tokenExpireTime },
     }),
   ],
   controllers: [
