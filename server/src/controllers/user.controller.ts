@@ -1,9 +1,12 @@
-import { Controller, Get, Param, Delete, Post, Put, Body, Query } from '@nestjs/common';
+import { Controller, Get, Param, Delete, Post, Put, Body, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiUseTags } from '@nestjs/swagger';
 
 import { UserModel, CreateUserModel, UpdateUserModel } from 'src/models';
 import { UserService } from 'src/services';
 
+
+@UseGuards(AuthGuard('jwt'))
 @Controller('user')
 @ApiUseTags('user')
 export class UserController {
