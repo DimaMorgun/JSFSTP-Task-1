@@ -6,9 +6,9 @@ import { Connection } from 'mongoose';
 
 import { MiddlewareRequest, LocalStrategy, JwtStrategy, PasswordHelper } from 'src/common';
 import { Environment } from 'src/environment/environment';
-import { UserController, HomeController, BookController, AuthController } from 'src/controllers';
-import { AuthService, BookService, UserService } from 'src/services';
-import { BookRepository, UserRepository } from 'src/repositories';
+import { UserController, HomeController, BookController, AuthController, FileController } from 'src/controllers';
+import { AuthService, BookService, UserService, FileService } from 'src/services';
+import { BookRepository, UserRepository, FileRepository } from 'src/repositories';
 import { BookMapper, UserMapper } from 'src/mappers';
 
 @Module({
@@ -24,6 +24,7 @@ import { BookMapper, UserMapper } from 'src/mappers';
     UserController,
     HomeController,
     BookController,
+    FileController,
   ],
   providers: [
     Connection,
@@ -38,6 +39,8 @@ import { BookMapper, UserMapper } from 'src/mappers';
     BookMapper,
     BookService,
     BookRepository,
+    FileService,
+    FileRepository,
   ],
 })
 export class AppModule implements NestModule {

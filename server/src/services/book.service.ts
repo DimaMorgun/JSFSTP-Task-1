@@ -14,7 +14,7 @@ export class BookService {
         private readonly bookMapper: BookMapper,
     ) { }
 
-    async getById(id: string): Promise<BookModel> {
+    public async getById(id: string): Promise<BookModel> {
         let book: BookModel = {};
 
         const isValidId: boolean = Types.ObjectId.isValid(id);
@@ -66,5 +66,13 @@ export class BookService {
         }
 
         return deletedBook;
+    }
+
+    public async isBookAvailable(id: string): Promise<boolean> {
+        const bookModel: BookModel = await this.getById(id);
+
+        const isBookAvailable: boolean = bookModel.isDeleted != null && !bookModel.isDeleted;
+
+        return isBookAvailable;
     }
 }

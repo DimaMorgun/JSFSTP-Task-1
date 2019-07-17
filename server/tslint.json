@@ -14,7 +14,7 @@
     "arrow-parens": false,
     "object-literal-sort-keys": false,
     "no-any": true,
-    "no-unused": false,
+    "no-unused": false
   },
   "rulesDirectory": []
 }

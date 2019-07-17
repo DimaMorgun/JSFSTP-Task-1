@@ -7,4 +7,7 @@ export * from './user/create-user.model';
 export * from './user/update-user.model';
 
 export * from './auth/login.model';
-export * from './auth/user-payload.model'
+export * from './auth/user-payload.model';
+
+export * from './file/file.model';
+export { UploadFileModel } from './file/upload-file.model';
