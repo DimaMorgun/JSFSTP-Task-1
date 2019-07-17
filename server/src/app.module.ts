@@ -9,7 +9,7 @@ import { Environment } from 'src/environment/environment';
 import { UserController, HomeController, BookController, AuthController, FileController } from 'src/controllers';
 import { AuthService, BookService, UserService, FileService } from 'src/services';
 import { BookRepository, UserRepository, FileRepository } from 'src/repositories';
-import { BookMapper, UserMapper } from 'src/mappers';
+import { UserMapper } from 'src/mappers';
 
 @Module({
   imports: [
@@ -36,7 +36,6 @@ import { BookMapper, UserMapper } from 'src/mappers';
     UserMapper,
     UserService,
     UserRepository,
-    BookMapper,
     BookService,
     BookRepository,
     FileService,

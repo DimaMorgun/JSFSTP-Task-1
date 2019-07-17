@@ -5,64 +5,137 @@ import { Types } from 'mongoose';
 import { BookRepository } from 'src/repositories';
 import { BookModel, CreateBookModel, UpdateBookModel } from 'src/models';
 import { BookDocument } from 'src/documents';
-import { BookMapper } from 'src/mappers';
 
 @Injectable()
 export class BookService {
     constructor(
         private readonly bookRepository: BookRepository,
-        private readonly bookMapper: BookMapper,
     ) { }
 
     public async getById(id: string): Promise<BookModel> {
-        let book: BookModel = {};
+        const book: BookModel = {};
 
         const isValidId: boolean = Types.ObjectId.isValid(id);
-        if (isValidId) {
-            const bookDocument: BookDocument = await this.bookRepository.getById(id);
-            book = this.bookMapper.getBookModel(bookDocument);
+        if (!isValidId) {
+            return book;
+        }
+
+        const bookDocument: BookDocument = await this.bookRepository.getById(id);
+        if (bookDocument) {
+            book.id = bookDocument._id;
+            book.name = bookDocument.name;
+            book.createdDate = bookDocument.createdDate;
+            book.updatedDate = bookDocument.updatedDate;
+            book.isDeleted = bookDocument.isDeleted;
         }
 
         return book;
     }
 
     public async getList(): Promise<BookModel[]> {
+        const books: BookModel[] = new Array<BookModel>();
+
         const bookDocuments: BookDocument[] = await this.bookRepository.getAll();
-        const books: BookModel[] = await this.bookMapper.getBookModels(bookDocuments);
+        if (!bookDocuments || bookDocuments.length === 0) {
+            return books;
+        }
+
+        for (const bookDocument of bookDocuments) {
+            const bookModel: BookModel = {};
+            bookModel.id = bookDocument._id;
+            bookModel.name = bookDocument.name;
+            bookModel.createdDate = bookDocument.createdDate;
+            bookModel.updatedDate = bookDocument.updatedDate;
+            bookModel.isDeleted = bookDocument.isDeleted;
+
+            books.push(bookModel);
+        }
 
         return books;
     }
 
     public async getPaginated(skip: number, limit: number): Promise<BookModel[]> {
+        const books: BookModel[] = new Array<BookModel>();
+
         const bookDocuments: BookDocument[] = await this.bookRepository.getPaginated(skip, limit);
-        const books: BookModel[] = await this.bookMapper.getBookModels(bookDocuments);
+        if (!bookDocuments || bookDocuments.length === 0) {
+            return books;
+        }
+
+        for (const bookDocument of bookDocuments) {
+            const bookModel: BookModel = {};
+            bookModel.id = bookDocument._id;
+            bookModel.name = bookDocument.name;
+            bookModel.createdDate = bookDocument.createdDate;
+            bookModel.updatedDate = bookDocument.updatedDate;
+            bookModel.isDeleted = bookDocument.isDeleted;
+
+            books.push(bookModel);
+        }
 
         return books;
     }
 
     public async create(createBookModel: CreateBookModel): Promise<BookModel> {
-        const createBookDocument: BookDocument = this.bookMapper.getBookDocumentFromCreateBookModel(createBookModel);
+        const createdBook: BookModel = {};
+        const createBookDocument: BookDocument = {};
+
+        if (createBookModel) {
+            createBookDocument.name = createBookModel.name;
+            createBookDocument.createdDate = new Date();
+            createBookDocument.updatedDate = new Date();
+            createBookDocument.isDeleted = false;
+        }
+
         const createdBookDocument: BookDocument = await this.bookRepository.create(createBookDocument);
-        const createdBook: BookModel = this.bookMapper.getBookModel(createdBookDocument);
+        if (createdBookDocument) {
+            createdBook.id = createdBookDocument._id;
+            createdBook.name = createdBookDocument.name;
+            createdBook.createdDate = createdBookDocument.createdDate;
+            createdBook.updatedDate = createdBookDocument.updatedDate;
+            createdBook.isDeleted = createdBookDocument.isDeleted;
+        }
 
         return createdBook;
     }
 
     public async update(updateBookModel: UpdateBookModel): Promise<BookModel> {
-        const updateBookDocument: BookDocument = this.bookMapper.getBookDocumentFromUpdateBookModel(updateBookModel);
+        const updatedBook: BookModel = {};
+        const updateBookDocument: BookDocument = {};
+
+        if (updateBookModel) {
+            updateBookDocument._id = updateBookModel.id;
+            updateBookDocument.name = updateBookModel.name;
+            updateBookDocument.updatedDate = new Date();
+        }
+
         const updatedBookDocument: BookDocument = await this.bookRepository.update(updateBookDocument);
-        const updatedBook: BookModel = this.bookMapper.getBookModel(updatedBookDocument);
+        if (updatedBookDocument) {
+            updatedBook.id = updatedBookDocument._id;
+            updatedBook.name = updatedBookDocument.name;
+            updatedBook.createdDate = updatedBookDocument.createdDate;
+            updatedBook.updatedDate = updatedBookDocument.updatedDate;
+            updatedBook.isDeleted = updatedBookDocument.isDeleted;
+        }
 
         return updatedBook;
     }
 
     public async delete(id: string): Promise<BookModel> {
-        let deletedBook: BookModel = {};
+        const deletedBook: BookModel = {};
 
         const isValidId: boolean = Types.ObjectId.isValid(id);
-        if (isValidId) {
-            const deletedBookDocument: BookDocument = await this.bookRepository.delete(id);
-            deletedBook = this.bookMapper.getBookModel(deletedBookDocument);
+        if (!isValidId) {
+            return deletedBook;
+        }
+
+        const deletedBookDocument: BookDocument = await this.bookRepository.delete(id);
+        if (deletedBookDocument) {
+            deletedBook.id = deletedBookDocument._id;
+            deletedBook.name = deletedBookDocument.name;
+            deletedBook.createdDate = deletedBookDocument.createdDate;
+            deletedBook.updatedDate = deletedBookDocument.updatedDate;
+            deletedBook.isDeleted = deletedBookDocument.isDeleted;
         }
 
         return deletedBook;
