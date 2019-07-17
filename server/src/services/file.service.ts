@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { FileRepository } from 'src/repositories';
 import { FileModel, UploadFileModel } from 'src/models';
 import { FileDocument } from 'src/documents/file.document';
-import { BookService } from './book.service';
+import { BookService } from '.';
 
 @Injectable()
 export class FileService {

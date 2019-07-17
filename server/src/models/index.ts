@@ -10,4 +10,4 @@ export * from './auth/login.model';
 export * from './auth/user-payload.model';
 
 export * from './file/file.model';
-export { UploadFileModel } from './file/upload-file.model';
+export * from './file/upload-file.model';

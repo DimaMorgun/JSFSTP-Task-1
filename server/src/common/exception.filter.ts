@@ -2,7 +2,7 @@ import { Catch, ExceptionFilter, ArgumentsHost, HttpException, HttpStatus } from
 
 @Catch()
 export class CommonExceptionFilter implements ExceptionFilter {
-    catch(exception: unknown, host: ArgumentsHost) {
+    public catch(exception: unknown, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse();
         const request = ctx.getRequest();

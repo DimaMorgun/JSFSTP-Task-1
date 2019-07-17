@@ -6,10 +6,12 @@ import { Environment } from 'src/environment/environment';
 @Controller('/')
 @ApiUseTags('home')
 export class HomeController {
-    constructor(private readonly environment: Environment) { }
+    constructor(
+        private readonly environment: Environment,
+    ) { }
 
     @Get()
-    async getInfo(): Promise<string> {
+    public async getInfo(): Promise<string> {
         const response: string = JSON.stringify({
             message: 'This controller allows only get requests',
             creator: 'Dmytro Morhun',

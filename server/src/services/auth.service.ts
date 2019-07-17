@@ -15,7 +15,7 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) { }
 
-    async validateUser(username: string, password: string): Promise<boolean> {
+    public async validateUser(username: string, password: string): Promise<boolean> {
         const user: UserModel = await this.userService.getByUsername(username);
 
         if (!user || !user.passwordSalt || !user.passwordHash) {
@@ -27,16 +27,15 @@ export class AuthService {
         return user.passwordHash === passwordHash;
     }
 
-    async getToken(username: string) {
+    public async getToken(username: string) {
         const userPayload: UserPayloadModel = await this.getUserPayload(username);
 
-
-        const accessToken: string = await this.jwtService.sign(userPayload)
+        const accessToken: string = await this.jwtService.sign(userPayload);
 
         return accessToken;
     }
 
-    async getUserPayload(username: string): Promise<UserPayloadModel> {
+    public async getUserPayload(username: string): Promise<UserPayloadModel> {
         const user: UserModel = await this.userService.getByUsername(username);
 
         if (!user) {

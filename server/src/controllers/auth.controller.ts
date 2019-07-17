@@ -3,19 +3,18 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 
 import { AuthService } from 'src/services';
-import { LoginModel } from 'src/models';
+import { LoginModel, UserPayloadModel } from 'src/models';
 
 @Controller('auth')
 @ApiUseTags('auth')
 export class AuthController {
     constructor(
         private readonly authService: AuthService,
-
     ) { }
 
     @UseGuards(AuthGuard('local'))
     @Post('login')
-    async login(@Body() request: LoginModel): Promise<LoginModel> {
+    public async login(@Body() request: LoginModel): Promise<LoginModel> {
         request.token = await this.authService.getToken(request.username);
 
         return request;
@@ -24,7 +23,7 @@ export class AuthController {
     @UseGuards(AuthGuard('jwt'))
     @Get('me')
     @ApiBearerAuth()
-    getProfile(@Request() req) {
+    public async getProfile(@Request() req): Promise<UserPayloadModel> {
         return req.user;
     }
 }

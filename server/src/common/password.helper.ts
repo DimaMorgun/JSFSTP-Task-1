@@ -6,13 +6,13 @@ import * as bcrypt from 'bcrypt';
 export class PasswordHelper {
     private saltRounds = 10;
 
-    async getRandomSalt(): Promise<string> {
+    public async getRandomSalt(): Promise<string> {
         const salt: string = await bcrypt.genSalt(this.saltRounds);
 
         return salt;
     }
 
-    async getPasswordHash(password: string, salt: string): Promise<string> {
+    public async getPasswordHash(password: string, salt: string): Promise<string> {
         const passwordHash: string = await bcrypt.hash(password, salt);
 
         return passwordHash;

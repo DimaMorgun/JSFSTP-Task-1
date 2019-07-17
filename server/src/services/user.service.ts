@@ -17,7 +17,7 @@ export class UserService {
         private readonly paswordHelper: PasswordHelper,
     ) { }
 
-    async getById(id: string): Promise<UserModel> {
+    public async getById(id: string): Promise<UserModel> {
         let user: UserModel = {};
 
         const isValidId: boolean = Types.ObjectId.isValid(id);
@@ -29,7 +29,7 @@ export class UserService {
         return user;
     }
 
-    async getByUsername(username: string): Promise<UserModel> {
+    public async getByUsername(username: string): Promise<UserModel> {
         let user: UserModel = {};
 
         if (username) {
@@ -40,21 +40,21 @@ export class UserService {
         return user;
     }
 
-    async getList(): Promise<UserModel[]> {
+    public async getList(): Promise<UserModel[]> {
         const userDocuments: UserDocument[] = await this.userRepository.getAll();
         const users: UserModel[] = await this.userMapper.getUserModels(userDocuments);
 
         return users;
     }
 
-    async getPaginated(skip: number, limit: number): Promise<UserModel[]> {
+    public async getPaginated(skip: number, limit: number): Promise<UserModel[]> {
         const userDocuments: UserDocument[] = await this.userRepository.getPaginated(skip, limit);
         const users: UserModel[] = await this.userMapper.getUserModels(userDocuments);
 
         return users;
     }
 
-    async create(createUserModel: CreateUserModel): Promise<UserModel> {
+    public async create(createUserModel: CreateUserModel): Promise<UserModel> {
         const createUserDocument: UserDocument = await this.userMapper.getUserDocumentFromCreateUserModel(createUserModel);
         createUserDocument.passwordSalt = await this.paswordHelper.getRandomSalt();
         createUserDocument.passwordHash = await this.paswordHelper.getPasswordHash(createUserModel.password, createUserDocument.passwordSalt);
@@ -65,7 +65,7 @@ export class UserService {
         return createdUser;
     }
 
-    async update(updateUserModel: UpdateUserModel): Promise<UserModel> {
+    public async update(updateUserModel: UpdateUserModel): Promise<UserModel> {
         const updateUserDocument: UserDocument = this.userMapper.getUserDocumentFromUpdateUserModel(updateUserModel);
         if (updateUserModel && updateUserModel.password) {
             updateUserDocument.passwordSalt = await this.paswordHelper.getRandomSalt();
@@ -78,7 +78,7 @@ export class UserService {
         return updatedUser;
     }
 
-    async delete(id: string): Promise<UserModel> {
+    public async delete(id: string): Promise<UserModel> {
         let deletedUser: UserModel = {};
 
         const isValidId: boolean = Types.ObjectId.isValid(id);

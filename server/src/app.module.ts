@@ -48,5 +48,5 @@ export class AppModule implements NestModule {
     consumer
       .apply(MiddlewareRequest)
       .forRoutes('/');
-  };
+  }
 }

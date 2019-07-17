@@ -5,7 +5,7 @@ import { Request, Response } from 'express';
 @Injectable()
 export class MiddlewareRequest implements NestMiddleware {
     // tslint:disable-next-line:ban-types
-    use(req: Request, res: Response, next: Function) {
+    public use(req: Request, res: Response, next: Function) {
         const logContent: string = JSON.stringify({
             date: new Date(),
             path: req.path,
