@@ -23,6 +23,9 @@ async function bootstrap() {
   };
 
   const server = express();
+  server.enable('trust proxy');
+  server.use(cors());
+
   const app = await NestFactory.create(
     AppModule,
     new ExpressAdapter(server),
@@ -38,9 +41,6 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.init();
-
-  server.enable('trust proxy');
-  server.use(cors());
 
   https.createServer(httpsOptions, server).listen(environment.httpsPort);
   http.createServer((req, res) => {
