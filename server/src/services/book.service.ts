@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
 
 import { BookRepository } from 'src/repositories';
-import { BookModel, CreateBookModel, UpdateBookModel } from 'src/models';
+import { BookModel, CreateBookModel, UpdateBookModel, FilterBookModel } from 'src/models';
 import { BookDocument } from 'src/documents';
 
 @Injectable()
@@ -11,6 +11,31 @@ export class BookService {
     constructor(
         private readonly bookRepository: BookRepository,
     ) { }
+
+    public async getFilteredList(filterModel: FilterBookModel): Promise<BookModel[]> {
+        const books: BookModel[] = new Array<BookModel>();
+
+        const bookDocuments: BookDocument[] = await this.bookRepository.getFilteredList(filterModel);
+
+        if (!bookDocuments || bookDocuments.length === 0) {
+            return books;
+        }
+
+        for (const bookDocument of bookDocuments) {
+            const bookModel: BookModel = {};
+            bookModel.id = bookDocument._id;
+            bookModel.name = bookDocument.name;
+            bookModel.price = bookDocument.price;
+            bookModel.type = bookDocument.type;
+            bookModel.createdDate = bookDocument.createdDate;
+            bookModel.updatedDate = bookDocument.updatedDate;
+            bookModel.isDeleted = bookDocument.isDeleted;
+
+            books.push(bookModel);
+        }
+
+        return books;
+    }
 
     public async getById(id: string): Promise<BookModel> {
         const book: BookModel = {};
@@ -24,6 +49,8 @@ export class BookService {
         if (bookDocument) {
             book.id = bookDocument._id;
             book.name = bookDocument.name;
+            book.price = bookDocument.price;
+            book.type = bookDocument.type;
             book.createdDate = bookDocument.createdDate;
             book.updatedDate = bookDocument.updatedDate;
             book.isDeleted = bookDocument.isDeleted;
@@ -44,6 +71,8 @@ export class BookService {
             const bookModel: BookModel = {};
             bookModel.id = bookDocument._id;
             bookModel.name = bookDocument.name;
+            bookModel.price = bookDocument.price;
+            bookModel.type = bookDocument.type;
             bookModel.createdDate = bookDocument.createdDate;
             bookModel.updatedDate = bookDocument.updatedDate;
             bookModel.isDeleted = bookDocument.isDeleted;
@@ -66,6 +95,8 @@ export class BookService {
             const bookModel: BookModel = {};
             bookModel.id = bookDocument._id;
             bookModel.name = bookDocument.name;
+            bookModel.price = bookDocument.price;
+            bookModel.type = bookDocument.type;
             bookModel.createdDate = bookDocument.createdDate;
             bookModel.updatedDate = bookDocument.updatedDate;
             bookModel.isDeleted = bookDocument.isDeleted;
@@ -82,6 +113,8 @@ export class BookService {
 
         if (createBookModel) {
             createBookDocument.name = createBookModel.name;
+            createBookDocument.price = createBookModel.price;
+            createBookDocument.type = createBookModel.type;
             createBookDocument.createdDate = new Date();
             createBookDocument.updatedDate = new Date();
             createBookDocument.isDeleted = false;
@@ -91,6 +124,8 @@ export class BookService {
         if (createdBookDocument) {
             createdBook.id = createdBookDocument._id;
             createdBook.name = createdBookDocument.name;
+            createdBook.price = createdBookDocument.price;
+            createdBook.type = createdBookDocument.type;
             createdBook.createdDate = createdBookDocument.createdDate;
             createdBook.updatedDate = createdBookDocument.updatedDate;
             createdBook.isDeleted = createdBookDocument.isDeleted;
@@ -106,6 +141,8 @@ export class BookService {
         if (updateBookModel) {
             updateBookDocument._id = updateBookModel.id;
             updateBookDocument.name = updateBookModel.name;
+            updateBookDocument.price = updateBookModel.price;
+            updateBookDocument.type = updateBookModel.type;
             updateBookDocument.updatedDate = new Date();
         }
 
@@ -113,6 +150,8 @@ export class BookService {
         if (updatedBookDocument) {
             updatedBook.id = updatedBookDocument._id;
             updatedBook.name = updatedBookDocument.name;
+            updatedBook.price = updatedBookDocument.price;
+            updatedBook.type = updatedBookDocument.type;
             updatedBook.createdDate = updatedBookDocument.createdDate;
             updatedBook.updatedDate = updatedBookDocument.updatedDate;
             updatedBook.isDeleted = updatedBookDocument.isDeleted;
@@ -133,6 +172,8 @@ export class BookService {
         if (deletedBookDocument) {
             deletedBook.id = deletedBookDocument._id;
             deletedBook.name = deletedBookDocument.name;
+            deletedBook.price = deletedBookDocument.price;
+            deletedBook.type = deletedBookDocument.type;
             deletedBook.createdDate = deletedBookDocument.createdDate;
             deletedBook.updatedDate = deletedBookDocument.updatedDate;
             deletedBook.isDeleted = deletedBookDocument.isDeleted;

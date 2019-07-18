@@ -1,7 +1,7 @@
-import { Controller, Get, Param, Delete, Post, Put, Body } from '@nestjs/common';
+import { Controller, Get, Param, Delete, Post, Put, Body, Query } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 
-import { BookModel, CreateBookModel, UpdateBookModel } from 'src/models';
+import { BookModel, CreateBookModel, UpdateBookModel, FilterBookModel } from 'src/models';
 import { BookService } from 'src/services';
 import { BookDocument } from 'src/documents';
 
@@ -11,6 +11,13 @@ export class BookController {
     constructor(
         private readonly bookService: BookService,
     ) { }
+
+    @Get('filter')
+    public async getFilteredBookList(@Query() filterModel: FilterBookModel): Promise<BookDocument[]> {
+        const books: BookDocument[] = await this.bookService.getFilteredList(filterModel);
+
+        return books;
+    }
 
     @Get(':id')
     public async getBookById(@Param('id') id: string): Promise<BookModel> {

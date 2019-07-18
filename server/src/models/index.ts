@@ -1,6 +1,7 @@
 export * from './book/book.model';
 export * from './book/create-book.model';
 export * from './book/update-book.model';
+export * from './book/filter-book.model';
 
 export * from './user/user.model';
 export * from './user/create-user.model';

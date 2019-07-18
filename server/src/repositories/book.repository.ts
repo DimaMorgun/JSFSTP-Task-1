@@ -3,8 +3,10 @@ import { Injectable } from '@nestjs/common';
 import { Model, objectid } from 'mongoose';
 
 import { BookDocument, BookSchema } from 'src/documents';
+import { FilterBookModel } from 'src/models';
 
 import * as mongoose from 'mongoose';
+
 
 @Injectable()
 export class BookRepository {
@@ -14,6 +16,25 @@ export class BookRepository {
         this.bookModel = mongoose.model('Book', BookSchema);
     }
 
+    public async getFilteredList(filterModel: FilterBookModel): Promise<BookDocument[]> {
+        const price = {
+            $gte: filterModel.priceFrom,
+            $lte: filterModel.priceTo,
+        };
+        const query = {
+            price,
+            type: filterModel.type,
+            // name: filterModel.name,
+        };
+
+        // tslint:disable-next-line:no-console
+        console.log(JSON.stringify(query));
+
+        const books: BookDocument[] = await this.bookModel.find(query);
+
+        return books;
+    }
+
     public async getById(id: objectid): Promise<BookDocument> {
         const book: BookDocument = await this.bookModel.findById(id).exec();
 
@@ -21,7 +42,7 @@ export class BookRepository {
     }
 
     public async getAll(): Promise<BookDocument[]> {
-        const books = await this.bookModel.find().exec();
+        const books: BookDocument[] = await this.bookModel.find().exec();
 
         return books;
     }

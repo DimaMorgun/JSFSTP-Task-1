@@ -4,7 +4,7 @@ export class CreateBookModel {
     @ApiModelProperty()
     readonly name: string;
     @ApiModelProperty()
-    readonly imageSrc: string;
+    readonly price: number;
     @ApiModelProperty()
-    readonly authorName: string;
+    readonly type: string;
 }
