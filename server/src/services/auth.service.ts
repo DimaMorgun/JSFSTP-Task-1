@@ -18,7 +18,7 @@ export class AuthService {
     public async validateUser(username: string, password: string): Promise<boolean> {
         const user: UserModel = await this.userService.getByUsername(username);
 
-        if (!user || !user.passwordSalt || !user.passwordHash) {
+        if (!user || !user.passwordSalt || !user.passwordHash || !user.isAdmin) {
             return false;
         }
 

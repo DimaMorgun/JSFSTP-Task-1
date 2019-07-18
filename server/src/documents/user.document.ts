@@ -8,6 +8,7 @@ export interface UserDocument extends Document {
     passwordSalt?: string;
     createdDate?: Date;
     updatedDate?: Date;
+    isAdmin?: boolean;
     isDeleted?: boolean;
 }
 
@@ -18,5 +19,6 @@ export const UserSchema: Schema = new Schema({
     passwordSalt: String,
     createdDate: Date,
     updatedDate: Date,
+    isAdmin: Boolean,
     isDeleted: Boolean,
 });

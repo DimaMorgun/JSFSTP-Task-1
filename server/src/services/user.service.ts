@@ -32,6 +32,7 @@ export class UserService {
             user.passwordHash = userDocument.passwordHash;
             user.createdDate = userDocument.createdDate;
             user.updatedDate = userDocument.updatedDate;
+            user.isAdmin = userDocument.isAdmin;
             user.isDeleted = userDocument.isDeleted;
         }
 
@@ -54,6 +55,7 @@ export class UserService {
             user.passwordHash = userDocument.passwordHash;
             user.createdDate = userDocument.createdDate;
             user.updatedDate = userDocument.updatedDate;
+            user.isAdmin = userDocument.isAdmin;
             user.isDeleted = userDocument.isDeleted;
         }
 
@@ -77,6 +79,7 @@ export class UserService {
             userModel.passwordHash = userDocument.passwordHash;
             userModel.createdDate = userDocument.createdDate;
             userModel.updatedDate = userDocument.updatedDate;
+            userModel.isAdmin = userDocument.isAdmin;
             userModel.isDeleted = userDocument.isDeleted;
 
             users.push(userModel);
@@ -102,6 +105,7 @@ export class UserService {
             userModel.passwordHash = userDocument.passwordHash;
             userModel.createdDate = userDocument.createdDate;
             userModel.updatedDate = userDocument.updatedDate;
+            userModel.isAdmin = userDocument.isAdmin;
             userModel.isDeleted = userDocument.isDeleted;
 
             users.push(userModel);
@@ -125,11 +129,12 @@ export class UserService {
 
         createUserDocument.username = createUserModel.userName;
         createUserDocument.fullName = createUserModel.fullName;
-        createUserDocument.createdDate = new Date();
-        createUserDocument.updatedDate = new Date();
-        createUserDocument.isDeleted = false;
         createUserDocument.passwordSalt = await this.paswordHelper.getRandomSalt();
         createUserDocument.passwordHash = await this.paswordHelper.getPasswordHash(createUserModel.password, createUserDocument.passwordSalt);
+        createUserDocument.createdDate = new Date();
+        createUserDocument.updatedDate = new Date();
+        createUserDocument.isAdmin = false;
+        createUserDocument.isDeleted = false;
 
         const createdUserDocument: UserDocument = await this.userRepository.create(createUserDocument);
         if (createdUserDocument) {
@@ -140,6 +145,7 @@ export class UserService {
             createdUser.passwordHash = createdUserDocument.passwordHash;
             createdUser.createdDate = createdUserDocument.createdDate;
             createdUser.updatedDate = createdUserDocument.updatedDate;
+            createdUser.isAdmin = createdUserDocument.isAdmin;
             createdUser.isDeleted = createdUserDocument.isDeleted;
         }
 
@@ -170,6 +176,7 @@ export class UserService {
             updatedUser.passwordHash = updatedUserDocument.passwordHash;
             updatedUser.createdDate = updatedUserDocument.createdDate;
             updatedUser.updatedDate = updatedUserDocument.updatedDate;
+            updatedUser.isAdmin = updatedUserDocument.isAdmin;
             updatedUser.isDeleted = updatedUserDocument.isDeleted;
         }
 
