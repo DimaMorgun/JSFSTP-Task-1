@@ -7,7 +7,6 @@ import { FilterBookModel } from 'src/models';
 
 import * as mongoose from 'mongoose';
 
-
 @Injectable()
 export class BookRepository {
     private readonly bookModel: Model<BookDocument>;
@@ -17,18 +16,24 @@ export class BookRepository {
     }
 
     public async getFilteredList(filterModel: FilterBookModel): Promise<BookDocument[]> {
-        const price = {
-            $gte: filterModel.priceFrom,
-            $lte: filterModel.priceTo,
-        };
+        const price = {};
+        if (filterModel.priceFrom) {
+            price['$gte'] = filterModel.priceFrom;
+        }
+        if (filterModel.priceTo) {
+            price['$lte'] = filterModel.priceTo;
+        }
+
+        const type = { $regex: filterModel.type || '.', $options: 'i' };
+        const name = { $regex: filterModel.name || '.', $options: 'i' };
         const query = {
-            price,
-            type: filterModel.type,
-            // name: filterModel.name,
+            type,
+            name,
         };
 
-        // tslint:disable-next-line:no-console
-        console.log(JSON.stringify(query));
+        if (Object.entries(price).length !== 0) {
+            query['price'] = price;
+        }
 
         const books: BookDocument[] = await this.bookModel.find(query);
 
