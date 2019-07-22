@@ -12,3 +12,7 @@ export * from './auth/user-payload.model';
 
 export * from './file/file.model';
 export * from './file/upload-file.model';
+
+export * from './author/author.model';
+export * from './author/create-author.model';
+export * from './author/update-author.model';

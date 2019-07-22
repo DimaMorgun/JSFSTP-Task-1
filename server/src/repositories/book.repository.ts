@@ -46,6 +46,22 @@ export class BookRepository {
         return book;
     }
 
+    public async getByIdList(ids: objectid[]): Promise<BookDocument[]> {
+        let query = {};
+
+        if (ids.length > 0) {
+            query = {
+                _id: {
+                    $in: ids,
+                },
+            };
+        }
+
+        const books: BookDocument[] = await this.bookModel.find(query).exec();
+
+        return books;
+    }
+
     public async getAll(): Promise<BookDocument[]> {
         const books: BookDocument[] = await this.bookModel.find().exec();
 
@@ -75,5 +91,22 @@ export class BookRepository {
         const deletedBook: BookDocument = await this.bookModel.findByIdAndRemove(id);
 
         return deletedBook;
+    }
+
+    public async getAwailableByIdList(ids: objectid[]): Promise<objectid[]> {
+        let query = {};
+
+        if (ids.length > 0) {
+            query = {
+                _id: {
+                    $in: ids,
+                },
+            };
+        }
+
+        const books: BookDocument[] = await this.bookModel.find(query).exec();
+        const availableIds: objectid[] = books.map(({ _id }) => _id);
+
+        return availableIds;
     }
 }

@@ -37,6 +37,20 @@ export class BookController {
     public async getBookList(): Promise<BookDocument[]> {
         const books: BookDocument[] = await this.bookService.getList();
 
+        const dates = {
+            birthday: Date.UTC(1828, 9, 9),
+            deathday: Date.UTC(1910, 11, 20),
+        };
+        const dates2 = {
+            birthday: new Date(1828, 9, 9),
+            deathday: new Date(1910, 11, 20),
+        };
+
+        // tslint:disable-next-line:no-console
+        console.log(JSON.stringify(dates));
+        // tslint:disable-next-line:no-console
+        console.log(JSON.stringify(dates2));
+
         return books;
     }
 

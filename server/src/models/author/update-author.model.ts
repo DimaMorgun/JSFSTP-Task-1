@@ -1,16 +1,16 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 
-import { BookTypes } from 'src/constants';
-
-export class UpdateBookModel {
+export class UpdateAuthorModel {
     @ApiModelProperty()
     readonly id: string;
     @ApiModelProperty()
     readonly name?: string;
     @ApiModelProperty()
-    readonly price?: number;
-    @ApiModelProperty({ required: false, enum: BookTypes })
-    readonly type?: string;
+    readonly country?: string;
+    @ApiModelProperty()
+    readonly birthday?: Date;
+    @ApiModelProperty()
+    readonly deathday?: Date;
     @ApiModelProperty({ type: [String], isArray: true })
-    authors?: string[];
+    readonly books?: string[];
 }
