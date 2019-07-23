@@ -18,9 +18,11 @@ export class BookRepository {
     public async getFilteredList(filterModel: FilterBookModel): Promise<BookDocument[]> {
         const price = {};
         if (filterModel.priceFrom) {
+            // tslint:disable-next-line:no-string-literal
             price['$gte'] = filterModel.priceFrom;
         }
         if (filterModel.priceTo) {
+            // tslint:disable-next-line:no-string-literal
             price['$lte'] = filterModel.priceTo;
         }
 
@@ -32,6 +34,7 @@ export class BookRepository {
         };
 
         if (Object.entries(price).length !== 0) {
+            // tslint:disable-next-line:no-string-literal
             query['price'] = price;
         }
 
