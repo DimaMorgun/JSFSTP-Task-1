@@ -6,6 +6,6 @@ export interface UserModel {
     passwordSalt?: string;
     createdDate?: Date;
     updatedDate?: Date;
-    isAdmin?: boolean;
+    userRole?: string;
     isDeleted?: boolean;
 }

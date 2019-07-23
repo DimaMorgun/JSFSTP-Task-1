@@ -4,7 +4,7 @@ import { PassportModule } from '@nestjs/passport';
 
 import { Connection } from 'mongoose';
 
-import { MiddlewareRequest, LocalStrategy, JwtStrategy, PasswordHelper } from 'src/common';
+import { MiddlewareRequest, LocalStrategy, JwtStrategy, Encryptor } from 'src/common';
 import { Environment } from 'src/environment/environment';
 import { UserController, HomeController, BookController, AuthController, FileController, AuthorController } from 'src/controllers';
 import { AuthService, BookService, UserService, FileService, AuthorService } from 'src/services';
@@ -31,7 +31,7 @@ import { BookRepository, UserRepository, FileRepository, AuthorRepository } from
     LocalStrategy,
     JwtStrategy,
     Environment,
-    PasswordHelper,
+    Encryptor,
     AuthService,
     UserService,
     UserRepository,

@@ -5,14 +5,15 @@ import { Types } from 'mongoose';
 import { UserRepository } from 'src/repositories';
 import { UserModel, CreateUserModel, UpdateUserModel } from 'src/models';
 import { UserDocument } from 'src/documents';
-import { PasswordHelper } from 'src/common/password.helper';
+import { Encryptor } from 'src/common/password.helper';
+import { UserRole } from 'src/constants';
 
 @Injectable()
 export class UserService {
     constructor(
         private readonly userRepository: UserRepository,
-        @Inject(forwardRef(() => PasswordHelper))
-        private readonly paswordHelper: PasswordHelper,
+        @Inject(forwardRef(() => Encryptor))
+        private readonly paswordHelper: Encryptor,
     ) { }
 
     public async getById(id: string): Promise<UserModel> {
@@ -32,7 +33,7 @@ export class UserService {
             user.passwordHash = userDocument.passwordHash;
             user.createdDate = userDocument.createdDate;
             user.updatedDate = userDocument.updatedDate;
-            user.isAdmin = userDocument.isAdmin;
+            user.userRole = userDocument.userRole;
             user.isDeleted = userDocument.isDeleted;
         }
 
@@ -55,7 +56,7 @@ export class UserService {
             user.passwordHash = userDocument.passwordHash;
             user.createdDate = userDocument.createdDate;
             user.updatedDate = userDocument.updatedDate;
-            user.isAdmin = userDocument.isAdmin;
+            user.userRole = userDocument.userRole;
             user.isDeleted = userDocument.isDeleted;
         }
 
@@ -79,7 +80,7 @@ export class UserService {
             userModel.passwordHash = userDocument.passwordHash;
             userModel.createdDate = userDocument.createdDate;
             userModel.updatedDate = userDocument.updatedDate;
-            userModel.isAdmin = userDocument.isAdmin;
+            userModel.userRole = userDocument.userRole;
             userModel.isDeleted = userDocument.isDeleted;
 
             users.push(userModel);
@@ -105,7 +106,7 @@ export class UserService {
             userModel.passwordHash = userDocument.passwordHash;
             userModel.createdDate = userDocument.createdDate;
             userModel.updatedDate = userDocument.updatedDate;
-            userModel.isAdmin = userDocument.isAdmin;
+            userModel.userRole = userDocument.userRole;
             userModel.isDeleted = userDocument.isDeleted;
 
             users.push(userModel);
@@ -130,10 +131,10 @@ export class UserService {
         createUserDocument.username = createUserModel.userName;
         createUserDocument.fullName = createUserModel.fullName;
         createUserDocument.passwordSalt = await this.paswordHelper.getRandomSalt();
-        createUserDocument.passwordHash = await this.paswordHelper.getPasswordHash(createUserModel.password, createUserDocument.passwordSalt);
+        createUserDocument.passwordHash = await this.paswordHelper.getSaltedHash(createUserModel.password, createUserDocument.passwordSalt);
         createUserDocument.createdDate = new Date();
         createUserDocument.updatedDate = new Date();
-        createUserDocument.isAdmin = false;
+        createUserDocument.userRole = UserRole.client;
         createUserDocument.isDeleted = false;
 
         const createdUserDocument: UserDocument = await this.userRepository.create(createUserDocument);
@@ -145,7 +146,7 @@ export class UserService {
             createdUser.passwordHash = createdUserDocument.passwordHash;
             createdUser.createdDate = createdUserDocument.createdDate;
             createdUser.updatedDate = createdUserDocument.updatedDate;
-            createdUser.isAdmin = createdUserDocument.isAdmin;
+            createdUser.userRole = createdUserDocument.userRole;
             createdUser.isDeleted = createdUserDocument.isDeleted;
         }
 
@@ -164,7 +165,7 @@ export class UserService {
 
         if (updateUserModel && updateUserModel.password) {
             updateUserDocument.passwordSalt = await this.paswordHelper.getRandomSalt();
-            updateUserDocument.passwordHash = await this.paswordHelper.getPasswordHash(updateUserModel.password, updateUserDocument.passwordSalt);
+            updateUserDocument.passwordHash = await this.paswordHelper.getSaltedHash(updateUserModel.password, updateUserDocument.passwordSalt);
         }
 
         const updatedUserDocument: UserDocument = await this.userRepository.update(updateUserDocument);
@@ -176,7 +177,7 @@ export class UserService {
             updatedUser.passwordHash = updatedUserDocument.passwordHash;
             updatedUser.createdDate = updatedUserDocument.createdDate;
             updatedUser.updatedDate = updatedUserDocument.updatedDate;
-            updatedUser.isAdmin = updatedUserDocument.isAdmin;
+            updatedUser.userRole = updatedUserDocument.userRole;
             updatedUser.isDeleted = updatedUserDocument.isDeleted;
         }
 

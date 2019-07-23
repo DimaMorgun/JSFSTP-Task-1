@@ -5,11 +5,8 @@ import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 import { UserModel, CreateUserModel, UpdateUserModel } from 'src/models';
 import { UserService } from 'src/services';
 
-
-@UseGuards(AuthGuard('jwt'))
 @Controller('user')
 @ApiUseTags('user')
-@ApiBearerAuth()
 export class UserController {
     constructor(
         private readonly userService: UserService,
@@ -22,6 +19,8 @@ export class UserController {
         return user;
     }
 
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth()
     @Get(':skip/:limit')
     async getUserListWithPaging(@Param('skip') skip: string, @Param('limit') limit: string): Promise<UserModel[]> {
         const users: UserModel[] = await this.userService.getPaginated(+skip, +limit);
@@ -29,6 +28,8 @@ export class UserController {
         return users;
     }
 
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth()
     @Get()
     async getUserList(): Promise<UserModel[]> {
         const users: UserModel[] = await this.userService.getList();
@@ -50,6 +51,8 @@ export class UserController {
         return updatedUser;
     }
 
+    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth()
     @Delete(':id')
     async deleteUser(@Param('id') id: string): Promise<UserModel> {
         const isDeleted: UserModel = await this.userService.delete(id);

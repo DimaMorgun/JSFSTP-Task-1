@@ -2,7 +2,7 @@ import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { UserModel, UserPayloadModel } from 'src/models';
-import { PasswordHelper } from 'src/common';
+import { Encryptor } from 'src/common';
 import { UserService } from '.';
 
 @Injectable()
@@ -10,19 +10,19 @@ export class AuthService {
     constructor(
         @Inject(forwardRef(() => UserService))
         private userService: UserService,
-        @Inject(forwardRef(() => PasswordHelper))
-        private readonly passwordHelper: PasswordHelper,
+        @Inject(forwardRef(() => Encryptor))
+        private readonly passwordHelper: Encryptor,
         private readonly jwtService: JwtService,
     ) { }
 
     public async validateUser(username: string, password: string): Promise<boolean> {
         const user: UserModel = await this.userService.getByUsername(username);
 
-        if (!user || !user.passwordSalt || !user.passwordHash || !user.isAdmin) {
+        if (!user || !user.passwordSalt || !user.passwordHash) {
             return false;
         }
 
-        const passwordHash: string = await this.passwordHelper.getPasswordHash(password, user.passwordSalt);
+        const passwordHash: string = await this.passwordHelper.getSaltedHash(password, user.passwordSalt);
 
         return user.passwordHash === passwordHash;
     }
@@ -46,6 +46,7 @@ export class AuthService {
         userPayload.id = user.id;
         userPayload.username = user.username;
         userPayload.fullName = user.fullName;
+        userPayload.userRole = user.userRole;
         userPayload.createdDate = user.createdDate;
         userPayload.updatedDate = user.updatedDate;
         userPayload.isDeleted = user.isDeleted;
