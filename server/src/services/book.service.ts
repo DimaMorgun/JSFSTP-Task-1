@@ -116,13 +116,13 @@ export class BookService {
         const createdBook: BookModel = {};
         const createBookDocument: BookDocument = {};
 
-        const availableRelatedAuthorsIds: objectid[] = await this.authorRepository.getAwailableByIdList(createBookModel.authors);
+        const availableAuthorsIdList: objectid[] = await this.authorRepository.getAwailableIdListByIdList(createBookModel.authors);
 
         if (createBookModel) {
             createBookDocument.name = createBookModel.name;
             createBookDocument.price = createBookModel.price;
             createBookDocument.type = createBookModel.type;
-            createBookDocument.authors = availableRelatedAuthorsIds;
+            createBookDocument.authors = availableAuthorsIdList;
             createBookDocument.createdDate = new Date();
             createBookDocument.updatedDate = new Date();
             createBookDocument.isDeleted = false;
@@ -140,7 +140,7 @@ export class BookService {
             createdBook.isDeleted = createdBookDocument.isDeleted;
         }
 
-        const x = await this.authorRepository.assingBook(availableRelatedAuthorsIds, createdBookDocument._id);
+        await this.authorRepository.assingBook(availableAuthorsIdList, createdBookDocument._id);
 
         return createdBook;
     }
@@ -149,12 +149,22 @@ export class BookService {
         const updatedBook: BookModel = {};
         const updateBookDocument: BookDocument = {};
 
+        const availableAuthorIdList: objectid[] = await this.authorRepository.getAwailableIdListByIdList(updateBookModel.authors);
+        const authorIdListForUnassigning: objectid[] = await this.authorRepository.getIdListAssignedByBookIdExcludeByIdList(
+            updateBookModel.id,
+            availableAuthorIdList,
+        );
+        const notAssignedAuthorIdList: objectid[] = await this.authorRepository.getIdListWithUnassignedBook(
+            availableAuthorIdList,
+            updateBookModel.id,
+        );
+
         if (updateBookModel) {
             updateBookDocument._id = updateBookModel.id;
             updateBookDocument.name = updateBookModel.name;
             updateBookDocument.price = updateBookModel.price;
             updateBookDocument.type = updateBookModel.type;
-            updateBookDocument.authors = updateBookModel.authors;
+            updateBookDocument.authors = availableAuthorIdList;
             updateBookDocument.updatedDate = new Date();
         }
 
@@ -169,6 +179,9 @@ export class BookService {
             updatedBook.updatedDate = updatedBookDocument.updatedDate;
             updatedBook.isDeleted = updatedBookDocument.isDeleted;
         }
+
+        await this.authorRepository.unassignBook(authorIdListForUnassigning, updateBookModel.id);
+        await this.authorRepository.assingBook(notAssignedAuthorIdList, updateBookDocument._id);
 
         return updatedBook;
     }
@@ -192,6 +205,8 @@ export class BookService {
             deletedBook.updatedDate = deletedBookDocument.updatedDate;
             deletedBook.isDeleted = deletedBookDocument.isDeleted;
         }
+
+        await this.authorRepository.unassignBook(deletedBook.authors, deletedBook.id);
 
         return deletedBook;
     }

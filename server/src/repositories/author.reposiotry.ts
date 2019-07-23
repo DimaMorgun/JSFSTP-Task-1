@@ -21,13 +21,13 @@ export class AuthorRepository {
         return author;
     }
 
-    public async getByIdList(ids: objectid[]): Promise<AuthorDocument[]> {
+    public async getByIdList(IdList: objectid[]): Promise<AuthorDocument[]> {
         let query = {};
 
-        if (ids.length > 0) {
+        if (IdList.length > 0) {
             query = {
                 _id: {
-                    $in: ids,
+                    $in: IdList,
                 },
             };
         }
@@ -68,45 +68,118 @@ export class AuthorRepository {
         return deletedAuthor;
     }
 
-    public async getAwailableByIdList(ids: objectid[]): Promise<objectid[]> {
-        let query = {};
+    public async getAwailableIdListByIdList(IdList: objectid[]): Promise<objectid[]> {
+        let availableAuthorIdList: objectid[] = new Array<objectid>();
 
-        // Todo: validation.
-        if (ids.length > 0) {
-            query = {
+        if (IdList && IdList.length > 0) {
+            const query = {
                 _id: {
-                    $in: ids,
+                    $in: IdList,
                 },
             };
+
+            availableAuthorIdList = await this.authorModel.find(query).distinct('_id').exec();
         }
 
-        const authors: AuthorDocument[] = await this.authorModel.find(query).exec();
-        const availableIds: objectid[] = authors.map(({ _id }) => _id);
-
-        return availableIds;
+        return availableAuthorIdList;
     }
 
-    public async assingBook(authorIds: objectid[], bookId: objectid): Promise<number> {
+    public async assingBook(authorIdList: objectid[], bookId: objectid): Promise<number> {
         let processedDocuments: number = 0;
 
-        if (authorIds.length > 0 && bookId) {
+        if (authorIdList.length > 0 && bookId) {
             const filterQuery = {
                 _id: {
-                    $in: authorIds,
+                    $in: authorIdList,
                 },
             };
 
             const updateQuery = {
-                push: {
-                    $books: bookId,
+                $push: {
+                    books: bookId,
                 },
             };
 
-            // Todo: define type.
-            const x = await this.authorModel.updateMany(filterQuery, updateQuery);
-            processedDocuments = x.n;
+            const updateResponse = await this.authorModel.updateMany(filterQuery, updateQuery);
+            processedDocuments = updateResponse.nModified;
         }
 
         return processedDocuments;
+    }
+
+    public async unassignBook(authorIdList: objectid[], bookId: objectid): Promise<number> {
+        let processedDocuments: number = 0;
+
+        if (authorIdList && authorIdList.length > 0 && bookId) {
+            const filterQuery = {
+                $and: [
+                    {
+                        _id: {
+                            $in: authorIdList,
+                        },
+                    },
+                    {
+                        books: bookId,
+                    },
+                ],
+            };
+
+            const updateQuery = {
+                $pull: {
+                    books: bookId,
+                },
+            };
+
+            const updateResponse = await this.authorModel.updateMany(filterQuery, updateQuery);
+            processedDocuments = updateResponse.nModified;
+        }
+
+        return processedDocuments;
+    }
+
+    public async getIdListWithUnassignedBook(authorIdList: objectid[], bookId: objectid): Promise<objectid[]> {
+        let notAssignedAuthorIdList: objectid[] = new Array<objectid>();
+
+        if (authorIdList.length > 0 && bookId) {
+            const query = {
+                $and: [
+                    {
+                        _id: {
+                            $in: authorIdList,
+                        },
+                    },
+                    {
+                        books: {
+                            $ne: bookId,
+                        },
+                    },
+                ],
+            };
+
+            notAssignedAuthorIdList = await this.authorModel.find(query).distinct('_id').exec();
+        }
+
+        return notAssignedAuthorIdList;
+    }
+
+    public async getIdListAssignedByBookIdExcludeByIdList(bookId: objectid, excludeAuthorIdList: objectid[]): Promise<objectid[]> {
+        let excludedAuthorIdList: objectid[] = new Array<objectid>();
+
+        if (bookId) {
+            const query = {
+                $and: [
+                    {
+                        _id: {
+                            $nin: excludeAuthorIdList,
+                        },
+                    },
+                    { books: bookId },
+                ],
+            };
+
+            excludedAuthorIdList = await this.authorModel.find(query).distinct('_id').exec();
+        }
+
+        return excludedAuthorIdList;
     }
 }
