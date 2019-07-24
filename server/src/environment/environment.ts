@@ -1,16 +1,15 @@
 import { Injectable } from '@nestjs/common';
-
-import fs = require('fs');
+import { EnvironmentProd, EnvironmentDev } from 'src/environment';
 
 @Injectable()
 export class Environment {
-    public httpPort: string = '80';
-    public httpsPort: string = '443';
-    public databaseProviderName: string = 'MONGO-CONNECTION';
+    public httpPort: string;
+    public httpsPort: string;
+    public databaseProviderName: string;
     public databaseMongoConnectionUrl: string;
     public buildMode: string;
-    public static jwtSecretKey: string = fs.readFileSync('src/secrets/jwtSecretKey.key').toString();
-    public static tokenExpireTime = 60 * 60 * 24;
+    public static jwtSecretKey: string;
+    public static tokenExpireTime: number;
 
     constructor() {
         const environment = process.env.NODE_ENV || 'development';
@@ -29,12 +28,22 @@ export class Environment {
     }
 
     development() {
-        this.databaseMongoConnectionUrl = 'mongodb://127.0.0.1:27017/library-dev';
-        this.buildMode = 'Development';
+        this.httpPort = EnvironmentDev.httpPort;
+        this.httpsPort = EnvironmentDev.httpsPort;
+        this.databaseProviderName = EnvironmentDev.databaseProviderName;
+        this.databaseMongoConnectionUrl = EnvironmentDev.databaseMongoConnectionUrl;
+        this.buildMode = EnvironmentDev.buildMode;
+        Environment.jwtSecretKey = EnvironmentDev.jwtSecretKey;
+        Environment.tokenExpireTime = EnvironmentDev.tokenExpireTime;
     }
 
     production() {
-        this.databaseMongoConnectionUrl = 'mongodb://127.0.0.1:27017/library-prod';
-        this.buildMode = 'Production';
+        this.httpPort = EnvironmentProd.httpPort;
+        this.httpsPort = EnvironmentProd.httpsPort;
+        this.databaseProviderName = EnvironmentProd.databaseProviderName;
+        this.databaseMongoConnectionUrl = EnvironmentProd.databaseMongoConnectionUrl;
+        this.buildMode = EnvironmentProd.buildMode;
+        Environment.jwtSecretKey = EnvironmentProd.jwtSecretKey;
+        Environment.tokenExpireTime = EnvironmentProd.tokenExpireTime;
     }
 }
