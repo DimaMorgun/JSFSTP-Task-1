@@ -4,9 +4,11 @@ import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 
 import { AuthService } from 'src/services';
 import { LoginModel, UserPayloadModel } from 'src/models';
-import { RolesGuard } from 'src/common/roles.guard';
 import { UserRole } from 'src/constants';
+import { Roles } from 'src/decorators/roles.decorator';
+import { RolesGuard } from 'src/common';
 
+@UseGuards(RolesGuard)
 @Controller('auth')
 @ApiUseTags('auth')
 export class AuthController {
@@ -29,10 +31,9 @@ export class AuthController {
         return req.user;
     }
 
-    @UseGuards(new RolesGuard())
-    @SetMetadata('userRole', [UserRole.admin])
+    @Roles(UserRole.admin)
     @ApiBearerAuth()
-    @Get('admin/me')
+    @Get('admin/test')
     public async getAdminProfile(@Request() req): Promise<string> {
         return 'You are admin';
     }

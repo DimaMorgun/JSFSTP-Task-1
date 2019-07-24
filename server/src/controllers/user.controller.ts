@@ -4,9 +4,13 @@ import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 
 import { UserModel, CreateUserModel, UpdateUserModel } from 'src/models';
 import { UserService } from 'src/services';
+import { RolesGuard } from 'src/common';
+import { Roles } from 'src/decorators/roles.decorator';
+import { UserRole } from 'src/constants';
 
 @Controller('user')
 @ApiUseTags('user')
+@UseGuards(RolesGuard)
 export class UserController {
     constructor(
         private readonly userService: UserService,
@@ -19,7 +23,7 @@ export class UserController {
         return user;
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    @Roles(UserRole.admin)
     @ApiBearerAuth()
     @Get(':skip/:limit')
     async getUserListWithPaging(@Param('skip') skip: string, @Param('limit') limit: string): Promise<UserModel[]> {
@@ -28,7 +32,7 @@ export class UserController {
         return users;
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    @Roles(UserRole.admin)
     @ApiBearerAuth()
     @Get()
     async getUserList(): Promise<UserModel[]> {
@@ -51,7 +55,7 @@ export class UserController {
         return updatedUser;
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    @Roles(UserRole.admin)
     @ApiBearerAuth()
     @Delete(':id')
     async deleteUser(@Param('id') id: string): Promise<UserModel> {

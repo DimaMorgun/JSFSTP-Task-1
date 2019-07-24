@@ -19,7 +19,7 @@ export class HomeController {
             currentDate: new Date(),
             applicationName: 'library-api',
             biltOn: 'NestJS',
-            buildMode: this.environment.buildMode,
+            buildMode: this.environment.environment,
         });
 
         return response;

@@ -47,7 +47,7 @@ export class UserService {
             return user;
         }
 
-        const userDocument: UserDocument = await this.userRepository.getByUsername(username);
+        const userDocument: UserDocument = await this.userRepository.getByUsername(username.toLowerCase());
         if (userDocument) {
             user.id = userDocument._id;
             user.username = userDocument.username;
