@@ -1,2 +1,2 @@
-export * from './book-types.constant';
+export * from './book-types.enum';
 export * from './user-roles.enum';
