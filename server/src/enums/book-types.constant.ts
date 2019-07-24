@@ -1,1 +1,4 @@
-export const BookTypes: string[] = ['BOOK', 'MAGAZINE'];
+export const BookTypes: string[] = [
+    'BOOK',
+    'MAGAZINE',
+];
