@@ -1,10 +1,13 @@
 import fs = require('fs');
+import { Environment } from './environment';
 
-export class EnvironmentProd {
-    public static httpPort: string = '80';
-    public static httpsPort: string = '443';
-    public static databaseProviderName: string = 'MONGO-CONNECTION';
-    public static databaseMongoConnectionUrl: string = 'mongodb://127.0.0.1:27017/library-prod';
-    public static jwtSecretKey: string = fs.readFileSync('src/secrets/jwtSecretKey.key').toString();
-    public static tokenExpireTime: number = 60 * 60 * 24;
-}
+// tslint:disable-next-line:one-variable-per-declaration
+export const environmentProduction: Environment = {
+    httpPort: '80',
+    httpsPort: '443',
+    environment: process.env.NODE_ENV,
+    databaseProviderName: 'MONGO-CONNECTION',
+    databaseMongoConnectionUrl: 'mongodb://127.0.0.1:27017/library-prod',
+    jwtSecretKey: fs.readFileSync('src/secrets/jwtSecretKey.key').toString(),
+    tokenExpireTime: 60 * 60 * 24,
+};

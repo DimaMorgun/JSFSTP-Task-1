@@ -3,7 +3,7 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
-import { Environment } from 'src/environment/environment';
+import { environment, Environment } from 'src/environment';
 
 import fs = require('fs');
 import express = require('express');
@@ -13,9 +13,9 @@ import cors = require('cors');
 import * as mongoose from 'mongoose';
 
 async function bootstrap() {
-  const environment: Environment = new Environment();
+  const env: Environment = environment();
 
-  mongoose.connect(environment.databaseMongoConnectionUrl, { useNewUrlParser: true, useFindAndModify: false });
+  mongoose.connect(env.databaseMongoConnectionUrl, { useNewUrlParser: true, useFindAndModify: false });
 
   const httpsOptions = {
     key: fs.readFileSync('src/secrets/server.key'),
@@ -42,13 +42,13 @@ async function bootstrap() {
 
   app.init();
 
-  https.createServer(httpsOptions, server).listen(environment.httpsPort);
+  https.createServer(httpsOptions, server).listen(env.httpsPort);
   http.createServer((req, res) => {
     res.writeHead(301, {
-      Location: `https://${req.headers.host.replace(environment.httpPort, environment.httpsPort)}${req.url}`,
+      Location: `https://${req.headers.host.replace(env.httpPort, env.httpsPort)}${req.url}`,
     });
     res.end();
-  }).listen(environment.httpPort);
+  }).listen(env.httpPort);
 }
 
 bootstrap();

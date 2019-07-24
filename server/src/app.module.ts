@@ -5,7 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 import { Connection } from 'mongoose';
 
 import { MiddlewareRequest, LocalStrategy, JwtStrategy, Encryptor } from 'src/common';
-import { Environment } from 'src/environment/environment';
+import { environment } from 'src/environment';
 import {
   UserController,
   HomeController,
@@ -23,8 +23,8 @@ import { BookRepository, UserRepository, FileRepository, AuthorRepository, BookT
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: Environment.jwtSecretKey,
-      signOptions: { expiresIn: Environment.tokenExpireTime },
+      secret: environment().jwtSecretKey,
+      signOptions: { expiresIn: environment().tokenExpireTime },
     }),
   ],
   controllers: [
@@ -41,7 +41,6 @@ import { BookRepository, UserRepository, FileRepository, AuthorRepository, BookT
     Connection,
     LocalStrategy,
     JwtStrategy,
-    Environment,
     Encryptor,
     AuthService,
     UserService,
