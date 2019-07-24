@@ -6,9 +6,18 @@ import { Connection } from 'mongoose';
 
 import { MiddlewareRequest, LocalStrategy, JwtStrategy, Encryptor } from 'src/common';
 import { Environment } from 'src/environment/environment';
-import { UserController, HomeController, BookController, AuthController, FileController, AuthorController } from 'src/controllers';
-import { AuthService, BookService, UserService, FileService, AuthorService } from 'src/services';
-import { BookRepository, UserRepository, FileRepository, AuthorRepository } from 'src/repositories';
+import {
+  UserController,
+  HomeController,
+  BookController,
+  AuthController,
+  FileController,
+  AuthorController,
+  BookTypeController,
+  UserRoleController,
+} from 'src/controllers';
+import { AuthService, BookService, UserService, FileService, AuthorService, BookTypeService, UserRoleService } from 'src/services';
+import { BookRepository, UserRepository, FileRepository, AuthorRepository, BookTypeRepository, UserRoleRepository } from 'src/repositories';
 
 @Module({
   imports: [
@@ -25,6 +34,8 @@ import { BookRepository, UserRepository, FileRepository, AuthorRepository } from
     BookController,
     FileController,
     AuthorController,
+    BookTypeController,
+    UserRoleController,
   ],
   providers: [
     Connection,
@@ -41,6 +52,10 @@ import { BookRepository, UserRepository, FileRepository, AuthorRepository } from
     FileRepository,
     AuthorService,
     AuthorRepository,
+    BookTypeService,
+    BookTypeRepository,
+    UserRoleService,
+    UserRoleRepository,
   ],
 })
 export class AppModule implements NestModule {

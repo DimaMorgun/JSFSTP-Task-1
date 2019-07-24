@@ -4,7 +4,7 @@ import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 
 import { AuthService } from 'src/services';
 import { LoginModel, UserPayloadModel } from 'src/models';
-import { UserRole } from 'src/constants';
+import { UserRole } from 'src/enums';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/common';
 

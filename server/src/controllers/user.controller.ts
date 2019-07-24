@@ -6,7 +6,7 @@ import { UserModel, CreateUserModel, UpdateUserModel } from 'src/models';
 import { UserService } from 'src/services';
 import { RolesGuard } from 'src/common';
 import { Roles } from 'src/decorators/roles.decorator';
-import { UserRole } from 'src/constants';
+import { UserRole } from 'src/enums';
 
 @Controller('user')
 @ApiUseTags('user')

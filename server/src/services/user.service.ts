@@ -6,7 +6,7 @@ import { UserRepository } from 'src/repositories';
 import { UserModel, CreateUserModel, UpdateUserModel } from 'src/models';
 import { UserDocument } from 'src/documents';
 import { Encryptor } from 'src/common/password.helper';
-import { UserRole } from 'src/constants';
+import { UserRole } from 'src/enums';
 
 @Injectable()
 export class UserService {

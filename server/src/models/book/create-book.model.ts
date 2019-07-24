@@ -1,6 +1,6 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 
-import { BookTypes } from 'src/constants';
+import { BookTypes } from 'src/enums';
 
 export class CreateBookModel {
     @ApiModelProperty()

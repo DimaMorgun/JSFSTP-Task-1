@@ -16,3 +16,11 @@ export * from './file/upload-file.model';
 export * from './author/author.model';
 export * from './author/create-author.model';
 export * from './author/update-author.model';
+
+export * from './book-type/book-type.model';
+export * from './book-type/create-book-type.model';
+export * from './book-type/update-book-type.model';
+
+export * from './user-role/user-role.model';
+export * from './user-role/create-user-role.model';
+export * from './user-role/update-user-role.model';
