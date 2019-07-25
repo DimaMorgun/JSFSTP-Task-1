@@ -9,7 +9,6 @@ import fs = require('fs');
 import express = require('express');
 import http = require('http');
 import https = require('https');
-import cors = require('cors');
 import * as mongoose from 'mongoose';
 
 async function bootstrap() {
@@ -24,12 +23,12 @@ async function bootstrap() {
 
   const server = express();
   server.enable('trust proxy');
-  server.use(cors());
 
   const app = await NestFactory.create(
     AppModule,
     new ExpressAdapter(server),
   );
+  app.enableCors();
 
   const options = new DocumentBuilder()
     .setTitle('Library Swagger api')
