@@ -1,18 +1,27 @@
-<nav class="navbar navbar-light justify-content-between">
-    <a class="navbar-brand" [routerLink]="['/']">
-        <img src="https://ui-ex.com/images/claptrap-drawing-easy-1.png" width="30" height="30"
-            class="d-inline-block align-top" alt="">
-        <span class="d-none d-lg-inline"> ClapTrap</span>
-    </a>
-    <a class="link" [routerLink]="['/']">
-        Home
-    </a>
-    <a class="link" [routerLink]="['/library/book']">
-        Books
-    </a>
+<nav class="navbar navbar-light row">
+    <div class="col-md-4 d-flex justify-content-between">
+        <a class="navbar-brand" [routerLink]="['/']">
+            <img src="https://ui-ex.com/images/claptrap-drawing-easy-1.png" width="30" height="30"
+                class="d-inline-block align-top" alt="">
+            <span class="d-none d-lg-inline"> ClapTrap</span>
+        </a>
+        <a class="link" [routerLink]="['/']">
+            Home
+        </a>
+        <a class="link" [routerLink]="['/library/book']">
+            Books
+        </a>
+    </div>
 
-    <form class="form-inline d-none d-lg-block">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+    <div class="col-md-4 d-flex justify-content-end">
+        <form class="form-inline d-none d-lg-block search-form">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+
+        <div class="btn-group">
+            <a class="btn btn-outline-warning" [routerLink]="['/auth/login']">Log In</a>
+            <a class="btn btn-outline-info" [routerLink]="['/auth/sign-up']">Sing Up</a>
+        </div>
+    </div>
 </nav>

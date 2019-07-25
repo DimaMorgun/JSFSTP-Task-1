@@ -2,16 +2,28 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { BookComponent } from './book/book.component';
 import { HomeComponent } from './home/home.component';
+import { LibraryComponent } from './library.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: HomeComponent
+        redirectTo: 'home',
+        pathMatch: 'full',
     },
     {
-        path: 'book',
-        component: BookComponent
-    }
+        path: '',
+        component: LibraryComponent,
+        children: [
+            {
+                path: 'home',
+                component: HomeComponent
+            },
+            {
+                path: 'book',
+                component: BookComponent
+            },
+        ]
+    },
 ];
 
 @NgModule({

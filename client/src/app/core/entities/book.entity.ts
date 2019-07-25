@@ -1,9 +1,11 @@
 export interface Book {
     id: string;
     name: string;
+    price: number;
+    type: string;
     imageSrc: string;
-    authorName: string;
-    created: Date;
-    updated: Date;
+    authors: string[];
+    createdDate: Date;
+    updatedDate: Date;
     isDeleted: boolean;
 }

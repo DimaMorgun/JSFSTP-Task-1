@@ -10,6 +10,8 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { BookService } from './core/services/book.service';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthModule } from './auth/auth.module';
+import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 
 
 @NgModule({
@@ -18,13 +20,15 @@ import { HttpClientModule } from '@angular/common/http';
     LayoutDefaultComponent,
     NavHeaderComponent,
     SidebarComponent,
-    FooterComponent
+    FooterComponent,
+    PageNotFoundComponent
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
+    AuthModule,
     LibraryModule,
-    HttpClientModule,
   ],
   providers: [BookService],
   bootstrap: [AppComponent]

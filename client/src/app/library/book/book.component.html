@@ -2,19 +2,23 @@
     <tr>
         <th>Id</th>
         <th>Name</th>
-        <th>Image SRC</th>
-        <th>Author Name</th>
+        <th>Price</th>
+        <td>Type</td>
+        <th>Image Src</th>
+        <th>Author Names</th>
         <th>Created</th>
         <th>Updated</th>
         <th>Deleted?</th>
     </tr>
     <tr *ngFor="let book of books">
-        <td>{{book._id}}</td>
+        <td>{{book.id}}</td>
         <td>{{book.name}}</td>
+        <td>{{book.price}}</td>
+        <td>{{book.type}}</td>
         <td>{{book.imageSrc}}</td>
-        <td>{{book.authorName}}</td>
-        <td>{{book.created}}</td>
-        <td>{{book.updated}}</td>
+        <td>{{book.authors}}</td>
+        <td>{{book.createdDate}}</td>
+        <td>{{book.updatedDate}}</td>
         <td><input type="checkbox" [checked]="book.isDeleted" disabled></td>
     </tr>
 </table>

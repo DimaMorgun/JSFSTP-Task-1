@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiHttpRoute: 'http://localhost:',
-  apiHttpPort: '3000',
+  apiHttpPort: '80',
   apiHttpsRoute: 'https://localhost:',
   apiHttpsPort: '443'
 };
