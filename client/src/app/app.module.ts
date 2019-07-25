@@ -8,6 +8,8 @@ import { LayoutDefaultComponent } from './shared/layout-default/layout-default.c
 import { NavHeaderComponent } from './shared/nav-header/nav-header.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { BookService } from './core/services/book.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -21,9 +23,10 @@ import { FooterComponent } from './shared/footer/footer.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    LibraryModule
+    LibraryModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [BookService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
