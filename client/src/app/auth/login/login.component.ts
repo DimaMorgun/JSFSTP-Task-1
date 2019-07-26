@@ -42,12 +42,12 @@ export class LoginComponent {
         requestModel.username = this.username;
         requestModel.password = this.password;
 
-        const responseModel: LoginResponseModel = await this.authService.getToken(requestModel);
+        const responseModel: LoginResponseModel = await this.authService.login(requestModel);
 
         if (responseModel.statusCode === 200) {
             this.isShowMessage = true;
             this.isErrorMessage = false;
-            this.message = responseModel.token;
+            this.message = 'Logged in successfully.';
         }
         if (responseModel.statusCode !== 200) {
             this.showErrorMessage(responseModel.statusCode);

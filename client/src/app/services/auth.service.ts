@@ -8,20 +8,28 @@ import { environment } from 'src/environments/environment';
 @Injectable()
 export class AuthService {
     private endpointUrl = `${environment.apiHttpsRoute}${environment.apiHttpsPort}/auth`;
-    private loginControllerAction = '/login';
+    private loginAction = `${this.endpointUrl}/login`;
 
     constructor(
         private http: HttpClient,
     ) { }
 
-    public async getToken(loginView: LoginRequestModel): Promise<LoginResponseModel> {
-        let requestModel: LoginRequestModel;
-        const responseModel: LoginResponseModel = {};
+    public async login(loginRequestModel: LoginRequestModel): Promise<LoginResponseModel> {
+        const loginResponseModel: LoginResponseModel = await this.getToken(loginRequestModel);
+
+        if (loginResponseModel.statusCode === 200) {
+            this.setSession(loginResponseModel.token);
+        }
+
+        return loginResponseModel;
+    }
+
+    public async getToken(loginRequestModel: LoginRequestModel): Promise<LoginResponseModel> {
+        let responseModel: LoginResponseModel = {};
 
         try {
-            requestModel = await this.http.post<LoginRequestModel>(this.endpointUrl + this.loginControllerAction, loginView).toPromise();
+            responseModel = await this.http.post<LoginResponseModel>(this.loginAction, loginRequestModel).toPromise();
 
-            responseModel.token = requestModel.token;
             responseModel.statusCode = 200;
         } catch (exception) {
             responseModel.statusCode = exception.status;
@@ -29,5 +37,9 @@ export class AuthService {
         }
 
         return responseModel;
+    }
+
+    private setSession(token) {
+        localStorage.setItem('access_token', token);
     }
 }
