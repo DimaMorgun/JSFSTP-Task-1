@@ -1,8 +1,12 @@
-import { Routes, RouterModule } from '@angular/router';
+import {
+    Routes,
+    RouterModule,
+} from '@angular/router';
 import { NgModule } from '@angular/core';
-import { BookComponent } from './book/book.component';
-import { HomeComponent } from './home/home.component';
-import { LibraryComponent } from './library.component';
+
+import { BookComponent } from 'src/app/library/book/book.component';
+import { HomeComponent } from 'src/app/library/home/home.component';
+import { LibraryComponent } from 'src/app/library/library.component';
 
 const routes: Routes = [
     {
@@ -16,11 +20,11 @@ const routes: Routes = [
         children: [
             {
                 path: 'home',
-                component: HomeComponent
+                component: HomeComponent,
             },
             {
                 path: 'book',
-                component: BookComponent
+                component: BookComponent,
             },
         ]
     },
@@ -30,5 +34,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-
 export class LibraryRoutingModule { }

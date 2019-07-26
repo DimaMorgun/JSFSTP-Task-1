@@ -1,28 +1,30 @@
 <div class="row login-container">
-    <div class="col-md-12 text-center login-title">Login</div>
+    <div class="col-md-12 text-center login-title">Login - {{info}}</div>
+
     <div class="col-md-12">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">Username</span>
             </div>
             <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-                aria-describedby="basic-addon1">
+                aria-describedby="basic-addon1" [(ngModel)]="username">
         </div>
     </div>
+
     <div class="col-md-12">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">Password</span>
             </div>
             <input type="password" class="form-control" placeholder="Password" aria-label="Password"
-                aria-describedby="basic-addon1">
-        </div>
-    </div>
-    <div class="col-md-12">
-        <div class="btn-group col-md-12">
-            <button class="btn btn-outline-info col-md-7">Log In</button>
-            <a class="btn btn-outline-warning col-md-5" [routerLink]="['/auth/sign-up']">Sing Up</a>
+                aria-describedby="basic-addon1" [(ngModel)]="password">
         </div>
     </div>
 
+    <div class="col-md-12">
+        <div class="btn-group col-md-12">
+            <button class="btn btn-outline-info col-md-7" (click)="login()">Log In</button>
+            <a class="btn btn-outline-warning col-md-5" [routerLink]="['/auth/sign-up']">Sing Up</a>
+        </div>
+    </div>
 </div>

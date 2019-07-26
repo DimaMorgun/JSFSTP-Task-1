@@ -1,15 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BookComponent } from './book/book.component';
-import { HomeComponent } from './home/home.component';
-import { LibraryRoutingModule } from './library-routing.module';
-import { LibraryComponent } from './library.component';
+
+import { LibraryRoutingModule } from 'src/app/library/library-routing.module';
+
+import { BookComponent } from 'src/app/library/book/book.component';
+import { HomeComponent } from 'src/app/library/home/home.component';
+import { LibraryComponent } from 'src/app/library/library.component';
 
 @NgModule({
-  declarations: [BookComponent, HomeComponent, LibraryComponent],
+  declarations: [
+    LibraryComponent,
+    BookComponent,
+    HomeComponent,
+  ],
   imports: [
     CommonModule,
-    LibraryRoutingModule
-  ]
+    LibraryRoutingModule,
+  ],
 })
 export class LibraryModule { }

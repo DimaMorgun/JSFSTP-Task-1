@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+
+import { BookModel } from 'src/app/shared/models';
 
 import { environment } from 'src/environments/environment';
-import { Book } from 'src/app/core/entities';
 
 @Injectable()
 export class BookService {
@@ -11,8 +11,8 @@ export class BookService {
 
   constructor(private http: HttpClient) { }
 
-  public getBooks(): Observable<Book[]> {
-    const books: Observable<Book[]> = this.http.get<Book[]>(this.endpointUrl);
+  public async getBooks(): Promise<BookModel[]> {
+    const books: BookModel[] = await this.http.get<BookModel[]>(this.endpointUrl).toPromise();
 
     return books;
   }

@@ -1,17 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AppRoutingModule } from './app-routing.module';
-import { LibraryModule } from './library/library.module';
-
-import { AppComponent } from './app.component';
-import { LayoutDefaultComponent } from './shared/layout-default/layout-default.component';
-import { NavHeaderComponent } from './shared/nav-header/nav-header.component';
-import { SidebarComponent } from './shared/sidebar/sidebar.component';
-import { FooterComponent } from './shared/footer/footer.component';
-import { BookService } from './core/services/book.service';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthModule } from './auth/auth.module';
-import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
+
+import { AppRoutingModule } from 'src/app/app-routing.module';
+import { AuthModule } from 'src/app/auth/auth.module';
+import { LibraryModule } from 'src/app/library/library.module';
+
+import { AppComponent } from 'src/app/app.component';
+import {
+  LayoutDefaultComponent,
+  NavHeaderComponent,
+  SidebarComponent,
+  FooterComponent,
+  PageNotFoundComponent,
+} from 'src/app/shared/components';
+
+import {
+  AuthService,
+  BookService,
+} from 'src/app/services';
 
 
 @NgModule({
@@ -24,13 +31,16 @@ import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.co
     PageNotFoundComponent
   ],
   imports: [
-    HttpClientModule,
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     AuthModule,
     LibraryModule,
   ],
-  providers: [BookService],
+  providers: [
+    AuthService,
+    BookService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

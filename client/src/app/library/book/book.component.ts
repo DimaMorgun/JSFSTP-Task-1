@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+} from '@angular/core';
 
-import { BookService } from 'src/app/core/services/book.service';
-import { Book } from 'src/app/core/entities';
+import { BookService } from 'src/app/services/book.service';
+
+import { BookModel } from 'src/app/shared/models';
 
 @Component({
   selector: 'app-book',
@@ -10,14 +14,15 @@ import { Book } from 'src/app/core/entities';
 })
 export class BookComponent implements OnInit {
 
-  public books: Book[];
+  public books: BookModel[];
 
   constructor(private bookService: BookService) { }
 
   ngOnInit() {
-    this.bookService.getBooks().subscribe(data => {
-      console.log(data);
-      this.books = data;
-    });
+    this.initialize();
+  }
+
+  private async initialize() {
+    this.books = await this.bookService.getBooks();
   }
 }

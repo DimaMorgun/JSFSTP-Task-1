@@ -1,25 +1,34 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { LayoutDefaultComponent } from 'src/app/shared/layout-default/layout-default.component';
-import { PageNotFoundComponent } from 'src/app/shared/page-not-found/page-not-found.component';
+import {
+    Routes,
+    RouterModule,
+} from '@angular/router';
+
+import {
+    LayoutDefaultComponent,
+    PageNotFoundComponent,
+} from 'src/app/shared/components';
 
 const routes: Routes = [
     {
         path: 'auth',
         component: LayoutDefaultComponent,
-        loadChildren: () => import('src/app/auth/auth.module').then(mod => mod.AuthModule)
+        loadChildren: () => import('src/app/auth/auth.module').then(mod => mod.AuthModule),
     },
     {
         path: 'library',
         component: LayoutDefaultComponent,
-        loadChildren: () => import('src/app/library/library.module').then(mod => mod.LibraryModule)
+        loadChildren: () => import('src/app/library/library.module').then(mod => mod.LibraryModule),
     },
     {
         path: '',
         redirectTo: 'library',
-        pathMatch: 'full'
+        pathMatch: 'full',
     },
-    { path: '**', component: PageNotFoundComponent }
+    {
+        path: '**',
+        component: PageNotFoundComponent,
+    }
 ];
 
 @NgModule({
