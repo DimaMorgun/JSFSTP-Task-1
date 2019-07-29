@@ -45,6 +45,7 @@ export class SingUpComponent {
         requestModel.password = this.password;
 
         const responseModel: SignUpResponseModel = await this.authService.signUp(requestModel);
+        console.log(responseModel);
 
         if (responseModel.statusCode === 200) {
             this.router.navigate(['/auth/login']);

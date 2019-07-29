@@ -84,10 +84,10 @@ export class AuthService {
         try {
             const user: UserModel = await this.http.post<UserModel>(this.signUpAction, signUpRequestModel).toPromise();
 
-            if (!user.id) {
+            if (user.id) {
                 signUpResponseModel.statusCode = 200;
             }
-            if (user.id) {
+            if (!user.id) {
                 signUpResponseModel.statusCode = 409;
                 signUpResponseModel.reason = 'User Already Exist!';
             }
