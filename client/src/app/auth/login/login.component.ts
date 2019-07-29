@@ -20,9 +20,6 @@ export class LoginComponent {
     private isErrorMessage: boolean;
     private message: string;
 
-    private invalidCredentialsMessage = 'Invalid credentials.';
-    private unhandledErrorMessage = 'Something went wrong.';
-
     constructor(
         private authService: AuthService,
         private router: Router,
@@ -35,31 +32,19 @@ export class LoginComponent {
 
         const responseModel: LoginResponseModel = await this.authService.login(requestModel);
 
-        if (responseModel.statusCode === 200) {
+        if (responseModel.status) {
             this.authService.currentUserSubject.subscribe(() => {
                 this.router.navigate(['/']);
             });
         }
-        if (responseModel.statusCode !== 200) {
-            this.showErrorMessage(responseModel.statusCode);
+        if (!responseModel.status) {
+            this.showErrorMessage(!responseModel.status, responseModel.errorMessage);
         }
     }
 
-    public showErrorMessage(statusCode?: number, message?: string) {
-        if (message) {
-            this.isShowMessage = true;
-            this.isErrorMessage = true;
-            this.message = message;
-        }
-        if (statusCode && statusCode === 401) {
-            this.isShowMessage = true;
-            this.isErrorMessage = true;
-            this.message = this.invalidCredentialsMessage;
-        }
-        if (statusCode && statusCode !== 401) {
-            this.isShowMessage = true;
-            this.isErrorMessage = true;
-            this.message = this.unhandledErrorMessage;
-        }
+    public showErrorMessage(isError: boolean, message: string) {
+        this.isShowMessage = true;
+        this.isErrorMessage = isError;
+        this.message = message;
     }
 }

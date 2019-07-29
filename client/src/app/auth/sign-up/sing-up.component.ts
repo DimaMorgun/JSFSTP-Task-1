@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthService } from 'src/app/services';
-import { SignUpRequestModel, SignUpResponseModel } from 'src/app/shared/models';
+import { SignUpRequestModel, BaseResponseModel } from 'src/app/shared/models';
 
 @Component({
     selector: 'app-sing-up',
@@ -21,20 +21,17 @@ export class SingUpComponent {
     private isErrorMessage: boolean;
     private message: string;
 
-    private invalidCredentialsMessage = 'Invalid credentials.';
-    private unhandledErrorMessage = 'Something went wrong.';
     private credentialRequirmentsMessage = 'Credentials do not meet requirments.';
 
     constructor(
         private authService: AuthService,
         private router: Router,
-    ) {
-    }
+    ) { }
 
     public async signUp() {
         const isCredentialsValid: boolean = this.testCredentials();
         if (!isCredentialsValid) {
-            this.showErrorMessage(0, this.credentialRequirmentsMessage);
+            this.showErrorMessage(true, this.credentialRequirmentsMessage);
 
             return;
         }
@@ -44,14 +41,13 @@ export class SingUpComponent {
         requestModel.username = this.username;
         requestModel.password = this.password;
 
-        const responseModel: SignUpResponseModel = await this.authService.signUp(requestModel);
-        console.log(responseModel);
+        const responseModel: BaseResponseModel = await this.authService.signUp(requestModel);
 
-        if (responseModel.statusCode === 200) {
+        if (responseModel.status) {
             this.router.navigate(['/auth/login']);
         }
-        if (responseModel.statusCode !== 200) {
-            this.showErrorMessage(0, responseModel.reason);
+        if (!responseModel.status) {
+            this.showErrorMessage(!responseModel.status, responseModel.errorMessage);
         }
     }
 
@@ -64,21 +60,9 @@ export class SingUpComponent {
         return result;
     }
 
-    public showErrorMessage(statusCode?: number, message?: string) {
-        if (message) {
-            this.isShowMessage = true;
-            this.isErrorMessage = true;
-            this.message = message;
-        }
-        if (statusCode && statusCode === 401) {
-            this.isShowMessage = true;
-            this.isErrorMessage = true;
-            this.message = this.invalidCredentialsMessage;
-        }
-        if (statusCode && statusCode !== 401) {
-            this.isShowMessage = true;
-            this.isErrorMessage = true;
-            this.message = this.unhandledErrorMessage;
-        }
+    public showErrorMessage(isError: boolean, message: string) {
+        this.isShowMessage = true;
+        this.isErrorMessage = isError;
+        this.message = message;
     }
 }

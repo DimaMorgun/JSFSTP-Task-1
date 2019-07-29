@@ -10,7 +10,7 @@ import {
     LoginResponseModel,
     UserModel,
     SignUpRequestModel,
-    SignUpResponseModel,
+    BaseResponseModel,
 } from 'src/app/shared/models';
 
 import { environment } from 'src/environments/environment';
@@ -20,6 +20,10 @@ export class AuthService {
     private endpointUrl = `${environment.apiHttpsRoute}${environment.apiHttpsPort}`;
     private loginAction = `${this.endpointUrl}/auth/login`;
     private signUpAction = `${this.endpointUrl}/user`;
+    private userAlreadyExistMessage = 'User Already Exist!';
+    private somethingWentWrongMessage = 'Something went wrong!';
+    private invalidCredentialsMessage = 'Invalid credentials!';
+
     public currentUserSubject: BehaviorSubject<UserModel>;
     public currentUser: UserModel;
 
@@ -47,13 +51,16 @@ export class AuthService {
     public async login(loginRequestModel: LoginRequestModel): Promise<LoginResponseModel> {
         const loginResponseModel: LoginResponseModel = await this.getToken(loginRequestModel);
 
-        if (loginResponseModel.statusCode === 200) {
+        if (loginResponseModel.status) {
             this.setSession(loginResponseModel.token);
 
             this.currentUser = jwtDecode(loginResponseModel.token);
             this.currentUser.token = loginResponseModel.token;
 
             this.currentUserSubject.next(this.currentUser);
+        }
+        if (!loginResponseModel.status) {
+            loginResponseModel.errorMessage = this.invalidCredentialsMessage;
         }
 
         return loginResponseModel;
@@ -64,11 +71,14 @@ export class AuthService {
 
         try {
             responseModel = await this.http.post<LoginResponseModel>(this.loginAction, loginRequestModel).toPromise();
+            responseModel.status = Boolean(responseModel.token && responseModel.token.trim());
 
-            responseModel.statusCode = 200;
-        } catch (exception) {
-            responseModel.statusCode = exception.status;
-            responseModel.reason = exception.statusText;
+            if (!responseModel.status) {
+                responseModel.errorMessage = this.invalidCredentialsMessage;
+            }
+        } catch {
+            responseModel.status = false;
+            responseModel.errorMessage = this.somethingWentWrongMessage;
         }
 
         return responseModel;
@@ -78,25 +88,25 @@ export class AuthService {
         localStorage.setItem('access_token', token);
     }
 
-    public async signUp(signUpRequestModel: SignUpRequestModel): Promise<SignUpResponseModel> {
-        const signUpResponseModel: SignUpResponseModel = {};
+    public async signUp(signUpRequestModel: SignUpRequestModel): Promise<BaseResponseModel> {
+        const responseModel: BaseResponseModel = {
+            status: true,
+        };
 
         try {
             const user: UserModel = await this.http.post<UserModel>(this.signUpAction, signUpRequestModel).toPromise();
+            const isUserEmpty: boolean = Object.entries(user).length === 0 && user.constructor === Object;
 
-            if (user.id) {
-                signUpResponseModel.statusCode = 200;
+            if (isUserEmpty) {
+                responseModel.status = false;
+                responseModel.errorMessage = this.userAlreadyExistMessage;
             }
-            if (!user.id) {
-                signUpResponseModel.statusCode = 409;
-                signUpResponseModel.reason = 'User Already Exist!';
-            }
-        } catch (exception) {
-            signUpResponseModel.statusCode = exception.status;
-            signUpResponseModel.reason = exception.statusText;
+        } catch {
+            responseModel.status = false;
+            responseModel.errorMessage = this.somethingWentWrongMessage;
         }
 
-        return signUpResponseModel;
+        return responseModel;
     }
 
     public logout() {

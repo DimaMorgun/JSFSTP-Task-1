@@ -1,5 +1,5 @@
 <nav class="navbar navbar-light row">
-    <div class="col-md-4 d-flex justify-content-between">
+    <div class="col-md-5 d-flex justify-content-between">
         <a class="navbar-brand" [routerLink]="['/']">
             <img src="https://ui-ex.com/images/claptrap-drawing-easy-1.png" width="30" height="30"
                 class="d-inline-block align-top" alt="">
@@ -11,9 +11,15 @@
         <a class="link" [routerLink]="['/library/book']">
             Books
         </a>
+        <a class="link" [routerLink]="['/library/author']">
+            Authors
+        </a>
+        <a *ngIf="isAdmin" class="link" [routerLink]="['/profile/admin']">
+            Admin Panel
+        </a>
     </div>
 
-    <div class="col-md-4 d-flex justify-content-end">
+    <div class="col-md-4 d-flex justify-content-between">
         <form class="form-inline d-none d-lg-block search-form">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
@@ -24,7 +30,7 @@
             <a class="btn btn-outline-warning" [routerLink]="['/auth/sign-up']">Sing Up</a>
         </div>
         <div *ngIf="isAuthenticated" class="btn-group">
-            <a class="btn btn-outline-success" [routerLink]="[ '/profile/account-profile' ]">
+            <a class="btn btn-outline-success profile-account-link" [routerLink]="[ '/profile/account-profile' ]">
                 <div>
                     {{userAlias}}
                 </div>
