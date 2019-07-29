@@ -55,9 +55,15 @@ export class AuthService {
     }
 
     private getUserSession(): UserModel {
-        const token: string = localStorage.getItem('access_token');
-        const user: UserModel = jwtDecode(token);
-        user.token = token;
+        let user: UserModel = {};
+
+        try {
+            const token: string = localStorage.getItem('access_token');
+            user = jwtDecode(token);
+            user.token = token;
+        } catch (error) {
+            user = null;
+        }
 
         return (user);
     }

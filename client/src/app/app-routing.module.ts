@@ -16,6 +16,11 @@ const routes: Routes = [
         loadChildren: () => import('src/app/auth/auth.module').then(mod => mod.AuthModule),
     },
     {
+        path: 'profile',
+        component: LayoutDefaultComponent,
+        loadChildren: () => import('src/app/profile/profile.module').then(mod => mod.ProfileModule),
+    },
+    {
         path: 'library',
         component: LayoutDefaultComponent,
         loadChildren: () => import('src/app/library/library.module').then(mod => mod.LibraryModule),
@@ -27,7 +32,13 @@ const routes: Routes = [
     },
     {
         path: '**',
-        component: PageNotFoundComponent,
+        component: LayoutDefaultComponent,
+        children: [
+            {
+                path: '**',
+                component: PageNotFoundComponent,
+            },
+        ],
     }
 ];
 
