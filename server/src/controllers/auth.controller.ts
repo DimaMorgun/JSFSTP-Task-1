@@ -16,12 +16,11 @@ export class AuthController {
         private readonly authService: AuthService,
     ) { }
 
-    @UseGuards(AuthGuard('local'))
     @Post('login')
-    public async login(@Body() request: LoginModel): Promise<LoginModel> {
-        request.token = await this.authService.getToken(request.username);
+    public async login(@Body() loginModel: LoginModel): Promise<LoginModel> {
+        loginModel.token = await this.authService.getToken(loginModel);
 
-        return request;
+        return loginModel;
     }
 
     @UseGuards(AuthGuard('jwt'))

@@ -1,7 +1,7 @@
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { UserModel, UserPayloadModel } from 'src/models';
+import { UserModel, UserPayloadModel, LoginModel } from 'src/models';
 import { Encryptor } from 'src/common';
 import { UserService } from '.';
 
@@ -27,8 +27,13 @@ export class AuthService {
         return user.passwordHash === passwordHash;
     }
 
-    public async getToken(username: string) {
-        const userPayload: UserPayloadModel = await this.getUserPayload(username);
+    public async getToken(loginModel: LoginModel): Promise<string> {
+        const isUserCredentialsValid: boolean = await this.validateUser(loginModel.username, loginModel.password);
+        if (!isUserCredentialsValid) {
+            return '';
+        }
+
+        const userPayload: UserPayloadModel = await this.getUserPayload(loginModel.username);
 
         const accessToken: string = await this.jwtService.sign(userPayload);
 
