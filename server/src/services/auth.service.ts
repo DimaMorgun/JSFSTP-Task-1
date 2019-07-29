@@ -45,7 +45,7 @@ export class AuthService {
         const userPayload: UserPayloadModel = {};
         userPayload.id = user.id;
         userPayload.username = user.username;
-        userPayload.fullName = user.fullName;
+        userPayload.fullname = user.fullname;
         userPayload.userRole = user.userRole;
         userPayload.createdDate = user.createdDate;
         userPayload.updatedDate = user.updatedDate;

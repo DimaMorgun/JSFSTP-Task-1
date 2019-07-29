@@ -2,7 +2,7 @@ import { Document, Schema, ObjectId } from 'mongoose';
 
 export interface UserDocument extends Document {
     _id?: ObjectId;
-    fullName?: string;
+    fullname?: string;
     username?: string;
     passwordHash?: string;
     passwordSalt?: string;
@@ -13,7 +13,7 @@ export interface UserDocument extends Document {
 }
 
 export const UserSchema: Schema = new Schema({
-    fullName: String,
+    fullname: String,
     username: String,
     passwordHash: String,
     passwordSalt: String,
