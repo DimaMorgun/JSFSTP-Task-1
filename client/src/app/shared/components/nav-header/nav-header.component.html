@@ -13,8 +13,6 @@
         </a>
     </div>
 
-    {{isLoggedIn}}
-
     <div class="col-md-4 d-flex justify-content-end">
         <form class="form-inline d-none d-lg-block search-form">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -26,6 +24,11 @@
             <a class="btn btn-outline-warning" [routerLink]="['/auth/sign-up']">Sing Up</a>
         </div>
         <div *ngIf="isAuthenticated" class="btn-group">
+            <a class="btn btn-outline-success" [routerLink]="[ '/profile/account-profile' ]">
+                <div>
+                    {{userAlias}}
+                </div>
+            </a>
             <button class="btn btn-outline-danger" (click)="logout()">Sign Out</button>
         </div>
     </div>

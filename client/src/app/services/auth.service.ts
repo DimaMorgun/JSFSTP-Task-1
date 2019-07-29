@@ -5,15 +5,21 @@ import { BehaviorSubject } from 'rxjs';
 
 import * as jwtDecode from 'jwt-decode';
 
-import { LoginRequestModel, LoginResponseModel, UserModel } from 'src/app/shared/models';
+import {
+    LoginRequestModel,
+    LoginResponseModel,
+    UserModel,
+    SignUpRequestModel,
+    SignUpResponseModel,
+} from 'src/app/shared/models';
 
 import { environment } from 'src/environments/environment';
 
-
 @Injectable()
 export class AuthService {
-    private endpointUrl = `${environment.apiHttpsRoute}${environment.apiHttpsPort}/auth`;
-    private loginAction = `${this.endpointUrl}/login`;
+    private endpointUrl = `${environment.apiHttpsRoute}${environment.apiHttpsPort}`;
+    private loginAction = `${this.endpointUrl}/auth/login`;
+    private signUpAction = `${this.endpointUrl}/user`;
     public currentUserSubject: BehaviorSubject<UserModel>;
     public currentUser: UserModel;
 
@@ -22,6 +28,20 @@ export class AuthService {
     ) {
         this.currentUser = this.getUserSession();
         this.currentUserSubject = new BehaviorSubject<UserModel>(this.currentUser);
+    }
+
+    private getUserSession(): UserModel {
+        let user: UserModel = {};
+
+        try {
+            const token: string = localStorage.getItem('access_token');
+            user = jwtDecode(token);
+            user.token = token;
+        } catch (error) {
+            user = null;
+        }
+
+        return (user);
     }
 
     public async login(loginRequestModel: LoginRequestModel): Promise<LoginResponseModel> {
@@ -54,26 +74,36 @@ export class AuthService {
         return responseModel;
     }
 
-    private getUserSession(): UserModel {
-        let user: UserModel = {};
-
-        try {
-            const token: string = localStorage.getItem('access_token');
-            user = jwtDecode(token);
-            user.token = token;
-        } catch (error) {
-            user = null;
-        }
-
-        return (user);
-    }
-
     private setSession(token) {
         localStorage.setItem('access_token', token);
     }
 
+    public async signUp(signUpRequestModel: SignUpRequestModel): Promise<SignUpResponseModel> {
+        const signUpResponseModel: SignUpResponseModel = {};
+
+        try {
+            const user: UserModel = await this.http.post<UserModel>(this.signUpAction, signUpRequestModel).toPromise();
+
+            if (!user.id) {
+                signUpResponseModel.statusCode = 200;
+            }
+            if (user.id) {
+                signUpResponseModel.statusCode = 409;
+                signUpResponseModel.reason = 'User Already Exist!';
+            }
+        } catch (exception) {
+            signUpResponseModel.statusCode = exception.status;
+            signUpResponseModel.reason = exception.statusText;
+        }
+
+        return signUpResponseModel;
+    }
+
     public logout() {
         localStorage.removeItem('access_token');
+
+        this.currentUser = null;
+
         this.currentUserSubject.next(null);
     }
 }
