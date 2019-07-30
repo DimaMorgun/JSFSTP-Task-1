@@ -8,26 +8,20 @@ import { UserModel, UserRole } from 'src/app/shared/models';
 @Component({
     selector: 'app-nav-header',
     templateUrl: './nav-header.component.html',
-    styleUrls: ['./nav-header.component.sass']
+    styleUrls: ['./nav-header.component.scss']
 })
 export class NavHeaderComponent {
-    private isAuthenticated: boolean;
-    private isAdmin: boolean;
-    private userAlias: string;
+    public isAuthenticated: boolean;
+    public isAdmin: boolean;
+    public userAlias: string;
+
+    public isHeaderExpanded = true;
 
     constructor(
         private authService: AuthService,
         private router: Router,
     ) {
         this.checkAuth();
-    }
-
-    private logout() {
-        this.authService.logout();
-
-        this.authService.currentUserSubject.subscribe(data => {
-            this.checkAuth();
-        });
     }
 
     private checkAuth() {
@@ -42,5 +36,17 @@ export class NavHeaderComponent {
         if (this.isAuthenticated) {
             this.userAlias = user.username.substr(0, 2).toUpperCase();
         }
+    }
+
+    private logout() {
+        this.authService.logout();
+
+        this.authService.currentUserSubject.subscribe(data => {
+            this.checkAuth();
+        });
+    }
+
+    private toggleHeader() {
+        this.isHeaderExpanded = !this.isHeaderExpanded;
     }
 }

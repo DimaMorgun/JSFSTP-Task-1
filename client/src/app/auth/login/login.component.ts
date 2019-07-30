@@ -13,12 +13,12 @@ import {
     styleUrls: ['./login.component.sass']
 })
 export class LoginComponent {
-    private username: string;
-    private password: string;
+    public username: string;
+    public password: string;
 
-    private isShowMessage: boolean;
-    private isErrorMessage: boolean;
-    private message: string;
+    public isShowMessage: boolean;
+    public isErrorMessage: boolean;
+    public message: string;
 
     constructor(
         private authService: AuthService,

@@ -1,35 +1,46 @@
-<nav class="navbar navbar-light row">
-    <div class="col-md-5 d-flex justify-content-between">
-        <a class="navbar-brand" [routerLink]="['/']">
+<nav class="navbar navbar-light row"
+    [ngClass]="{'admin-nav': isAdmin, 'client-nav': !isAdmin, 'collapsed-header': !isHeaderExpanded}">
+    <div class="col-12 col-md-4 col-lg-2">
+        <a class="navbar-brand col-12 text-center" [routerLink]="['/']">
             <img src="https://ui-ex.com/images/claptrap-drawing-easy-1.png" width="30" height="30"
-                class="d-inline-block align-top" alt="">
+                class="d-inline-block align-top">
             <span class="d-none d-lg-inline"> ClapTrap</span>
         </a>
-        <a class="link" [routerLink]="['/']">
+    </div>
+    <div class="col-12 col-md-2 col-lg-1 col-xl-1 text-center">
+        <a class="link col-7" [routerLink]="['/']">
             Home
         </a>
-        <a class="link" [routerLink]="['/library/book']">
+    </div>
+    <div class="col-12 col-md-2 col-lg-1 col-xl-1 text-center">
+        <a class="link col-7" [routerLink]="['/library/book']">
             Books
         </a>
-        <a class="link" [routerLink]="['/library/author']">
+    </div>
+    <div class="col-12 col-md-2 col-lg-1 col-xl-1 text-center">
+        <a class="link col-7" [routerLink]="['/library/author']">
             Authors
         </a>
-        <a *ngIf="isAdmin" class="link" [routerLink]="['/profile/admin']">
+    </div>
+    <div class="col-12 col-md-2 col-lg-1 col-xl-1 text-center">
+        <a *ngIf="isAdmin" class="link col-7" [routerLink]="['/profile/admin']">
             Admin Panel
         </a>
     </div>
-
-    <div class="col-md-4 d-flex justify-content-between">
-        <form class="form-inline d-none d-lg-block search-form">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+    <div class="col-12 col-md-12 col-lg-4 my-md-3 col-xl-3 col-xl-offset-1 text-center">
+        <form class="col-12 form-inline search-form">
+            <input class="col-10 form-control" type="search" placeholder="Search" aria-label="Search">
+            <button class="col-2 btn btn-outline-info my-2 my-md-0" type="submit">
+                <fa name="fas fa-search"></fa>
+            </button>
         </form>
-
-        <div *ngIf="!isAuthenticated" class="btn-group">
+    </div>
+    <div class="col-12 mb-4 mb-md-0 col-lg-2">
+        <div *ngIf="!isAuthenticated" class="col-12 btn-group">
             <a class="btn btn-outline-info" [routerLink]="['/auth/login']">Log In</a>
             <a class="btn btn-outline-warning" [routerLink]="['/auth/sign-up']">Sing Up</a>
         </div>
-        <div *ngIf="isAuthenticated" class="btn-group">
+        <div *ngIf="isAuthenticated" class="col-12 btn-group">
             <a class="btn btn-outline-success profile-account-link" [routerLink]="[ '/profile/account-profile' ]">
                 <div>
                     {{userAlias}}
@@ -37,5 +48,9 @@
             </a>
             <button class="btn btn-outline-danger" (click)="logout()">Sign Out</button>
         </div>
+    </div>
+    <div class="col-12 text-center mt-2 collapse-element d-md-none" (click)="toggleHeader()">
+        <fa *ngIf="isHeaderExpanded" name="fas fa-caret-up"></fa>
+        <fa *ngIf="!isHeaderExpanded" name="fas fa-caret-down"></fa>
     </div>
 </nav>

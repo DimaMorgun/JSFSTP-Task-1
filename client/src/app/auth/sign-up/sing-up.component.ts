@@ -10,16 +10,16 @@ import { SignUpRequestModel, BaseResponseModel } from 'src/app/shared/models';
     styleUrls: ['./sing-up.component.sass']
 })
 export class SingUpComponent {
-    private fullname: string;
+    public fullname: string;
     // tslint:disable-next-line:max-line-length
-    private usernamePattern: RegExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-    private username: string;
-    private passwordPattern: RegExp = new RegExp(/[A-Za-z0-9_ ]{5,16}/);
-    private password: string;
+    public usernamePattern: RegExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    public username: string;
+    public passwordPattern: RegExp = new RegExp(/[A-Za-z0-9_ ]{5,16}/);
+    public password: string;
 
-    private isShowMessage: boolean;
-    private isErrorMessage: boolean;
-    private message: string;
+    public isShowMessage: boolean;
+    public isErrorMessage: boolean;
+    public message: string;
 
     private credentialRequirmentsMessage = 'Credentials do not meet requirments.';
 

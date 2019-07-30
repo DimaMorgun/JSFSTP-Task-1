@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
+
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AuthModule } from 'src/app/auth/auth.module';
 import { LibraryModule } from 'src/app/library/library.module';
@@ -36,6 +38,7 @@ import { JwtInterceptor, ErrorInterceptor } from 'src/app/core';
   imports: [
     BrowserModule,
     HttpClientModule,
+    AngularFontAwesomeModule,
     AppRoutingModule,
     AuthModule,
     LibraryModule,
