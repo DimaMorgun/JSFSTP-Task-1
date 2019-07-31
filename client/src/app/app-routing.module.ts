@@ -5,24 +5,24 @@ import {
 } from '@angular/router';
 
 import {
-    LayoutDefaultComponent,
+    LayoutGeneralComponent,
     PageNotFoundComponent,
 } from 'src/app/shared/components';
 
 const routes: Routes = [
     {
         path: 'auth',
-        component: LayoutDefaultComponent,
+        component: LayoutGeneralComponent,
         loadChildren: () => import('src/app/auth/auth.module').then(mod => mod.AuthModule),
     },
     {
         path: 'profile',
-        component: LayoutDefaultComponent,
+        component: LayoutGeneralComponent,
         loadChildren: () => import('src/app/profile/profile.module').then(mod => mod.ProfileModule),
     },
     {
         path: 'library',
-        component: LayoutDefaultComponent,
+        component: LayoutGeneralComponent,
         loadChildren: () => import('src/app/library/library.module').then(mod => mod.LibraryModule),
     },
     {
@@ -32,7 +32,7 @@ const routes: Routes = [
     },
     {
         path: '**',
-        component: LayoutDefaultComponent,
+        component: LayoutGeneralComponent,
         children: [
             {
                 path: '**',

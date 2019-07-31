@@ -41,9 +41,7 @@ export class NavHeaderComponent {
     private logout() {
         this.authService.logout();
 
-        this.authService.currentUserSubject.subscribe(data => {
-            this.checkAuth();
-        });
+        this.checkAuth();
     }
 
     private toggleHeader() {

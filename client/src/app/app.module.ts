@@ -11,9 +11,11 @@ import { ProfileModule } from 'src/app/profile/profile.module';
 
 import { AppComponent } from 'src/app/app.component';
 import {
-  LayoutDefaultComponent,
+  LayoutGeneralComponent,
+  LayoutAdminComponent,
+  LayoutClientComponent,
+  AdminSidebarComponent,
   NavHeaderComponent,
-  SidebarComponent,
   FooterComponent,
   PageNotFoundComponent,
 } from 'src/app/shared/components';
@@ -29,11 +31,14 @@ import { JwtInterceptor, ErrorInterceptor } from 'src/app/core';
 @NgModule({
   declarations: [
     AppComponent,
-    LayoutDefaultComponent,
+    LayoutGeneralComponent,
+    LayoutAdminComponent,
+    LayoutClientComponent,
+    AdminSidebarComponent,
     NavHeaderComponent,
-    SidebarComponent,
     FooterComponent,
     PageNotFoundComponent,
+
   ],
   imports: [
     BrowserModule,
