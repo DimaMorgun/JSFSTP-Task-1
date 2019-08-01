@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class BookService {
-  private endpointUrl = `${environment.apiHttpsRoute}${environment.apiHttpsPort}/book`;
+  private endpointUrl = `${environment.apiHttpsRoute}:${environment.apiHttpsPort}/book`;
 
   constructor(private http: HttpClient) { }
 

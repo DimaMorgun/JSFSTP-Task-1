@@ -1,52 +1,33 @@
-<div class="row">
-    <div class="col-12" style="background-color: lightskyblue;">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum debitis sequi ullam, excepturi quos facere ut
-        eum aut dolor? Minima, ullam tenetur. Pariatur a, autem facilis sapiente laborum praesentium reprehenderit!
-        Porro cupiditate hic quae architecto voluptatibus magnam? Molestiae nemo illo recusandae est omnis fugiat, ipsa
-        ducimus. Eaque ducimus tenetur sequi officiis? Quaerat nobis quis sit commodi delectus sed. Alias, eaque!
-        Ab perferendis id architecto asperiores tempore accusamus nobis, quia consectetur culpa similique quidem
-        distinctio. Aspernatur rem sunt illo quo natus neque quasi reprehenderit laudantium pariatur. Aspernatur iusto
-        ab autem officiis.
-        Dolorum, nesciunt, cum pariatur architecto aliquam, at esse reiciendis et vitae necessitatibus dignissimos ea.
-        Accusantium et pariatur tenetur quaerat adipisci ratione odio repellendus aut nostrum, praesentium fugiat a
-        dolorum dignissimos?
-        Ullam, rerum possimus praesentium sapiente incidunt assumenda ipsum est ut ipsam expedita non, quia accusamus
-        earum hic deserunt! Harum nulla deleniti totam vero commodi qui omnis delectus est ipsa sequi.
-        Illum culpa aperiam nulla ipsam distinctio iure porro cumque minus quo, deserunt, eius iusto, perspiciatis nisi
-        debitis aspernatur omnis ratione. Dolorem suscipit qui esse, facere nemo commodi molestias aliquid cumque.
-        Illo, temporibus necessitatibus, nihil officia molestias fugiat illum totam, quibusdam quisquam assumenda sunt
-        eius? Autem cumque est facere possimus omnis ratione, provident porro ipsa molestias. Perspiciatis praesentium
-        id consequuntur ut!
-        Voluptas nesciunt, ipsa, quisquam, in alias rerum numquam sint nemo totam deserunt maiores odio? Cum non iusto
-        architecto, neque cupiditate dolore placeat consequuntur, odit aliquam magni iste, dolorem recusandae eius.
-        Impedit laborum aperiam vero, eaque omnis a assumenda tempora, odio dolorum rem est necessitatibus voluptatibus
-        quam delectus voluptas repellat? Quasi cupiditate labore accusamus similique! Dignissimos inventore ab
-        necessitatibus minima dicta?
-        Accusantium voluptate unde cum debitis expedita inventore, architecto esse explicabo cumque id ad quis
-        laudantium consectetur. Reprehenderit itaque soluta eligendi? Praesentium doloribus et, eum reiciendis unde vero
-        vitae minus odio.
-        Harum dicta id quam cumque aut dignissimos ratione exercitationem excepturi, expedita, ex eos tempora rem fugiat
-        molestiae perferendis architecto omnis aliquam maxime veniam at est suscipit aspernatur eaque. Excepturi, error!
-        Quos officia aut quibusdam dicta praesentium. Odit quibusdam commodi distinctio quidem sunt, id unde modi
-        tempore animi atque, cumque alias, molestias nam sint sed porro sapiente sit nisi fugit soluta.
-        Perferendis quaerat dolore reiciendis porro sapiente quidem, quasi quia ea facilis culpa corrupti aliquam, magni
-        earum optio quo tenetur nulla. Illo laboriosam atque laudantium nesciunt? Non obcaecati quia error harum?
-        Quidem, adipisci doloremque quos amet sed ut vel cum iusto. Reprehenderit, iusto ipsam accusantium, accusamus
-        eveniet deleniti eius dolorum odit nemo ex voluptates veritatis tenetur, alias sed animi! Ipsam, dignissimos.
-        Asperiores earum quibusdam vero nobis enim eius rerum laboriosam, fuga optio provident animi maiores similique
-        voluptate fugit. Amet quasi quam soluta ipsa, quos laboriosam neque quo autem tempora voluptate! Animi.
-        Non, qui ipsa. Earum rem optio perspiciatis quae, illo deleniti veritatis aperiam, quaerat repudiandae
-        dignissimos aut quos velit perferendis nihil, fugit eveniet est nam dolore ab. Sit, suscipit! Explicabo, nulla.
-        Incidunt at facilis deserunt id rerum recusandae ipsa omnis tempore cumque? Incidunt officia exercitationem
-        maiores laborum error pariatur natus, soluta quo ipsam corrupti amet temporibus voluptates labore architecto
-        veritatis veniam!
-        Alias optio quae, dolore delectus blanditiis qui quos. Debitis ex quam molestiae eum dolorum, sit, saepe facilis
-        laudantium mollitia dicta magnam, enim tenetur sunt fuga eveniet possimus quos incidunt cupiditate.
-        Maxime eius tempore aliquam esse porro expedita magni distinctio, sapiente ex ea cum, corporis mollitia. Dolore
-        exercitationem voluptatibus sed saepe. Magnam consectetur debitis sint minima corrupti voluptas modi unde
-        laudantium!
-        Consequuntur aliquid, aspernatur eos itaque, odio laboriosam dolor tempore ratione reiciendis sed optio
-        accusantium. Soluta accusamus voluptatibus deserunt eius iusto. Tenetur delectus recusandae fugit dolore optio
-        sed praesentium sunt corrupti.
+<div class="row justify-content-around">
+    <div *ngFor="let book of books" class="col-12 book-wrapper">
+        <div class="row image-section">
+            <div class="col-12 image-wrapper d-flex justify-content-center">
+                <img class="image-element" src="https://via.placeholder.com/150x150">
+            </div>
+        </div>
+        <div class="row title-section">
+            <div class="col-12 text-center">
+                <div class="title-element">{{book.name}}</div>
+            </div>
+        </div>
+        <div class="row authors-section">
+            <div class="col-12 text-center">
+                <div class="author-element" *ngFor="let author of book.authors">{{author}}
+                </div>
+                <div class="author-element" *ngIf="book.authors.length === 0">No Authors
+                </div>
+            </div>
+        </div>
+        <div class="row price-section">
+            <div class="col-6 text-center">
+                <button class="btn btn-outline-danger disabled">
+                    Remove
+                </button>
+            </div>
+            <div class="col-6 text-center">
+                <button class="btn btn-outline-info">{{book.price}} $</button>
+            </div>
+        </div>
     </div>
+    <div class="col-12">PAGINATION</div>
 </div>

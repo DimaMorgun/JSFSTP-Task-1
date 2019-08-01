@@ -44,7 +44,7 @@ export class NavHeaderComponent {
         this.checkAuth();
     }
 
-    private toggleHeader() {
+    public toggleHeader() {
         this.isHeaderExpanded = !this.isHeaderExpanded;
     }
 }

@@ -36,7 +36,14 @@
             <a class="btn btn-outline-warning" [routerLink]="['/auth/sign-up']">Sing Up</a>
         </div>
         <div *ngIf="isAuthenticated" class="col-12 btn-group">
-            <a class="btn btn-outline-success profile-account-link" [routerLink]="[ '/profile/account-profile' ]">
+            <a *ngIf="!isAdmin" class="btn btn-outline-success profile-account-link"
+                [routerLink]="[ '/profile/client-profile' ]">
+                <div>
+                    {{userAlias}}
+                </div>
+            </a>
+            <a *ngIf="isAdmin" class="btn btn-outline-success profile-account-link"
+                [routerLink]="[ '/profile/admin-profile' ]">
                 <div>
                     {{userAlias}}
                 </div>

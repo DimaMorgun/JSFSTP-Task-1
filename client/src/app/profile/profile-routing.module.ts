@@ -1,18 +1,20 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AccountProfileComponent } from 'src/app/profile/account-profile/account-profile.component';
 import { ProfileComponent } from 'src/app/profile/profile.component';
-import { AdminComponent } from 'src/app/profile/admin/admin.component';
+import { AdminProfileComponent } from 'src/app/profile/admin-profile/admin-profile.component';
+import { ClientProfileComponent } from 'src/app/profile/client-profile/client-profile.component';
+import { EditProfileComponent } from 'src/app/profile/edit-profile/edit-profile.component';
 
 import { AuthGuard } from 'src/app/core';
 
 import { UserRole } from 'src/app/shared/models';
 
+
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'account-profile',
+        redirectTo: 'client-profile',
         pathMatch: 'full',
     },
     {
@@ -20,14 +22,20 @@ const routes: Routes = [
         component: ProfileComponent,
         children: [
             {
-                path: 'account-profile',
-                component: AccountProfileComponent,
+                path: 'client-profile',
+                component: ClientProfileComponent,
             },
             {
-                path: 'admin',
+                path: 'admin-profile',
                 canActivate: [AuthGuard],
                 data: { roles: [UserRole.Admin] },
-                component: AdminComponent,
+                component: AdminProfileComponent,
+            },
+            {
+                path: 'edit-profile',
+                canActivate: [AuthGuard],
+                data: { roles: [UserRole.Admin] },
+                component: EditProfileComponent,
             },
         ]
     },

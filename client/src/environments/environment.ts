@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  apiHttpRoute: 'http://localhost:',
+  apiHttpRoute: 'http://localhost',
   apiHttpPort: '80',
-  apiHttpsRoute: 'https://localhost:',
+  apiHttpsRoute: 'https://localhost',
   apiHttpsPort: '443'
 };
 

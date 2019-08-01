@@ -17,7 +17,7 @@ import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class AuthService {
-    private endpointUrl = `${environment.apiHttpsRoute}${environment.apiHttpsPort}`;
+    private endpointUrl = `${environment.apiHttpsRoute}:${environment.apiHttpsPort}`;
     private loginAction = `${this.endpointUrl}/auth/login`;
     private signUpAction = `${this.endpointUrl}/user`;
     private userAlreadyExistMessage = 'User Already Exist!';

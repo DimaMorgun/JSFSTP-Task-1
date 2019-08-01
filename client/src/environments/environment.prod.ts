@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  apiHttpRoute: 'http://localhost:',
+  apiHttpRoute: 'http://10.10.3.210',
   apiHttpPort: '80',
-  apiHttpsRoute: 'https://localhost:',
+  apiHttpsRoute: 'https://10.10.3.210',
   apiHttpsPort: '443'
 };
