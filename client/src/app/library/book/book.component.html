@@ -25,9 +25,10 @@
                 </button>
             </div>
             <div class="col-6 text-center">
-                <button class="btn btn-outline-info">{{book.price}} $</button>
+                <button class="btn btn-outline-info" (click)="addBookToCart(book)">{{book.price}} $</button>
             </div>
         </div>
     </div>
     <div class="col-12">PAGINATION</div>
+    <div *ngFor="let book of booksInCart">{{book.name}}</div>
 </div>

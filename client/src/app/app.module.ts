@@ -23,6 +23,7 @@ import {
 import {
   AuthService,
   BookService,
+  CartService,
 } from 'src/app/services';
 
 import { JwtInterceptor, ErrorInterceptor } from 'src/app/core';
@@ -52,6 +53,7 @@ import { JwtInterceptor, ErrorInterceptor } from 'src/app/core';
   providers: [
     AuthService,
     BookService,
+    CartService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
