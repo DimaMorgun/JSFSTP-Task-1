@@ -26,6 +26,11 @@
         </div>
     </div>
 
-    <div class="cart-purchase-button" title="Purchase" (click)="purchase()">
+    <div *ngIf="amount > 0" class="cart-purchase-button" title="Purchase" (click)="purchase()">
+        Purchase: {{amount}} $
     </div>
+
+    <div [ngClass]="{'start': purchasePopupMessage}" class="purchase-popup test">{{purchasePopupMessage}}</div>
+
+    <p *ngIf="books.length == 0">Your cart is empty</p>
 </div>

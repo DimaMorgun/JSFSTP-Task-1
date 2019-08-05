@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
-import { BookService, CartService, AuthService } from 'src/app/services';
+import { BookService, CartService } from 'src/app/services';
 
-import { BookModel, UserModel } from 'src/app/shared/models';
+import { BookModel } from 'src/app/shared/models';
 
 @Component({
     selector: 'app-cart',
@@ -11,6 +11,8 @@ import { BookModel, UserModel } from 'src/app/shared/models';
 })
 export class CartComponent {
     public books: BookModel[] = new Array<BookModel>();
+    public amount: number;
+    public purchasePopupMessage: string;
 
     public purchaseCompletedSuccessfully = false;
 
@@ -22,27 +24,46 @@ export class CartComponent {
     }
 
     public async purchase() {
-        let amount = 0;
-        this.books.forEach(book => amount += book.price);
-        if (amount === 0) {
-            return;
-        }
-
         this.cartService.clearCart();
-        alert(`Successfully. You bought for the amount of ${amount}.`);
+
+        this.showPurchasePopup();
+
+        await this.reinitialize();
+    }
+
+    private async reinitialize(): Promise<void> {
+        this.books = new Array<BookModel>();
+
+        await this.initialize();
     }
 
     private async initialize(): Promise<void> {
         const booksInCartIdList: string[] = await this.cartService.getBookIdListFromCart();
-        console.log(booksInCartIdList);
 
         for (const bookId of booksInCartIdList) {
             const book: BookModel = await this.bookService.getBookById(bookId);
-            console.log(book);
 
             if (book) {
                 this.books.push(book);
             }
         }
+
+        this.getAmount();
+    }
+
+    private getAmount(): void {
+        this.amount = 0;
+        this.books.forEach(book => this.amount += book.price);
+        if (this.amount === 0) {
+            return;
+        }
+    }
+
+    private showPurchasePopup(): void {
+        this.purchasePopupMessage = `Successfully bought\nfor the amount of\n${this.amount} $.`;
+
+        setTimeout(() => {
+            this.purchasePopupMessage = '';
+        }, (5000));
     }
 }
