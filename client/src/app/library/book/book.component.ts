@@ -18,9 +18,10 @@ import { BookModel } from 'src/app/shared/models';
 })
 export class BookComponent implements OnInit, OnDestroy {
   public books: BookModel[];
-  public booksInCart: BookModel[];
+  public booksInCartIdList: string[];
 
-  private cartSubscription: Subscription;
+  private cartAddBookSubscription: Subscription;
+  private cartRemoveBookSubscription: Subscription;
 
   constructor(
     private bookService: BookService,
@@ -32,20 +33,36 @@ export class BookComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.cartSubscription.unsubscribe();
+    this.cartAddBookSubscription.unsubscribe();
+    this.cartRemoveBookSubscription.unsubscribe();
   }
 
-  public addBookToCart(bookModel: BookModel) {
+  public addBookToCart(bookModel: BookModel): void {
     this.cartService.addBookToCart(bookModel);
   }
 
-  private async initialize() {
-    this.books = await this.bookService.getBooks();
-    this.booksInCart = await this.cartService.getBooksFromCart();
+  public removeBookFromCart(bookModel: BookModel): void {
+    this.cartService.removeBookFromCart(bookModel);
+  }
 
-    this.cartSubscription = this.cartService.cartAddSubject.subscribe(book => {
+  public isBookInCart(bookModel: BookModel): boolean {
+    const isBookInCart: boolean = this.booksInCartIdList.includes(bookModel.id);
+
+    return isBookInCart;
+  }
+
+  private async initialize(): Promise<void> {
+    this.books = await this.bookService.getBooks();
+    this.booksInCartIdList = await this.cartService.getBookIdListFromCart();
+
+    this.cartAddBookSubscription = this.cartService.cartAddSubject.subscribe(book => {
       if (book) {
-        this.booksInCart.push(book);
+        this.booksInCartIdList.push(book.id);
+      }
+    });
+    this.cartRemoveBookSubscription = this.cartService.cartRemoveSubject.subscribe(book => {
+      if (book) {
+        this.booksInCartIdList = this.booksInCartIdList.filter(bookId => bookId !== book.id);
       }
     });
   }

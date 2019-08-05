@@ -12,22 +12,20 @@
 
     & .title-element {
         margin: 10px auto;
-        white-space: nowrap;
-        overflow: auto;
         border-top: 1px solid #2F9395;
         border-bottom: 1px solid #2F9395;
     }
 
     &>.authors-section {
         margin: 0 0 10px 0;
-        white-space: nowrap;
-        overflow: auto;
 
         & .author-element {
             padding: 0 5px;
-            border-right: 1px solid #2F9395;
-            border-left: 1px solid #2F9395;
             display: inline-block;
         }
+    }
+
+    & .disabled {
+        cursor: not-allowed;
     }
 }

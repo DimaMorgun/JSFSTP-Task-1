@@ -8,4 +8,6 @@ export interface BookModel {
     createdDate?: Date;
     updatedDate?: Date;
     isDeleted?: boolean;
+
+    isInCard?: boolean;
 }
