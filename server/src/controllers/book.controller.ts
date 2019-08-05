@@ -46,11 +46,6 @@ export class BookController {
             deathday: new Date(1910, 11, 20),
         };
 
-        // tslint:disable-next-line:no-console
-        console.log(JSON.stringify(dates));
-        // tslint:disable-next-line:no-console
-        console.log(JSON.stringify(dates2));
-
         return books;
     }
 
