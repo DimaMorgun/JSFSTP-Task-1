@@ -34,7 +34,7 @@ export class AuthService {
         this.currentUserSubject = new BehaviorSubject<UserModel>(this.currentUser);
     }
 
-    private getUserSession(): UserModel {
+    public getUserSession(): UserModel {
         let user: UserModel = {};
 
         try {
@@ -46,6 +46,16 @@ export class AuthService {
         }
 
         return (user);
+    }
+
+    public isUserAuthenticated() {
+        const currentUser: UserModel = this.getUserSession();
+
+        if (currentUser) {
+            return true;
+        }
+
+        return false;
     }
 
     public async login(loginRequestModel: LoginRequestModel): Promise<LoginResponseModel> {

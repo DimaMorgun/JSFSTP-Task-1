@@ -8,6 +8,7 @@ import { BookComponent } from 'src/app/library/book/book.component';
 import { HomeComponent } from 'src/app/library/home/home.component';
 import { LibraryComponent } from 'src/app/library/library.component';
 import { AuthorComponent } from 'src/app/library/author/author.component';
+import { CartComponent } from './cart/cart.component';
 import { EditBookComponent } from 'src/app/library/edit-book/edit-book.component';
 import { EditAuthorComponent } from 'src/app/library/edit-author/edit-author.component';
 
@@ -48,6 +49,11 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: { roles: [UserRole.Admin] },
                 component: EditAuthorComponent,
+            },
+            {
+                path: 'cart',
+                canActivate: [AuthGuard],
+                component: CartComponent,
             },
         ]
     },

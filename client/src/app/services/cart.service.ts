@@ -1,22 +1,35 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 
-import { BookModel } from 'src/app/shared/models';
+import { BookModel, UserModel } from 'src/app/shared/models';
 
-import { BehaviorSubject } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable()
-export class CartService {
-    public cartAddSubject: BehaviorSubject<BookModel>;
-    public cartRemoveSubject: BehaviorSubject<BookModel>;
+export class CartService implements OnDestroy {
+    public cartAddSubject: Subject<BookModel>;
+    public cartRemoveSubject: Subject<BookModel>;
 
-    constructor() {
-        this.cartAddSubject = new BehaviorSubject<BookModel>(null);
-        this.cartRemoveSubject = new BehaviorSubject<BookModel>(null);
+    private authSubscription: Subscription;
+
+    private clientId: string;
+
+    constructor(
+        private authService: AuthService,
+    ) {
+        this.cartAddSubject = new Subject<BookModel>();
+        this.cartRemoveSubject = new Subject<BookModel>();
+
+        this.initializeCurrentClientId();
+    }
+
+    ngOnDestroy(): void {
+        this.authSubscription.unsubscribe();
     }
 
     public async addBookToCart(bookModel: BookModel): Promise<void> {
         let books: BookModel[] = new Array<BookModel>();
-        const booksFromStorage: string = localStorage.getItem('book-cart');
+        const booksFromStorage: string = localStorage.getItem(`book-cart-${this.clientId}`);
 
         if (booksFromStorage) {
             books = JSON.parse(booksFromStorage) as BookModel[];
@@ -24,14 +37,14 @@ export class CartService {
 
         books.push(bookModel);
         const booksToStorage: string = JSON.stringify(books);
-        localStorage.setItem('book-cart', booksToStorage);
+        localStorage.setItem(`book-cart-${this.clientId}`, booksToStorage);
 
         this.cartAddSubject.next(bookModel);
     }
 
     public async removeBookFromCart(bookModel: BookModel): Promise<void> {
         let books: BookModel[] = new Array<BookModel>();
-        const booksFromStorage: string = localStorage.getItem('book-cart');
+        const booksFromStorage: string = localStorage.getItem(`book-cart-${this.clientId}`);
 
         if (booksFromStorage) {
             books = JSON.parse(booksFromStorage) as BookModel[];
@@ -39,14 +52,14 @@ export class CartService {
 
         books = books.filter(bookObject => bookObject.id !== bookModel.id);
         const booksToStorage: string = JSON.stringify(books);
-        localStorage.setItem('book-cart', booksToStorage);
+        localStorage.setItem(`book-cart-${this.clientId}`, booksToStorage);
 
         this.cartRemoveSubject.next(bookModel);
     }
 
     public async getBooksFromCart(): Promise<BookModel[]> {
         let books: BookModel[] = Array<BookModel>();
-        const booksFromStorage: string = localStorage.getItem('book-cart');
+        const booksFromStorage: string = localStorage.getItem(`book-cart-${this.clientId}`);
 
         if (booksFromStorage) {
             books = JSON.parse(booksFromStorage) as BookModel[];
@@ -57,7 +70,7 @@ export class CartService {
 
     public async getBookIdListFromCart(): Promise<string[]> {
         let books: BookModel[] = Array<BookModel>();
-        const booksFromStorage: string = localStorage.getItem('book-cart');
+        const booksFromStorage: string = localStorage.getItem(`book-cart-${this.clientId}`);
         let bookIdList: string[] = Array<string>();
 
         if (booksFromStorage) {
@@ -66,5 +79,25 @@ export class CartService {
         }
 
         return bookIdList;
+    }
+
+    public clearCart(): void {
+        localStorage.removeItem(`book-cart-${this.clientId}`);
+    }
+
+    private initializeCurrentClientId(): void {
+        this.authSubscription = this.authService.currentUserSubject.subscribe(data => {
+            if (data) {
+                this.clientId = data.id;
+            }
+            if (!data) {
+                this.clientId = null;
+            }
+        });
+
+        const currentUser: UserModel = this.authService.getUserSession();
+        if (currentUser) {
+            this.clientId = currentUser.id;
+        }
     }
 }

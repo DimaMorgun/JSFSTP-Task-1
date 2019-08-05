@@ -19,14 +19,17 @@ export class LayoutGeneralComponent implements OnDestroy {
     constructor(
         private authService: AuthService,
     ) {
-        this.authSubject = this.authService.currentUserSubject.subscribe(user => {
-            console.log('LayoutGeneralComponent -> authSubject', user);
-            this.checkAuth(user);
-        });
+        this.initialize();
     }
 
     ngOnDestroy(): void {
         this.authSubject.unsubscribe();
+    }
+
+    private initialize(): void {
+        this.authSubject = this.authService.currentUserSubject.subscribe(user => {
+            this.checkAuth(user);
+        });
     }
 
     private checkAuth(user: UserModel) {

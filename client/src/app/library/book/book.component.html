@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="!isBookInCart(book)" class="row price-section">
+        <div *ngIf="!isBookInCart(book) && isAuthenticated" class="row price-section">
             <div class="col-6 text-center">
                 <button class="btn btn-danger disabled" disabled>Remove</button>
             </div>
@@ -27,7 +27,7 @@
                 <button class="btn btn-outline-info" (click)="addBookToCart(book)">{{book.price}} $</button>
             </div>
         </div>
-        <div *ngIf="isBookInCart(book)" class="row price-section">
+        <div *ngIf="isBookInCart(book) && isAuthenticated" class="row price-section">
             <div class="col-6 text-center">
                 <button class="btn btn-outline-danger" (click)="removeBookFromCart(book)">Remove</button>
             </div>
@@ -38,6 +38,12 @@
             </div>
         </div>
     </div>
+
     <div class="col-12">PAGINATION</div>
-    <div *ngFor="let book of booksInCart">{{book.name}}</div>
+
+    <a *ngIf="booksInCartIdList.length > 0" class="cart-link" title="Cart" [routerLink]="[ '/library/cart/' ]">
+        <div class="cart-link-button">
+            {{booksInCartIdList.length}}
+        </div>
+    </a>
 </div>

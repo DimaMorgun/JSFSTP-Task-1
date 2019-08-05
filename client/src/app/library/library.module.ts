@@ -9,6 +9,7 @@ import { LibraryComponent } from 'src/app/library/library.component';
 import { EditBookComponent } from './edit-book/edit-book.component';
 import { EditAuthorComponent } from './edit-author/edit-author.component';
 import { AuthorComponent } from './author/author.component';
+import { CartComponent } from './cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { AuthorComponent } from './author/author.component';
     EditBookComponent,
     EditAuthorComponent,
     AuthorComponent,
+    CartComponent,
   ],
   imports: [
     CommonModule,

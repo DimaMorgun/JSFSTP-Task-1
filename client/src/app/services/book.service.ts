@@ -17,4 +17,9 @@ export class BookService {
     return books;
   }
 
+  public async getBookById(bookId: string): Promise<BookModel> {
+    const book: BookModel = await this.http.get<BookModel>(`${this.endpointUrl}/${bookId}`).toPromise();
+
+    return book;
+  }
 }
