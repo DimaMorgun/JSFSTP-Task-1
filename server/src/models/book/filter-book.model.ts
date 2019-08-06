@@ -3,6 +3,8 @@ import { ApiModelProperty } from '@nestjs/swagger';
 import { BookType } from 'src/enums';
 
 export class FilterBookModel {
+    @ApiModelProperty({ required: false, type: [String], isArray: true })
+    readonly idList?: string[];
     @ApiModelProperty({ required: false })
     readonly priceFrom?: number;
     @ApiModelProperty({ required: false })
