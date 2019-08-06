@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { BookService, CartService } from 'src/app/services';
 
-import { BookModel } from 'src/app/shared/models';
+import { BookModel, BookFilterModel } from 'src/app/shared/models';
 
 @Component({
     selector: 'app-cart',
@@ -38,15 +38,11 @@ export class CartComponent {
     }
 
     private async initialize(): Promise<void> {
-        const booksInCartIdList: string[] = await this.cartService.getBookIdListFromCart();
+        const bookFilterModel: BookFilterModel = {};
+        bookFilterModel.name = 'Test';
+        bookFilterModel.idList = await this.cartService.getBookIdListFromCart();
 
-        for (const bookId of booksInCartIdList) {
-            const book: BookModel = await this.bookService.getBookById(bookId);
-
-            if (book) {
-                this.books.push(book);
-            }
-        }
+        this.books = await this.bookService.getFilteredBooks(bookFilterModel);
 
         this.getAmount();
     }

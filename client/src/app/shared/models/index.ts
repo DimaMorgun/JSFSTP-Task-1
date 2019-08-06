@@ -1,6 +1,7 @@
 export * from 'src/app/shared/models/base-response.model';
 
 export * from 'src/app/shared/models/library/book/book.model';
+export * from 'src/app/shared/models/library/book/book-filter.model';
 
 export * from 'src/app/shared/models/auth/user.model';
 export * from 'src/app/shared/models/auth/user-role.enum';
