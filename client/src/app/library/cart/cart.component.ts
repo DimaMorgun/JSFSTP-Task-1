@@ -39,10 +39,11 @@ export class CartComponent {
 
     private async initialize(): Promise<void> {
         const bookFilterModel: BookFilterModel = {};
-        bookFilterModel.name = 'Test';
         bookFilterModel.idList = await this.cartService.getBookIdListFromCart();
 
-        this.books = await this.bookService.getFilteredBooks(bookFilterModel);
+        if (bookFilterModel && bookFilterModel.idList.length > 0) {
+            this.books = await this.bookService.getFilteredBooks(bookFilterModel);
+        }
 
         this.getAmount();
     }

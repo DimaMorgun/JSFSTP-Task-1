@@ -89,6 +89,9 @@ export class BookService {
 
     public async getPaginated(skip: number, limit: number): Promise<BookModel[]> {
         const books: BookModel[] = new Array<BookModel>();
+        if (skip < 0 || limit < 0) {
+            return books;
+        }
 
         const bookDocuments: BookDocument[] = await this.bookRepository.getPaginated(skip, limit);
         if (!bookDocuments || bookDocuments.length === 0) {

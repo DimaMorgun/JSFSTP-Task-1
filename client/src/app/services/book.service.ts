@@ -31,19 +31,20 @@ export class BookService {
         let httpParams = new HttpParams();
         for (const key of Object.keys(bookFilterModel)) {
             if (Array.isArray(bookFilterModel[key])) {
-                console.log(bookFilterModel[key]);
                 bookFilterModel[key].forEach(value => httpParams = httpParams.append(key, value));
             } else {
-                console.log(bookFilterModel[key]);
                 httpParams = httpParams.append(key, bookFilterModel[key]);
             }
         }
 
-        console.log(httpParams);
         const paramsString = httpParams.toString();
-        console.log(paramsString);
-
         const books: BookModel[] = await this.http.get<BookModel[]>(`${this.endpointUrl}/filter?${paramsString}`).toPromise();
+
+        return books;
+    }
+
+    public async getPaginatedBooks(skip: number, limit: number): Promise<BookModel[]> {
+        const books: BookModel[] = await this.http.get<BookModel[]>(`${this.endpointUrl}/${skip}/${limit}`).toPromise();
 
         return books;
     }

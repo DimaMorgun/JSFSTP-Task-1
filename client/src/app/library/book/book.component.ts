@@ -19,6 +19,9 @@ export class BookComponent implements OnDestroy {
     public booksInCartIdList: string[] = new Array<string>();
     public isAuthenticated = false;
 
+    public page = 0;
+    private limit = 5;
+
     private cartAddBookSubscription: Subscription;
     private cartRemoveBookSubscription: Subscription;
 
@@ -49,8 +52,18 @@ export class BookComponent implements OnDestroy {
         return isBookInCart;
     }
 
+    public async getPaginatedBooks(page: number): Promise<void> {
+        const skip: number = page * this.limit;
+        const paginatedBooks: BookModel[] = await this.bookService.getPaginatedBooks(skip, this.limit);
+
+        if (paginatedBooks && paginatedBooks.length > 0) {
+            this.page = page;
+            this.books = paginatedBooks;
+        }
+    }
+
     private async initialize(): Promise<void> {
-        this.books = await this.bookService.getBooks();
+        this.books = await this.bookService.getPaginatedBooks(this.page, this.limit);
         this.booksInCartIdList = await this.cartService.getBookIdListFromCart();
 
         this.cartAddBookSubscription = this.cartService.cartAddSubject.subscribe(book => {
