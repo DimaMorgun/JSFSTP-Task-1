@@ -1,5 +1,51 @@
 <div class="row justify-content-around">
-    <div *ngFor="let book of books" class="col-12 book-wrapper">
+
+    <div class="filter-area col-12 text-center mb-4" (change)="filterOptionUpdated()">
+        <div class="row">
+            <div class="input-group col-12 col-md-3">
+                <div class="input-group-prepend" title="Clear name input.">
+                    <button class="btn btn-outline-danger" type="button"
+                        (click)="nameFilter = '';filterOptionUpdated();">
+                        <fa name="fas fa-times"></fa>
+                    </button>
+                </div>
+                <input type="text" class="form-control" placeholder="Name" [(ngModel)]="nameFilter">
+            </div>
+            <div class="input-group col-6 col-md-3">
+                <div class="input-group-prepend" title="Clear price from input.">
+                    <button class="btn btn-outline-danger" type="button"
+                        (click)="priceFromFilter = '';filterOptionUpdated();">
+                        <fa name="fas fa-times"></fa>
+                    </button>
+                </div>
+                <input type="number" class="form-control" placeholder="50$" [(ngModel)]="priceFromFilter">
+            </div>
+            <div class="input-group col-6 col-md-3">
+                <div class="input-group-prepend" title="Clear price to input.">
+                    <button class="btn btn-outline-danger" type="button"
+                        (click)="priceToFilter = '';filterOptionUpdated();">
+                        <fa name="fas fa-times"></fa>
+                    </button>
+                </div>
+                <input type="number" class="form-control" placeholder="1000$" [(ngModel)]="priceToFilter">
+            </div>
+            <div class="input-group col-12 col-md-3">
+                <div class="input-group-prepend" title="Clear name input.">
+                    <button class="btn btn-outline-danger" type="button"
+                        (click)="typeFilter = '';filterOptionUpdated();">
+                        <fa name="fas fa-times"></fa>
+                    </button>
+                </div>
+                <select class="form-control" [(ngModel)]="typeFilter">
+                    <option value="" selected>All</option>
+                    <option value="BOOK">Book</option>
+                    <option value="MAGAZINE">Magazine</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div *ngFor="let book of paginatedBooks" class="col-12 book-wrapper">
         <div class="row image-section">
             <div class="col-12 image-wrapper d-flex justify-content-center">
                 <img class="image-element" title="Book Image" alt="Book Image"
@@ -39,7 +85,11 @@
         </div>
     </div>
 
-    <div class="col-12 text-center">
+    <div class="col-12 text-center mb-3" *ngIf="!hasContent()">
+        No books were found!
+    </div>
+
+    <div class="col-12 text-center" *ngIf="hasContent()">
         <button class="btn btn-outline-info" (click)="getPaginatedBooks(page - 1)">
             <fa name="fas fa-arrow-left"></fa>
         </button>

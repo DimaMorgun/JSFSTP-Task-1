@@ -1,3 +1,17 @@
+.filter-area {
+    &>input:first-child {
+        margin-top: 0;
+    }
+
+    &>input {
+        margin: 5px auto;
+    }
+
+    &>input:last-child {
+        margin-bottom: 0;
+    }
+}
+
 .book-wrapper {
     max-width: 320px;
     margin-bottom: 20px;
