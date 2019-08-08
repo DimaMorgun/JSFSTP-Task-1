@@ -23,6 +23,12 @@ export class CartComponent {
         this.initialize();
     }
 
+    public async removeBookFromCart(bookModel: BookModel): Promise<void> {
+        await this.cartService.removeBookFromCart(bookModel);
+
+        await this.reinitialize();
+    }
+
     public async purchase() {
         this.cartService.clearCart();
 

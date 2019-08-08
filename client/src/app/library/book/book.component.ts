@@ -48,8 +48,8 @@ export class BookComponent implements OnDestroy {
         this.cartService.addBookToCart(bookModel);
     }
 
-    public removeBookFromCart(bookModel: BookModel): void {
-        this.cartService.removeBookFromCart(bookModel);
+    public async removeBookFromCart(bookModel: BookModel): Promise<void> {
+        await this.cartService.removeBookFromCart(bookModel);
     }
 
     public isBookInCart(bookModel: BookModel): boolean {

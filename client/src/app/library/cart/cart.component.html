@@ -20,8 +20,11 @@
             </div>
         </div>
         <div class="row price-section">
-            <div class="col-12 text-center">
-                <p>{{book.price}} $</p>
+            <div class="col-6 text-center">
+                <button class="btn btn-outline-danger" (click)="removeBookFromCart(book)">Remove</button>
+            </div>
+            <div class="col-6 text-center">
+                <p class="mt-1">{{book.price}} $</p>
             </div>
         </div>
     </div>
