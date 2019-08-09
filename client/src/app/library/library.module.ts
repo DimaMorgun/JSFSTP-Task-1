@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 import { FormsModule } from '@angular/forms';
 
 import { LibraryRoutingModule } from 'src/app/library/library-routing.module';
@@ -19,6 +20,7 @@ import { CartComponent } from 'src/app/library/cart/cart.component';
     CommonModule,
     LibraryRoutingModule,
     AngularFontAwesomeModule,
+    AngularMultiSelectModule,
     FormsModule,
   ],
   declarations: [

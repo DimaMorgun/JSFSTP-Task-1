@@ -24,12 +24,22 @@ import {
   AuthService,
   BookService,
   CartService,
+  AuthorService,
 } from 'src/app/services';
 
 import { JwtInterceptor, ErrorInterceptor } from 'src/app/core';
 
 
 @NgModule({
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    AngularFontAwesomeModule,
+    AppRoutingModule,
+    AuthModule,
+    LibraryModule,
+    ProfileModule,
+  ],
   declarations: [
     AppComponent,
     LayoutGeneralComponent,
@@ -41,17 +51,9 @@ import { JwtInterceptor, ErrorInterceptor } from 'src/app/core';
     PageNotFoundComponent,
 
   ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    AngularFontAwesomeModule,
-    AppRoutingModule,
-    AuthModule,
-    LibraryModule,
-    ProfileModule,
-  ],
   providers: [
     AuthService,
+    AuthorService,
     BookService,
     CartService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

@@ -1,91 +1,98 @@
+import { Component } from '@angular/core';
+
 import {
-    Component,
-    OnDestroy,
-} from '@angular/core';
+    BookService,
+    AuthorService,
+} from 'src/app/services';
 
-import { Subscription } from 'rxjs';
-
-import { BookService, CartService, AuthService } from 'src/app/services';
-
-import { BookModel, BookFilterModel } from 'src/app/shared/models';
+import {
+    BookModel,
+    AuthorModel,
+    DropdownModel,
+} from 'src/app/shared/models';
 
 @Component({
     selector: 'app-edit-book',
     templateUrl: './edit-book.component.html',
     styleUrls: ['./edit-book.component.scss']
 })
-export class EditBookComponent implements OnDestroy {
+export class EditBookComponent {
     public allBooks: BookModel[] = new Array<BookModel>();
     public paginatedBooks: BookModel[] = new Array<BookModel>();
-    public booksInCartIdList: string[] = new Array<string>();
-    public isAuthenticated = false;
+    public allAuthors: AuthorModel[] = new Array<AuthorModel>();
+    public allDropdownAuthor: DropdownModel[] = new Array<DropdownModel>();
+    public selectedDropdownAuthors: Map<string, DropdownModel[]> = new Map<string, DropdownModel[]>();
 
-    public nameFilter: string;
-    public priceFromFilter: number;
-    public priceToFilter: number;
-    public typeFilter: string;
+    public dropdownSettings: any = {
+        singleSelection: false,
+        text: 'Select Authors',
+        enableSearchFilter: true,
+        classes: 'author-dropdown',
+    };
 
     public page = 0;
     private limit = 5;
 
-    private cartAddBookSubscription: Subscription;
-    private cartRemoveBookSubscription: Subscription;
-
     constructor(
-        private authService: AuthService,
+        private authorService: AuthorService,
         private bookService: BookService,
-        private cartService: CartService,
     ) {
         this.initialize();
     }
 
-    ngOnDestroy(): void {
-        this.cartAddBookSubscription.unsubscribe();
-        this.cartRemoveBookSubscription.unsubscribe();
+    public hasContent(): boolean {
+        const hasBookContent: boolean = (this.allBooks && this.allBooks.length > 0);
+
+        return hasBookContent;
     }
 
-    public addBookToCart(bookModel: BookModel): void {
-        this.cartService.addBookToCart(bookModel);
+    public onFileChanged(book: BookModel, event: any): void {
+        const file: File = event.target.files[0];
+        const myReader: FileReader = new FileReader();
+
+        myReader.onloadend = (e) => {
+            console.log(myReader.result);
+        };
+        myReader.readAsDataURL(file);
     }
 
-    public async removeBookFromCart(bookModel: BookModel): Promise<void> {
-        await this.cartService.removeBookFromCart(bookModel);
-    }
+    public onAuthorSelected(book: BookModel, selectedAuthor: DropdownModel): void {
+        const authorModel: AuthorModel = this.allAuthors.find(author => author.id === selectedAuthor.id);
 
-    public isBookInCart(bookModel: BookModel): boolean {
-        const isBookInCart: boolean = this.booksInCartIdList.includes(bookModel.id);
-
-        return isBookInCart;
-    }
-
-    public async filterOptionUpdated(): Promise<void> {
-        const bookFilterModel: BookFilterModel = {};
-
-        if (this.nameFilter && this.nameFilter.trim()) {
-            bookFilterModel.name = this.nameFilter;
+        if (authorModel) {
+            book.authors.push(authorModel.id);
         }
-        if (this.priceFromFilter > 0) {
-            bookFilterModel.priceFrom = this.priceFromFilter;
-        }
-        if (this.priceToFilter > 0) {
-            bookFilterModel.priceTo = this.priceToFilter;
-        }
-        if (this.typeFilter) {
-            bookFilterModel.type = this.typeFilter;
-        }
-
-        this.allBooks = await this.bookService.getFilteredBooks(bookFilterModel);
-
-        await this.clearPagingOptions();
     }
 
-    public async clearPagingOptions(): Promise<void> {
-        this.page = 0;
+    public onAuthorDeselected(book: BookModel, deselectedAuthor: DropdownModel): void {
+        book.authors = book.authors.filter(authorId => authorId !== deselectedAuthor);
+    }
+
+    public onSelectedAllAuthors(book: BookModel): void {
+        book.authors = this.allAuthors.map(author => {
+            return author.id;
+        });
+    }
+
+    public onDeselectedAllAuthors(book: BookModel): void {
+        book.authors = new Array<string>();
+    }
+
+    public saveChanges(book: BookModel) {
+        console.log(book);
+    }
+
+    private async initialize(): Promise<void> {
+        this.allBooks = await this.bookService.getBooks();
+        this.allAuthors = await this.authorService.getAuthors();
+
+        this.initializeDropdownAuthors();
+        this.initializeBookDropdownAuthors();
 
         await this.getPaginatedBooks(this.page);
     }
 
-    public async getPaginatedBooks(page: number): Promise<void> {
+    private async getPaginatedBooks(page: number): Promise<void> {
         const startIndex: number = page * this.limit;
         const endIndex: number = startIndex + this.limit;
         const paginatedBooks: BookModel[] = this.allBooks.slice(startIndex, endIndex);
@@ -101,28 +108,34 @@ export class EditBookComponent implements OnDestroy {
         }
     }
 
-    public hasContent(): boolean {
-        const hasBookContent: boolean = (this.allBooks && this.allBooks.length > 0);
+    private initializeDropdownAuthors() {
+        this.allDropdownAuthor = this.allAuthors.map((author) => {
+            const dropdownElement: DropdownModel = {};
+            dropdownElement.id = author.id;
+            dropdownElement.itemName = author.name;
 
-        return hasBookContent;
+            return dropdownElement;
+        });
     }
 
-    private async initialize(): Promise<void> {
-        this.allBooks = await this.bookService.getBooks();
-        await this.getPaginatedBooks(this.page);
-        this.booksInCartIdList = await this.cartService.getBookIdListFromCart();
+    private initializeBookDropdownAuthors() {
+        this.allBooks.map(book => {
+            const bookAuthors: AuthorModel[] = this.allAuthors.filter(author => book.authors.includes(author.id));
+            const bookDropdownAuthors: DropdownModel[] = this.getDropdownAuthors(bookAuthors);
 
-        this.cartAddBookSubscription = this.cartService.cartAddSubject.subscribe(book => {
-            if (book) {
-                this.booksInCartIdList.push(book.id);
-            }
+            this.selectedDropdownAuthors[book.id] = bookDropdownAuthors;
         });
-        this.cartRemoveBookSubscription = this.cartService.cartRemoveSubject.subscribe(book => {
-            if (book) {
-                this.booksInCartIdList = this.booksInCartIdList.filter(bookId => bookId !== book.id);
-            }
+    }
+
+    private getDropdownAuthors(authorModels: AuthorModel[]): DropdownModel[] {
+        const dropdownAuthors: DropdownModel[] = authorModels.map(author => {
+            const dropdownAuthor: DropdownModel = {};
+            dropdownAuthor.id = author.id;
+            dropdownAuthor.itemName = author.name;
+
+            return dropdownAuthor;
         });
 
-        this.isAuthenticated = this.authService.isUserAuthenticated();
+        return dropdownAuthors;
     }
 }
