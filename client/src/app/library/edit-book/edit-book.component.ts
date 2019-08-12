@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import {
     BookService,
@@ -32,10 +33,12 @@ export class EditBookComponent {
 
     public page = 0;
     private limit = 5;
+    private imageDefaultUrl = 'https://via.placeholder.com/150x150';
 
     constructor(
         private authorService: AuthorService,
         private bookService: BookService,
+        private sanitizer: DomSanitizer,
     ) {
         this.initialize();
     }
@@ -46,14 +49,18 @@ export class EditBookComponent {
         return hasBookContent;
     }
 
-    public onFileChanged(book: BookModel, event: any): void {
-        const file: File = event.target.files[0];
-        const myReader: FileReader = new FileReader();
+    public onFileChanged(book: BookModel, fileEvent) {
+        const reader = new FileReader();
 
-        myReader.onloadend = (e) => {
-            console.log(myReader.result);
-        };
-        myReader.readAsDataURL(file);
+        if (fileEvent.target.files && fileEvent.target.files.length > 0) {
+            const file = fileEvent.target.files[0];
+
+            reader.onload = () => {
+                book.imageSrc = reader.result.toString();
+            };
+
+            reader.readAsDataURL(file);
+        }
     }
 
     public onAuthorSelected(book: BookModel, selectedAuthor: DropdownModel): void {
@@ -79,11 +86,17 @@ export class EditBookComponent {
     }
 
     public saveChanges(book: BookModel) {
+        book.imageSrc = 'https://tpc.googlesyndication.com/simgad/7652834702811792486';
         console.log(book);
     }
 
     private async initialize(): Promise<void> {
         this.allBooks = await this.bookService.getBooks();
+        this.allBooks.map(book => {
+            if (!book.imageSrc) {
+                book.imageSrc = this.imageDefaultUrl;
+            }
+        });
         this.allAuthors = await this.authorService.getAuthors();
 
         this.initializeDropdownAuthors();
@@ -137,5 +150,9 @@ export class EditBookComponent {
         });
 
         return dropdownAuthors;
+    }
+
+    private sanitize(url: string) {
+        return this.sanitizer.bypassSecurityTrustUrl(url);
     }
 }

@@ -10,7 +10,7 @@
                 <input style="display:none;" type="file" (change)="onFileChanged(book, $event)" accept="image/*"
                     #fileInput>
                 <img class="image-element" title="Book Image.&#13;Upload Image." alt="Book Image"
-                    src="https://via.placeholder.com/150x150" (click)="fileInput.click()">
+                    [src]="sanitize(book.imageSrc)" (click)="fileInput.click()">
             </div>
         </div>
         <div class="row">
