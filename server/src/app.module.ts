@@ -1,11 +1,13 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+} from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
 import { Connection } from 'mongoose';
 
-import { MiddlewareRequest, LocalStrategy, JwtStrategy, Encryptor } from 'src/common';
-import { environment } from 'src/environment';
 import {
   UserController,
   HomeController,
@@ -16,8 +18,33 @@ import {
   BookTypeController,
   UserRoleController,
 } from 'src/controllers';
-import { AuthService, BookService, UserService, FileService, AuthorService, BookTypeService, UserRoleService } from 'src/services';
-import { BookRepository, UserRepository, FileRepository, AuthorRepository, BookTypeRepository, UserRoleRepository } from 'src/repositories';
+
+import {
+  AuthService,
+  BookService,
+  UserService,
+  FileService,
+  AuthorService,
+  BookTypeService,
+  UserRoleService,
+} from 'src/services';
+
+import {
+  BookRepository,
+  UserRepository,
+  FileRepository,
+  AuthorRepository,
+  BookTypeRepository,
+  UserRoleRepository,
+} from 'src/repositories';
+
+import {
+  MiddlewareRequest,
+  LocalStrategy,
+  JwtStrategy,
+  Encryptor,
+} from 'src/common';
+import { environment } from 'src/environment';
 
 @Module({
   imports: [

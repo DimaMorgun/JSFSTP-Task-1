@@ -1,9 +1,22 @@
 import { Injectable } from '@nestjs/common';
 
-import { Types, objectid } from 'mongoose';
+import {
+    Types,
+    objectid,
+} from 'mongoose';
 
-import { BookRepository, AuthorRepository } from 'src/repositories';
-import { BookModel, CreateBookModel, UpdateBookModel, FilterBookModel } from 'src/models';
+import {
+    BookRepository,
+    AuthorRepository,
+} from 'src/repositories';
+
+import {
+    BookModel,
+    CreateBookModel,
+    UpdateBookModel,
+    FilterBookModel,
+} from 'src/models';
+
 import { BookDocument } from 'src/documents';
 
 @Injectable()
