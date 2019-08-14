@@ -9,6 +9,14 @@ import { PassportModule } from '@nestjs/passport';
 import { Connection } from 'mongoose';
 
 import {
+  MiddlewareRequest,
+  LocalStrategy,
+  JwtStrategy,
+  Encryptor,
+} from 'src/common';
+import { environment } from 'src/environment';
+
+import {
   UserController,
   HomeController,
   BookController,
@@ -37,14 +45,6 @@ import {
   BookTypeRepository,
   UserRoleRepository,
 } from 'src/repositories';
-
-import {
-  MiddlewareRequest,
-  LocalStrategy,
-  JwtStrategy,
-  Encryptor,
-} from 'src/common';
-import { environment } from 'src/environment';
 
 @Module({
   imports: [
