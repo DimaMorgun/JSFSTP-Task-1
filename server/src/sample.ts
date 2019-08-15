@@ -46,8 +46,7 @@ export interface SecondTypeModel {
 enum PropertyType {
     NONE = 0,
     First = 1,
-    Second = 2,
-    Third = 3,
+    Second = 2
 }
 
 // class FirstClass {
