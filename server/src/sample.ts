@@ -1,5 +1,3 @@
-import { FirstModel, SecondTypeModel } from 'src/sample';
-
 export class Sample {
     private secondModel: SecondTypeModel = {};
 
