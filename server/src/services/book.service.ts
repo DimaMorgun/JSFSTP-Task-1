@@ -1,9 +1,22 @@
 import { Injectable } from '@nestjs/common';
 
-import { Types, objectid } from 'mongoose';
+import {
+    Types,
+    objectid,
+} from 'mongoose';
 
-import { BookRepository, AuthorRepository } from 'src/repositories';
-import { BookModel, CreateBookModel, UpdateBookModel, FilterBookModel } from 'src/models';
+import {
+    BookRepository,
+    AuthorRepository,
+} from 'src/repositories';
+
+import {
+    BookModel,
+    CreateBookModel,
+    UpdateBookModel,
+    FilterBookModel,
+} from 'src/models';
+
 import { BookDocument } from 'src/documents';
 
 @Injectable()
@@ -89,6 +102,9 @@ export class BookService {
 
     public async getPaginated(skip: number, limit: number): Promise<BookModel[]> {
         const books: BookModel[] = new Array<BookModel>();
+        if (skip < 0 || limit < 0) {
+            return books;
+        }
 
         const bookDocuments: BookDocument[] = await this.bookRepository.getPaginated(skip, limit);
         if (!bookDocuments || bookDocuments.length === 0) {

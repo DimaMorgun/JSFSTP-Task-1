@@ -1,0 +1,39 @@
+<div class="row justify-content-around">
+    <div *ngFor="let book of books" class="col-12 book-wrapper">
+        <div class="row image-section">
+            <div class="col-12 image-wrapper d-flex justify-content-center">
+                <img class="image-element" title="Book Image" alt="Book Image"
+                    src="https://via.placeholder.com/150x150">
+            </div>
+        </div>
+        <div class="row title-section">
+            <div class="col-12 text-center">
+                <div class="title-element" title="Book Title">{{book.name}}</div>
+            </div>
+        </div>
+        <div class="row authors-section">
+            <div class="col-12 text-center">
+                <div class="author-element" title="Author Name" *ngFor="let author of book.authors">{{author}}
+                </div>
+                <div class="author-element" *ngIf="book.authors.length === 0">No Authors
+                </div>
+            </div>
+        </div>
+        <div class="row price-section">
+            <div class="col-6 text-center">
+                <button class="btn btn-outline-danger" (click)="removeBookFromCart(book)">Remove</button>
+            </div>
+            <div class="col-6 text-center">
+                <p class="mt-1">{{book.price}} $</p>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="amount > 0" class="cart-purchase-button" title="Purchase" (click)="purchase()">
+        Purchase: {{amount}} $
+    </div>
+
+    <div [ngClass]="{'start': purchasePopupMessage}" class="purchase-popup test">{{purchasePopupMessage}}</div>
+
+    <p *ngIf="books.length == 0">Your cart is empty</p>
+</div>

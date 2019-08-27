@@ -1,6 +1,6 @@
 export interface UserModel {
     id?: string;
-    fullName?: string;
+    fullname?: string;
     username?: string;
     passwordHash?: string;
     passwordSalt?: string;

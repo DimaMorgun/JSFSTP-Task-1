@@ -4,7 +4,7 @@ export class UpdateUserModel {
     @ApiModelProperty()
     readonly id: string;
     @ApiModelProperty()
-    readonly fullName: string;
+    readonly fullname: string;
     @ApiModelProperty()
     readonly username: string;
     @ApiModelProperty()

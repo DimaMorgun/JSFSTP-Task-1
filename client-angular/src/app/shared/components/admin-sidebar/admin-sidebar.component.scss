@@ -1,0 +1,17 @@
+.admin-sidebar {
+    color: #2F9395;
+    background-color: #FFFFF0;
+    border-top: 1px solid #2F9395;
+    border-bottom: 1px solid #2F9395;
+    overflow: hidden;
+    position: relative;
+    transition: 0.3s;
+
+    &>.title {
+        font-size: 1.5em;
+    }
+
+    & .link {
+        text-align: center;
+    }
+}

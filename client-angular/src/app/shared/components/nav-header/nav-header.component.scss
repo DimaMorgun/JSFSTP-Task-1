@@ -1,0 +1,81 @@
+$mobile-to-desctop: 768px;
+
+nav {
+    background-color: ivory;
+    box-shadow: 0px 0px 10px 0px #2F9395;
+    overflow: hidden;
+    position: relative;
+    transition: .3s;
+
+    &.admin-nav {
+        height: 280px;
+
+        @media screen and (min-width: $mobile-to-desctop) {
+            height: auto;
+        }
+    }
+
+    &.client-nav {
+        height: 280px;
+
+        @media screen and (min-width: $mobile-to-desctop) {
+            height: auto;
+        }
+    }
+
+    & .link.admin-route {
+        color: #FF7F50;
+
+        &:visited {
+            border-bottom: 3px solid #FF7F50;
+            border-radius: 3px;
+        }
+
+        &:hover {
+            font-size: 24px;
+            border-bottom: 3px solid #FF7F50;
+            border-radius: 3px;
+        }
+    }
+
+    &.collapsed-header {
+        height: 24px;
+
+        @media screen and (min-width: $mobile-to-desctop) {
+            height: auto;
+        }
+    }
+
+    & .collapse-element {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: ivory;
+        color: #2F9395;
+        border-top: 1px solid #2F9395;
+    }
+
+    & .link {
+        color: #2F9395;
+        border-bottom: 1px solid #2F9395;
+        font-size: 24px;
+        text-decoration: none;
+        transition: .2s;
+
+        &:visited {
+            border-bottom: 3px solid #2F9395;
+            border-radius: 3px;
+        }
+
+        &:hover {
+            font-size: 24px;
+            border-bottom: 3px solid #2F9395;
+            border-radius: 3px;
+        }
+    }
+}
+
+.search-form {
+    margin-right: 20px;
+}

@@ -1,6 +1,4 @@
-# Client [README.MD](https://github.com/DimaMorgun/JSFSTP-Task-1/tree/development/client)
+# Client-Angular [README.MD](https://github.com/DimaMorgun/JSFSTP-Task-1/tree/development/client-angular)
 # Server [README.MD](https://github.com/DimaMorgun/JSFSTP-Task-1/tree/development/server)
-
-New test string from github.
 
 # Author - Dmytro Morhun

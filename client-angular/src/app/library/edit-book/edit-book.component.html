@@ -1,0 +1,57 @@
+<div class="row justify-content-around">
+
+    <div class="col-12 text-center mb-4 py-3 page-title">
+        Books Edit Page (ADMIN AREA)
+    </div>
+
+    <div *ngFor="let book of paginatedBooks" class="col-12 book-wrapper">
+        <div class="row image-section">
+            <div class="col-12 image-wrapper d-flex justify-content-center">
+                <input style="display:none;" type="file" (change)="onFileChanged(book, $event)" accept="image/*"
+                    #fileInput>
+                <img class="image-element" title="Book Image.&#13;Upload Image." alt="Book Image"
+                    [src]="sanitize(book.imageSrc)" (click)="fileInput.click()">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <input type="text" class="mt-2 mb-1 form-control" title="Book Title" placeholder="Book Title"
+                    [(ngModel)]="book.name">
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-12">
+                <angular2-multiselect class="mb-3" [data]="allDropdownAuthor"
+                    [(ngModel)]="selectedDropdownAuthors[book.id]" [settings]="dropdownSettings"
+                    (onSelect)="onAuthorSelected(book, $event)" (onDeSelect)="onAuthorDeselected($event)"
+                    (onSelectAll)="onSelectedAllAuthors(book)" (onDeSelectAll)="onDeselectedAllAuthors(book)">
+                </angular2-multiselect>
+            </div>
+        </div>
+        <div class="row price-section">
+            <div class="col-4 text-center">
+                <button class="btn btn-outline-danger">Remove</button>
+            </div>
+            <div class="col-4 text-center">
+                <button class="btn btn-outline-info" (click)="saveChanges(book)">Save</button>
+            </div>
+            <div class="col-4 text-center">
+                <input type="number" class="form-control" [(ngModel)]="book.price">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 text-center mb-3" *ngIf="!hasContent()">
+        No books were found!
+    </div>
+
+    <div class="col-12 text-center" *ngIf="hasContent()">
+        <button class="btn btn-outline-info" (click)="getPaginatedBooks(page - 1)">
+            <fa name="fas fa-arrow-left"></fa>
+        </button>
+        <button class="btn btn-info disabled mx-1" disabled>{{page + 1}}</button>
+        <button class="btn btn-outline-info" (click)="getPaginatedBooks(page + 1)">
+            <fa name="fas fa-arrow-right"></fa>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+<div class="row justify-content-around">
+
+    <div class="filter-area col-12 text-center mb-4" (change)="filterOptionUpdated()">
+        <div class="row">
+            <div class="input-group col-12 col-md-3">
+                <div class="input-group-prepend" title="Clear name input.">
+                    <button class="btn btn-outline-danger" type="button"
+                        (click)="nameFilter = '';filterOptionUpdated();">
+                        <fa name="fas fa-times"></fa>
+                    </button>
+                </div>
+                <input type="text" class="form-control" placeholder="Name" [(ngModel)]="nameFilter">
+            </div>
+            <div class="input-group col-6 col-md-3">
+                <div class="input-group-prepend" title="Clear price from input.">
+                    <button class="btn btn-outline-danger" type="button"
+                        (click)="priceFromFilter = '';filterOptionUpdated();">
+                        <fa name="fas fa-times"></fa>
+                    </button>
+                </div>
+                <input type="number" class="form-control" placeholder="50$" [(ngModel)]="priceFromFilter">
+            </div>
+            <div class="input-group col-6 col-md-3">
+                <div class="input-group-prepend" title="Clear price to input.">
+                    <button class="btn btn-outline-danger" type="button"
+                        (click)="priceToFilter = '';filterOptionUpdated();">
+                        <fa name="fas fa-times"></fa>
+                    </button>
+                </div>
+                <input type="number" class="form-control" placeholder="1000$" [(ngModel)]="priceToFilter">
+            </div>
+            <div class="input-group col-12 col-md-3">
+                <div class="input-group-prepend" title="Clear name input.">
+                    <button class="btn btn-outline-danger" type="button"
+                        (click)="typeFilter = '';filterOptionUpdated();">
+                        <fa name="fas fa-times"></fa>
+                    </button>
+                </div>
+                <select class="form-control" [(ngModel)]="typeFilter">
+                    <option value="" selected>All</option>
+                    <option value="BOOK">Book</option>
+                    <option value="MAGAZINE">Magazine</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div *ngFor="let book of paginatedBooks" class="col-12 book-wrapper">
+        <div class="row image-section">
+            <div class="col-12 image-wrapper d-flex justify-content-center">
+                <img class="image-element" title="Book Image" alt="Book Image"
+                    src="https://via.placeholder.com/150x150">
+            </div>
+        </div>
+        <div class="row title-section">
+            <div class="col-12 text-center">
+                <div class="title-element" title="Book Title">{{book.name}}</div>
+            </div>
+        </div>
+        <div class="row authors-section">
+            <div class="col-12 text-center">
+                <div class="author-element" title="Author Name" *ngFor="let author of book.authors">{{author}}
+                </div>
+                <div class="author-element" *ngIf="book.authors.length === 0">No Authors
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!isBookInCart(book) && isAuthenticated" class="row price-section">
+            <div class="col-6 text-center">
+                <button class="btn btn-danger disabled" disabled>Remove</button>
+            </div>
+            <div class="col-6 text-center">
+                <button class="btn btn-outline-info" (click)="addBookToCart(book)">{{book.price}} $</button>
+            </div>
+        </div>
+        <div *ngIf="isBookInCart(book) && isAuthenticated" class="row price-section">
+            <div class="col-6 text-center">
+                <button class="btn btn-outline-danger" (click)="removeBookFromCart(book)">Remove</button>
+            </div>
+            <div class="col-6 text-center">
+                <button class="btn btn-info disabled" disabled>
+                    {{book.price}} $
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 text-center mb-3" *ngIf="!hasContent()">
+        No books were found!
+    </div>
+
+    <div class="col-12 text-center" *ngIf="hasContent()">
+        <button class="btn btn-outline-info" (click)="getPaginatedBooks(page - 1)">
+            <fa name="fas fa-arrow-left"></fa>
+        </button>
+        <button class="btn btn-info disabled mx-1" disabled>{{page + 1}}</button>
+        <button class="btn btn-outline-info" (click)="getPaginatedBooks(page + 1)">
+            <fa name="fas fa-arrow-right"></fa>
+        </button>
+    </div>
+
+    <a *ngIf="booksInCartIdList.length > 0" class="cart-link" title="Cart" [routerLink]="[ '/library/cart/' ]">
+        <div class="cart-link-button">
+            Cart: {{booksInCartIdList.length}}
+        </div>
+    </a>
+</div>

@@ -1,7 +1,7 @@
 export interface UserPayloadModel {
     id?: string;
     username?: string;
-    fullName?: string;
+    fullname?: string;
     userRole?: string;
     createdDate?: Date;
     updatedDate?: Date;

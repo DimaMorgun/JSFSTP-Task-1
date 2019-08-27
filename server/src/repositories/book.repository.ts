@@ -16,6 +16,12 @@ export class BookRepository {
     }
 
     public async getFilteredList(filterModel: FilterBookModel): Promise<BookDocument[]> {
+        const idList = {};
+        if (filterModel.idList && filterModel.idList.length > 0) {
+            // tslint:disable-next-line:no-string-literal
+            idList['$in'] = filterModel.idList;
+        }
+
         const price = {};
         if (filterModel.priceFrom) {
             // tslint:disable-next-line:no-string-literal
@@ -36,6 +42,11 @@ export class BookRepository {
         if (Object.entries(price).length !== 0) {
             // tslint:disable-next-line:no-string-literal
             query['price'] = price;
+        }
+
+        if (Object.entries(idList).length !== 0) {
+            // tslint:disable-next-line:no-string-literal
+            query['_id'] = idList;
         }
 
         const books: BookDocument[] = await this.bookModel.find(query);

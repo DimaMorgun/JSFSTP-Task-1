@@ -28,7 +28,7 @@ export class UserService {
         if (userDocument) {
             user.id = userDocument._id;
             user.username = userDocument.username;
-            user.fullName = userDocument.fullName;
+            user.fullname = userDocument.fullname;
             user.passwordSalt = userDocument.passwordSalt;
             user.passwordHash = userDocument.passwordHash;
             user.createdDate = userDocument.createdDate;
@@ -51,7 +51,7 @@ export class UserService {
         if (userDocument) {
             user.id = userDocument._id;
             user.username = userDocument.username;
-            user.fullName = userDocument.fullName;
+            user.fullname = userDocument.fullname;
             user.passwordSalt = userDocument.passwordSalt;
             user.passwordHash = userDocument.passwordHash;
             user.createdDate = userDocument.createdDate;
@@ -75,7 +75,7 @@ export class UserService {
             const userModel: UserModel = {};
             userModel.id = userDocument._id;
             userModel.username = userDocument.username;
-            userModel.fullName = userDocument.fullName;
+            userModel.fullname = userDocument.fullname;
             userModel.passwordSalt = userDocument.passwordSalt;
             userModel.passwordHash = userDocument.passwordHash;
             userModel.createdDate = userDocument.createdDate;
@@ -101,7 +101,7 @@ export class UserService {
             const userModel: UserModel = {};
             userModel.id = userDocument._id;
             userModel.username = userDocument.username;
-            userModel.fullName = userDocument.fullName;
+            userModel.fullname = userDocument.fullname;
             userModel.passwordSalt = userDocument.passwordSalt;
             userModel.passwordHash = userDocument.passwordHash;
             userModel.createdDate = userDocument.createdDate;
@@ -119,17 +119,17 @@ export class UserService {
         const createdUser: UserModel = {};
         const createUserDocument: UserDocument = {};
 
-        if (!createUserModel.userName == null) {
+        if (!createUserModel.username == null) {
             return createdUser;
         }
 
-        const isUserExist: boolean = await this.isUserExist(createUserModel.userName);
+        const isUserExist: boolean = await this.isUserExist(createUserModel.username);
         if (isUserExist) {
             return createdUser;
         }
 
-        createUserDocument.username = createUserModel.userName;
-        createUserDocument.fullName = createUserModel.fullName;
+        createUserDocument.username = createUserModel.username;
+        createUserDocument.fullname = createUserModel.fullname;
         createUserDocument.passwordSalt = await this.paswordHelper.getRandomSalt();
         createUserDocument.passwordHash = await this.paswordHelper.getSaltedHash(createUserModel.password, createUserDocument.passwordSalt);
         createUserDocument.createdDate = new Date();
@@ -141,7 +141,7 @@ export class UserService {
         if (createdUserDocument) {
             createdUser.id = createdUserDocument._id;
             createdUser.username = createdUserDocument.username;
-            createdUser.fullName = createdUserDocument.fullName;
+            createdUser.fullname = createdUserDocument.fullname;
             createdUser.passwordSalt = createdUserDocument.passwordSalt;
             createdUser.passwordHash = createdUserDocument.passwordHash;
             createdUser.createdDate = createdUserDocument.createdDate;
@@ -159,7 +159,7 @@ export class UserService {
 
         if (updateUserModel) {
             updateUserDocument._id = updateUserModel.id;
-            updateUserDocument.fullName = updateUserModel.fullName;
+            updateUserDocument.fullname = updateUserModel.fullname;
             updateUserDocument.updatedDate = new Date();
         }
 
@@ -172,7 +172,7 @@ export class UserService {
         if (updatedUserDocument) {
             updatedUser.id = updatedUserDocument._id;
             updatedUser.username = updatedUserDocument.username;
-            updatedUser.fullName = updatedUserDocument.fullName;
+            updatedUser.fullname = updatedUserDocument.fullname;
             updatedUser.passwordSalt = updatedUserDocument.passwordSalt;
             updatedUser.passwordHash = updatedUserDocument.passwordHash;
             updatedUser.createdDate = updatedUserDocument.createdDate;
