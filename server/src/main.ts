@@ -1,9 +1,10 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, HttpAdapterHost } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
-import { AppModule } from './app.module';
+import { AppModule } from 'src/app.module';
 import { environment, Environment } from 'src/environment';
+import { CommonExceptionFilter } from 'src/common';
 
 import fs = require('fs');
 import express = require('express');
@@ -28,6 +29,9 @@ async function bootstrap() {
     AppModule,
     new ExpressAdapter(server),
   );
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new CommonExceptionFilter(httpAdapter));
+
   app.enableCors();
 
   const options = new DocumentBuilder()
