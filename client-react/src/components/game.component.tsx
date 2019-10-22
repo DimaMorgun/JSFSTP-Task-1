@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
-import { Board } from './board.component';
+import { Board } from ".";
 
-export class Game extends React.Component {
-  constructor(props) {
+export class Game extends React.Component<{}, { history: Array<{ squares: Array<string> }>, stepNumber: number, xIsNext: boolean }> {
+  constructor(props: { history: Array<{ squares: Array<string> }>, stepNumber: number, xIsNext: boolean }) {
     super(props);
     this.state = {
       history: [{
@@ -14,7 +14,7 @@ export class Game extends React.Component {
     };
   }
 
-  handleClick(i) {
+  handleClick(i: number) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
@@ -31,7 +31,7 @@ export class Game extends React.Component {
     });
   }
 
-  jumpTo(step) {
+  jumpTo(step: number) {
     this.setState({
       stepNumber: step,
       xIsNext: (step % 2) === 0,
@@ -66,7 +66,7 @@ export class Game extends React.Component {
         <div className="game-board">
           <Board
             squares={current.squares}
-            onClick={(i) => this.handleClick(i)}
+            onClick={(i: number) => this.handleClick(i)}
           />
         </div>
         <div className="game-info">
@@ -78,7 +78,7 @@ export class Game extends React.Component {
   }
 }
 
-function calculateWinner(squares) {
+function calculateWinner(squares: Array<string>) {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
