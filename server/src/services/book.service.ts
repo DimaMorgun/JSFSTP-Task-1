@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 
 import {
     Types,
@@ -18,12 +18,14 @@ import {
 } from 'src/models';
 
 import { BookDocument } from 'src/documents';
+import { BookEntity } from 'src/entities';
 
 @Injectable()
 export class BookService {
     constructor(
         private readonly bookRepository: BookRepository,
         private readonly authorRepository: AuthorRepository,
+        @Inject('BOOK_REPOSITORY') private readonly repository: typeof BookEntity,
     ) { }
 
     public async getFilteredList(filterModel: FilterBookModel): Promise<BookModel[]> {
@@ -234,4 +236,12 @@ export class BookService {
 
         return isBookAvailable;
     }
+
+    // Sequelize
+    public async getAllBySequelize(): Promise<BookEntity[]> {
+        const books: BookEntity[] = await this.repository.findAll<BookEntity>();
+
+        return books;
+    }
+    // /Sequelize
 }
