@@ -12,20 +12,28 @@ export class AuthorEntity extends Model<AuthorEntity> {
         defaultValue: uuid(),
     })
     id?: string;
+
     @Column
     name?: string;
+
     @Column
     country?: string;
+
     @Column
     birthday?: Date;
+
     @Column
     deathday?: Date;
+
     @Column
     books?: string;
+
     @Column
     createdDate?: Date;
+
     @Column
     updatedDate?: Date;
+
     @Column
     isDeleted?: boolean;
 }

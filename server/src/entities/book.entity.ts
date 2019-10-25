@@ -12,18 +12,25 @@ export class BookEntity extends Model<BookEntity> {
         defaultValue: uuid(),
     })
     id?: string;
+
     @Column
     name?: string;
+
     @Column
     price?: number;
+
     @Column
     type?: string;
+
     @Column
     authors?: string;
+
     @Column
     createdDate?: Date;
+
     @Column
     updatedDate?: Date;
+
     @Column
     isDeleted?: boolean;
 }
