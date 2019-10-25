@@ -1,4 +1,6 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, BelongsToMany } from 'sequelize-typescript';
+
+import { AuthorEntity, BookInAuthorEntity } from 'src/entities';
 
 import uuid = require('uuid/v4');
 
@@ -11,26 +13,26 @@ export class BookEntity extends Model<BookEntity> {
         allowNull: false,
         defaultValue: uuid(),
     })
-    id?: string;
+    id: string;
 
     @Column
-    name?: string;
+    name: string;
 
     @Column
-    price?: number;
+    price: number;
 
     @Column
-    type?: string;
+    type: string;
+
+    @BelongsToMany(() => AuthorEntity, () => BookInAuthorEntity)
+    authors: AuthorEntity[];
 
     @Column
-    authors?: string;
+    createdDate: Date;
 
     @Column
-    createdDate?: Date;
+    updatedDate: Date;
 
     @Column
-    updatedDate?: Date;
-
-    @Column
-    isDeleted?: boolean;
+    isDeleted: boolean;
 }

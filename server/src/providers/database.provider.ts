@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
 import * as env from 'src/environment';
-import { BookEntity, AuthorEntity } from 'src/entities';
+import { BookEntity, AuthorEntity, BookInAuthorEntity } from 'src/entities';
 
 const environment = env.environment();
 
@@ -16,7 +16,7 @@ export const databaseProviders = [
                 password: environment.mysqlPassword,
                 database: environment.mysqlDatabaseName,
             });
-            sequelize.addModels([BookEntity, AuthorEntity]);
+            sequelize.addModels([BookEntity, AuthorEntity, BookInAuthorEntity]);
             await sequelize.sync();
             return sequelize;
         },

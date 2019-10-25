@@ -1,4 +1,6 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, BelongsToMany } from 'sequelize-typescript';
+
+import { BookEntity, BookInAuthorEntity } from 'src/entities';
 
 import uuid = require('uuid/v4');
 
@@ -25,8 +27,8 @@ export class AuthorEntity extends Model<AuthorEntity> {
     @Column
     deathday?: Date;
 
-    @Column
-    books?: string;
+    @BelongsToMany(() => BookEntity, () => BookInAuthorEntity)
+    books?: BookEntity[];
 
     @Column
     createdDate?: Date;
