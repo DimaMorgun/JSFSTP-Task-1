@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Check console!</h1>
+
+    <!-- Event listener for div element has been added with event.target in message to console. -->
+    <div>
+        <button style="background-color: ivory;" onclick="console.log('Button onclick event. event.stopPropagation() called.');event.stopPropagation();"></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button style="background-color: aliceblue;" onclick="console.log('Button onclick event.');"></button>
+    </div>
+
+    <script src="./dist/common.js"></script>
+</body>
+
+</html>
