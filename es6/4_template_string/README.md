@@ -1,3 +1,1 @@
-## VAR
-## LET
-## CONST
+Template literals are string literals allowing embedded expressions. You can use multi-line strings and string interpolation features with them. They were called "template strings" in prior editions of the ES2015 specification.
