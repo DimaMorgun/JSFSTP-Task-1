@@ -46,3 +46,30 @@ const FUNC = () => { };
 
 // 7) IIFE
 (() => { null })();
+
+// Context
+// --- _this refers to person  object.
+// ---  this refers to windows object.
+// const person = {
+//     userName: 'Jack',
+//     greet: function () {
+//         const _this = this; // This issue has been solved using closure.
+
+//         window.setTimeout(function () {
+//             console.log(_this.userName, this);
+//         }, 1000);
+//     }
+// }
+
+// Arrow functions take context from where they were executed.
+const person = {
+    userName: 'Jack',
+    greet: function () {
+        window.setTimeout(() => {
+            console.log(this.userName, this);
+        }, 1000);
+    }
+}
+
+person.greet();
+///Context
