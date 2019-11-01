@@ -1,44 +1,107 @@
-// The class is defined using es6 syntax.
+// Task class has been created.
 class Task {
-    // Class should contains no more than one constructor.
-    constructor(title = '', isCompleted = true) {
-        // Class propertiest 
-        // Properties are created using this value.
+    constructor(title = '') {
+        // 2 properties have been created in class `Task`.
         this.title = title;
-        this._isCompleted = isCompleted;
-        // Static property is called using class name.
-        Task.counter += 1;
-    };
+        this.isCompleted = false;
+    }
 
-    // Static methods are created using static keyword.
-    static getInfo() {
-        return `Task class contains ${Task.counter} instances.`;
-    };
-
+    // `completed` method has been created in `Task` class.
     completed() {
         this.isCompleted = true;
-    };
+    }
+}
 
-    // There is getter for `isCompleted` property.
-    get isCompleted() {
-        return this._isCompleted ? 'Task is completed.' : 'Task is not completed.';
+// `SubTask` class has been created.
+class SubTask extends Task {
+    constructor(title) {
+        // `super` keyword calls parent constructor if it is not defined.
+        // `super` keyword allows to call parent constructor.
+        super(title);
     }
 
-    // There is setter for `isCompleted` property.
-    set isCompleted(status) {
-        this._isCompleted = status;
+    completed() {
+        // `super` keyword allows to call parent methods.
+        super.completed();
+        console.log(`Task ${this.title} is completed!`);
+    }
+}
+
+// 2 instances of Task and SubTask objects have been created.
+const task = new Task('Learn ReactJS');
+const subTask = new SubTask('Learn ES6');
+
+
+// complete methods have been called from `task` and `subTask` objects.
+task.completed();
+subTask.completed();
+
+console.log(task, subTask);
+
+// Class declaration
+class Declarated {
+    constructor(isDeclarated = true) {
+        this.isDeclarated = isDeclarated;
     }
 };
-// Static properties defines outside of class.
-Task.counter = 0;
 
-const task1 = new Task('Learn ES6', false);
-const task2 = new Task('Learn ReactJS', false);
-console.log(Task.counter);
+// Class expression
+const Extended = class extends Declarated {
+    constructor(isExtended) {
+        super(false);
 
-console.log(task1);
-console.log(task2);
+        this.isExtended = isExtended
+    }
+};
 
-task2.completed();
+const declarated = new Declarated(true);
+const extended = new Extended(true);
 
-console.log(task2);
+console.log(declarated, extended);
+
+// Additional information
+// Function declaration
+console.log('`sum` function has been called before declaration.', sumDeclaration(1, 2));
+function sumDeclaration(a, b) {
+    return a + b;
+}
+
+// Function expression
+// Сode above will throw the `Uncaught TypeError: sumExpression is not a function` error
+// console.log('`sum1` function expression has been called before expression.');
+// console.log(sumExpression(1, 2));
+const sumExpression = function (a, b) {
+    return a + b;
+}
+console.log('`sum1` function expression has been called after expression.');
+
+// Name Function Expression
+const functionExpression = function nameFunction() {
+
+}
+
+// `factorial` function has been declared
+// function factorial(n) {
+//     return n ? n * factorial(n - 1) : 1;
+// }
+// const n = 5;
+// console.log(`factorial n=${n}`, factorial(n));
+
+// factorial method reference has been assigned to newFactorial constant
+// const newFactorial = factorial;
+// console.log(`newFactorial n=${n}`, newFactorial(n));
+
+// `factorial` reference has been removed
+// factorial = null;
+// Code belove will throw `newFactorial` is not a function because `factorial`
+// - reference has been removed.
+// console.log(`newFactorial n=${n}`, newFactorial(n));
+
+let newFactorial = function factorial(n) {
+    return n ? n * factorial(n - 1) : 1;
+}
+
+const n = 5;
+const secondNewFactorial = newFactorial;
+newFactorial = null;
+console.log(`secondNewFactorial n=${n}`, secondNewFactorial(n));
