@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 
-import { Header } from "./components";
+import { SignIn } from "./components/auth/SignIn";
 
 class App extends Component {
   render(): any {
     return (
-      <Header />
+      <SignIn />
     );
   }
 }
