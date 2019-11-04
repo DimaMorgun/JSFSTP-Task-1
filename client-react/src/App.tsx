@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import { Task } from "./models/task";
 import { NewTaskForm } from "./components/new-task-form";
+import { TasksList } from "./components/task-list";
 
 interface IState {
   newTask: Task;
@@ -55,6 +56,12 @@ class App extends Component<{}, IState> {
           onAdd={this.addTask}
           onChange={this.handleTaskChange}
         />
+        <div>
+          <TasksList
+            tasks={this.state.tasks}
+            onDelete={this.deleteTask}
+          />
+        </div>
       </div>
     );
   }
