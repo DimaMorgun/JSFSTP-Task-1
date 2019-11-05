@@ -46,24 +46,10 @@ import {
   BookTypeRepository,
   UserRoleRepository,
 } from 'src/repositories';
-import { BookTypeORMService } from './services/type-orm/book-type-orm.service';
-import { BookTypeORMController } from './controllers/type-orm/book-type-orm.controller';
-import { BookEntity } from 'dist/entities/book.entity';
 
 @Module({
   imports: [
     PassportModule,
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: '127.0.0.1',
-      port: 3306,
-      username: 'root',
-      password: 'admin',
-      database: 'book-store',
-      entities: [BookEntity],
-      synchronize: true,
-    }),
-    TypeOrmModule.forFeature([BookEntity]),
     JwtModule.register({
       secret: environment().jwtSecretKey,
       signOptions: { expiresIn: environment().tokenExpireTime },
@@ -77,7 +63,6 @@ import { BookEntity } from 'dist/entities/book.entity';
     FileController,
     AuthorController,
     BookTypeController,
-    BookTypeORMController,
     UserRoleController,
   ],
   providers: [
@@ -95,7 +80,6 @@ import { BookEntity } from 'dist/entities/book.entity';
     AuthorService,
     AuthorRepository,
     BookTypeService,
-    BookTypeORMService,
     BookTypeRepository,
     UserRoleService,
     UserRoleRepository,
