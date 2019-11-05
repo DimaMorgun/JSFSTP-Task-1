@@ -6,13 +6,20 @@ const LOGIN_ACTION_PATH: string = "login";
 const LOGGED_IN_USER_INFORMATION_ACTION_PATH: string = "me";
 const TEST_ADMIN_ACTION_PATH: string = "admin/test";
 
-interface ISignInModel {
+interface SignInModel {
     username?: string;
     password?: string;
 }
 
+interface SignInState {
+    username: string;
+    password: string;
+    token: string;
+    textareaContent: string;
+}
+
 export class SignIn extends Component {
-    state = {
+    state: SignInState = {
         username: "",
         password: "",
         token: "",
@@ -27,32 +34,30 @@ export class SignIn extends Component {
 
     handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        console.log("SignIn Request.", this.state);
 
-        const singInModel: ISignInModel = {};
+        const singInModel: SignInModel = {};
         singInModel.username = this.state.username;
         singInModel.password = this.state.password;
+        const requestJsonData: string = JSON.stringify(singInModel);
 
         const loginRoute: string = `${API_ENDPOINT}/${AUTH_CONTROLLER_PATH}/${LOGIN_ACTION_PATH}`;
         fetch(loginRoute, {
             method: "post",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(singInModel),
+            body: requestJsonData,
         })
             .then(response => response.json())
             .then(responseJson => {
-                console.log("responseJson", responseJson);
-
                 if (responseJson.token) {
-                    this.setState({ token: responseJson.token });
+                    this.setState({ token: responseJson.token, textareaContent: responseJson.token });
+                }
+                if (!responseJson.token) {
+                    this.setState({ textareaContent: "Invalid credentials." });
                 }
             })
             .catch(error => {
                 console.log("error", error);
             })
-            .finally(() => {
-                alert("'signIn' Request completed.");
-            });
     }
 
     handleClick = () => {
@@ -62,14 +67,12 @@ export class SignIn extends Component {
         })
             .then(response => response.json())
             .then(response => {
-                this.setState({ textareaContent: JSON.stringify(response) });
+                const responseJsonData: string = JSON.stringify(response);
+                this.setState({ textareaContent: responseJsonData });
             })
             .catch(error => {
                 console.log("error", error);
             })
-            .finally(() => {
-                alert("'getMe' Request completed.");
-            });
     }
 
     render(): ReactElement {
