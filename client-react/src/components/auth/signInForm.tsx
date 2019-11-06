@@ -6,25 +6,35 @@ const LOGIN_ACTION_PATH: string = "login";
 const LOGGED_IN_USER_INFORMATION_ACTION_PATH: string = "me";
 const TEST_ADMIN_ACTION_PATH: string = "admin/test";
 
+export interface SignInFormProps {
+    onSignInSuccess: Function;
+}
+
+interface SignInFormState {
+    username: string;
+    password: string;
+}
+
 interface SignInModel {
     username?: string;
     password?: string;
 }
 
-interface SignInState {
-    username: string;
-    password: string;
-}
-
-export class SignInForm extends Component {
-    state: SignInState = {
+export class SignInForm extends Component<SignInFormProps, SignInFormState> {
+    state: SignInFormState = {
         username: "",
         password: "",
     };
 
-    handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({
-            [event.target.id]: event.target.value,
+            username: event.target.value,
+        });
+    }
+
+    handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({
+            password: event.target.value,
         });
     }
 
@@ -44,12 +54,13 @@ export class SignInForm extends Component {
         })
             .then(response => response.json())
             .then(responseJson => {
-                // if (responseJson.token) {
-                //     this.setState({ token: responseJson.token, textareaContent: responseJson.token });
-                // }
-                // if (!responseJson.token) {
-                //     this.setState({ textareaContent: "Invalid credentials." });
-                // }
+                if (responseJson.token) {
+                    this.props.onSignInSuccess(responseJson.token);
+                    // this.setState({ token: responseJson.token, textareaContent: responseJson.token });
+                }
+                if (!responseJson.token) {
+                    // this.setState({ textareaContent: "Invalid credentials." });
+                }
             })
             .catch(error => {
                 console.log("error", error);
@@ -76,9 +87,9 @@ export class SignInForm extends Component {
             <div>
                 <p>SignIn - Form</p>
                 <form onSubmit={this.handleSubmit}>
-                    <input type="username" id="username" onChange={this.handleChange} />
+                    <input type="username" id="username" onChange={this.handleUsernameChange} />
                     <br />
-                    <input type="password" id="password" onChange={this.handleChange} />
+                    <input type="password" id="password" onChange={this.handlePasswordChange} />
                     <br />
                     <input type="submit" value="Submit" />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

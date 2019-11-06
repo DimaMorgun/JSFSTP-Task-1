@@ -1,5 +1,5 @@
 import { createStore, compose } from 'redux';
-import rootReducer from './reducers/index';
+import rootReducer from '../reducers/index';
 
 /* eslint-disable no-underscore-dangle */
 const composeEnhancers =
