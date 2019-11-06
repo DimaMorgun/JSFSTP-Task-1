@@ -14,16 +14,12 @@ interface SignInModel {
 interface SignInState {
     username: string;
     password: string;
-    token: string;
-    textareaContent: string;
 }
 
 export class SignInForm extends Component {
     state: SignInState = {
         username: "",
         password: "",
-        token: "",
-        textareaContent: "",
     };
 
     handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,12 +44,12 @@ export class SignInForm extends Component {
         })
             .then(response => response.json())
             .then(responseJson => {
-                if (responseJson.token) {
-                    this.setState({ token: responseJson.token, textareaContent: responseJson.token });
-                }
-                if (!responseJson.token) {
-                    this.setState({ textareaContent: "Invalid credentials." });
-                }
+                // if (responseJson.token) {
+                //     this.setState({ token: responseJson.token, textareaContent: responseJson.token });
+                // }
+                // if (!responseJson.token) {
+                //     this.setState({ textareaContent: "Invalid credentials." });
+                // }
             })
             .catch(error => {
                 console.log("error", error);
@@ -63,12 +59,12 @@ export class SignInForm extends Component {
     handleClick = () => {
         const getMeRoute: string = `${API_ENDPOINT}/${AUTH_CONTROLLER_PATH}/${LOGGED_IN_USER_INFORMATION_ACTION_PATH}`;
         fetch(getMeRoute, {
-            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${this.state.token}` },
+            // headers: { "Content-Type": "application/json", "Authorization": `Bearer ${this.state.token}` },
         })
             .then(response => response.json())
             .then(response => {
                 const responseJsonData: string = JSON.stringify(response);
-                this.setState({ textareaContent: responseJsonData });
+                // this.setState({ textareaContent: responseJsonData });
             })
             .catch(error => {
                 console.log("error", error);
@@ -88,7 +84,6 @@ export class SignInForm extends Component {
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <input type="button" value="My Info" onClick={this.handleClick} />
                 </form>
-                <textarea cols={50} rows={20} readOnly value={this.state.textareaContent} />
             </div>
         );
     }
