@@ -1,42 +1,36 @@
-import React, { Component, FormEvent, ReactElement } from "react";
+import React, { Component } from "react";
 
-const API_ENDPOINT: string = "https://localhost";
-const AUTH_CONTROLLER_PATH: string = "auth";
-const LOGIN_ACTION_PATH: string = "login";
-const LOGGED_IN_USER_INFORMATION_ACTION_PATH: string = "me";
-const TEST_ADMIN_ACTION_PATH: string = "admin/test";
-
-interface SignInModel {
-    username?: string;
-    password?: string;
-}
-
-interface SignInState {
-    username: string;
-    password: string;
-}
+const API_ENDPOINT = "https://localhost";
+const AUTH_CONTROLLER_PATH = "auth";
+const LOGIN_ACTION_PATH = "login";
+const LOGGED_IN_USER_INFORMATION_ACTION_PATH = "me";
+const TEST_ADMIN_ACTION_PATH = "admin/test";
 
 export class SignInForm extends Component {
-    state: SignInState = {
-        username: "",
-        password: "",
-    };
+    constructor(props) {
+        super(props);
 
-    handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.state = {
+            username: "",
+            password: "",
+        };
+    }
+
+    handleChange = (event) => {
         this.setState({
             [event.target.id]: event.target.value,
         });
     }
 
-    handleSubmit = (event: FormEvent) => {
+    handleSubmit = (event) => {
         event.preventDefault();
 
-        const singInModel: SignInModel = {};
+        const singInModel = {};
         singInModel.username = this.state.username;
         singInModel.password = this.state.password;
-        const requestJsonData: string = JSON.stringify(singInModel);
+        const requestJsonData = JSON.stringify(singInModel);
 
-        const loginRoute: string = `${API_ENDPOINT}/${AUTH_CONTROLLER_PATH}/${LOGIN_ACTION_PATH}`;
+        const loginRoute = `${API_ENDPOINT}/${AUTH_CONTROLLER_PATH}/${LOGIN_ACTION_PATH}`;
         fetch(loginRoute, {
             method: "post",
             headers: { "Content-Type": "application/json" },
@@ -57,13 +51,13 @@ export class SignInForm extends Component {
     }
 
     handleClick = () => {
-        const getMeRoute: string = `${API_ENDPOINT}/${AUTH_CONTROLLER_PATH}/${LOGGED_IN_USER_INFORMATION_ACTION_PATH}`;
+        const getMeRoute = `${API_ENDPOINT}/${AUTH_CONTROLLER_PATH}/${LOGGED_IN_USER_INFORMATION_ACTION_PATH}`;
         fetch(getMeRoute, {
             // headers: { "Content-Type": "application/json", "Authorization": `Bearer ${this.state.token}` },
         })
             .then(response => response.json())
             .then(response => {
-                const responseJsonData: string = JSON.stringify(response);
+                const responseJsonData = JSON.stringify(response);
                 // this.setState({ textareaContent: responseJsonData });
             })
             .catch(error => {
@@ -71,7 +65,7 @@ export class SignInForm extends Component {
             })
     }
 
-    render(): ReactElement {
+    render() {
         return (
             <div>
                 <p>SignIn - Form</p>
