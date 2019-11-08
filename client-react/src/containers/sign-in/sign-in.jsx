@@ -7,7 +7,14 @@ import { Title } from "../../components/layout/Title";
 import { SignInForm } from "../../components/auth/sign-in-form";
 import { ResponseBox } from "../../components/common/response-box";
 
-export class SignIn extends Component {
+class SignIn extends Component {
+
+    constructor(props, dispatch, a) {
+        debugger;
+        super(props);
+    
+        console.log(props.dispatch)
+    }
     state = {
         title: "Sign In Page",
         responseMessage: "",
@@ -25,20 +32,23 @@ export class SignIn extends Component {
         });
     }
 
-    signIn = ({ key }) => {
-        const { taskText } = this.state;
+    // signIn = ({ key }) => {
+    //     const { taskText } = this.state;
 
-        if (taskText.length > 3 && key === 'Enter') {
-            const { addTast } = this.props;
+    //     if (taskText.length > 3 && key === 'Enter') {
+    //         const { addTast } = this.props;
 
-            addTast((new Date()).getTime(), taskText, false);
+    //         addTast((new Date()).getTime(), taskText, false);
 
-            this.setState({
-                taskText: '',
-            })
+    //         this.setState({
+    //             taskText: '',
+    //         })
 
-        }
+    //     }
 
+    // }
+    componentDidMount(){
+        this.props.init({ type: 'INCREMENT' })
     }
 
     render() {
@@ -47,6 +57,11 @@ export class SignIn extends Component {
 
         console.log("state", this.state);
         console.log("props", this.props);
+
+        console.log("title", title);
+        console.log("responseMessage", responseMessage);
+
+        console.log("username", username);
 
         return (
             <div>
@@ -58,8 +73,17 @@ export class SignIn extends Component {
     }
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+      // dispatching plain actions
+      init: () => dispatch(signIn()),
+      decrement: () => dispatch({ type: 'DECREMENT' }),
+      reset: () => dispatch({ type: 'RESET' })
+    }
+  }
+
 //connect function takes 'MapStateToProps' function
 export default connect(state => ({
     username: state.username,
     token: state.token,
-}), { signIn })(SignIn);
+}), mapDispatchToProps)(SignIn);
