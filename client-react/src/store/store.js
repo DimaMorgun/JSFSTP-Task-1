@@ -17,6 +17,6 @@ const configureStore = preloadedState => (
     )
 );
 
-const store = configureStore(  { signIn : { z: 1 }});
+const store = configureStore({});
 
 export default store;
