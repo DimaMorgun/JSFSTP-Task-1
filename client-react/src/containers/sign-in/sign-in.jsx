@@ -1,65 +1,70 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { signIn } from "../../actions/actionCreator";
-
 import { Title } from "../../components/layout/Title";
 import { SignInForm } from "../../components/auth/sign-in-form";
 import { ResponseBox } from "../../components/common/response-box";
 
-export class SignIn extends Component {
+import { signIn, getUserInfo } from "../../actions/actionCreator";
+
+class SignIn extends Component {
     state = {
         title: "Sign In Page",
         responseMessage: "",
     }
 
-    handleSignInSuccess = token => {
+    handleSignInSuccess = (username, token) => {
+        const { signIn } = this.props;
+
+        signIn(username, token);
+
         this.setState({
-            token,
+            responseMessage: "Logged in successfully.",
         });
     }
 
-    handleGetUserInformation = username => {
+    handleSignInError = (reason) => {
         this.setState({
-            username,
+            responseMessage: `Logged in failed. ${reason}`,
         });
     }
 
-    signIn = ({ key }) => {
-        const { taskText } = this.state;
+    handleGetUserInformation = userInfo => {
+        const { getUserInfo } = this.props;
 
-        if (taskText.length > 3 && key === 'Enter') {
-            const { addTast } = this.props;
+        getUserInfo(userInfo);
 
-            addTast((new Date()).getTime(), taskText, false);
-
-            this.setState({
-                taskText: '',
-            })
-
-        }
-
+        this.setState({
+            responseMessage: JSON.stringify(userInfo),
+        });
     }
 
     render() {
+        const { handleSignInSuccess, handleSignInError, handleGetUserInformation } = this;
+        const { username, token } = this.props;
         const { title, responseMessage } = this.state;
-        const { username } = this.props;
-
-        console.log("state", this.state);
-        console.log("props", this.props);
 
         return (
             <div>
                 <Title title={title} username={username} />
-                <SignInForm onSignInSuccess={this.handleSignInSuccess} onGetUserInformation={this.handleGetUserInformation} />
+                <SignInForm onSignInSuccess={handleSignInSuccess} onSignInError={handleSignInError} onGetUserInformation={handleGetUserInformation} token={token} />
                 <ResponseBox responseMessage={responseMessage} />
             </div>
         );
     }
 }
 
-//connect function takes 'MapStateToProps' function
-export default connect(state => ({
-    username: state.username,
-    token: state.token,
-}), { signIn })(SignIn);
+const mapStateToProps = state => {
+    const { username, token, userInfo } = state.signIn;
+
+    return { username, token, userInfo };
+}
+
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         signIn: () => dispatch({ type: SIGN_IN }),
+//     }
+// }
+
+//connect function takes 'mapStateToProps' and 'mapDispatchToProps' function
+export default connect(mapStateToProps, { signIn, getUserInfo })(SignIn);
