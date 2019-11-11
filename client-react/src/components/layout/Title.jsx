@@ -1,11 +1,6 @@
 import React from "react";
 
-export interface TitleProps {
-    title?: string;
-    username?: string;
-}
-
-export const Title = (props: TitleProps) => {
+export const Title = (props) => {
     const { title, username } = props;
 
     return <h3>{title} : {username ? `Current user is ${username}.` : 'Please sign in.'}</h3>;
