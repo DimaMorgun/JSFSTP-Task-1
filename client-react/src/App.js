@@ -5,7 +5,9 @@ import SignIn from "./containers/sign-in/sign-in"
 class App extends Component {
   render() {
     return (
-      <SignIn />
+      <Fragment>
+        <SignIn />
+      </Fragment>
     );
   }
 }
