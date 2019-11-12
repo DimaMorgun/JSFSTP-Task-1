@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { Title } from "../../components/layout/Title";
+import { Title } from "../../components/layout/title";
 import { SignInForm } from "../../components/auth/sign-in-form";
 import { ResponseBox } from "../../components/common/response-box";
 
-import { signIn, getUserInfo } from "../../actions/actionCreator";
+import { signIn, getUserInfo } from "../../actions/sign-in.actions";
 
 class SignIn extends Component {
     state = {
