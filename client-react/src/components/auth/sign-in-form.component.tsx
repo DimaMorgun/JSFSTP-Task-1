@@ -1,25 +1,37 @@
 import React, { Component } from "react";
 
+import { SignInFormProps, SignInFormState } from "../../types/index"
+
 const API_ENDPOINT = "https://localhost";
 const AUTH_CONTROLLER_PATH = "auth";
 const LOGIN_ACTION_PATH = "login";
 const LOGGED_IN_USER_INFORMATION_ACTION_PATH = "me";
 
-export class SignInForm extends Component {
+export class SignInForm extends Component<SignInFormProps, SignInFormState> {
     state = {
         username: "",
         password: "",
     };
 
-    handleChange = (event) => {
-        const { id, value } = event.target;
+    handleUsernameChange = (event: React.FormEvent<HTMLInputElement>): void => {
+        const { value } = event.currentTarget;
+        const currentState: SignInFormState = this.state;
 
-        this.setState({
-            [id]: value,
-        });
+        currentState.username = value;
+
+        this.setState(currentState);
     }
 
-    handleSubmit = (event) => {
+    handlePasswordChange = (event: React.FormEvent<HTMLInputElement>): void => {
+        const { value } = event.currentTarget;
+        const currentState: SignInFormState = this.state;
+
+        currentState.password = value;
+
+        this.setState(currentState);
+    }
+
+    handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
 
         const { onSignInSuccess, onSignInError } = this.props;
@@ -51,7 +63,7 @@ export class SignInForm extends Component {
             })
     }
 
-    handleClick = () => {
+    handleClick = (): void => {
         const { token, onGetUserInformation, onSignInError } = this.props;
 
         const getMeRoute = `${API_ENDPOINT}/${AUTH_CONTROLLER_PATH}/${LOGGED_IN_USER_INFORMATION_ACTION_PATH}`;
@@ -72,9 +84,9 @@ export class SignInForm extends Component {
             <div>
                 <p>SignIn - Form</p>
                 <form onSubmit={this.handleSubmit}>
-                    <input type="username" id="username" onChange={this.handleChange} />
+                    <input type="username" id="username" onChange={this.handleUsernameChange} />
                     <br />
-                    <input type="password" id="password" onChange={this.handleChange} />
+                    <input type="password" id="password" onChange={this.handlePasswordChange} />
                     <br />
                     <input type="submit" value="Submit" />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

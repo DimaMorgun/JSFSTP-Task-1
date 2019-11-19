@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
-import SignIn from "./containers/sign-in/sign-in.container";
+
+import SignIn from "./redux/containers/sign-in/sign-in.container";
 
 class App extends Component {
   render() {
