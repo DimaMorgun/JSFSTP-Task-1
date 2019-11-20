@@ -14,21 +14,19 @@ import { SignInState, SignInPayload, GetUserInfoPayload, } from "../types/sign-i
 
 import { UserInfoModel } from "../../shared/models/index";
 
-class SignIn extends Component<any, SignInState> {
+class SignIn extends Component<AppProps, SignInState> {
     state: SignInState = {
         title: "Sign In Page",
         responseMessage: "",
     }
 
     handleSignInSuccess = (username: string, token: string) => {
-        const { signInAction } = this.props as AppProps;
-
         const signInPayload: SignInPayload = {
             username,
             token,
         }
 
-        signInAction(signInPayload);
+        this.props.signInAction(signInPayload);
 
         this.setState({
             responseMessage: "Logged in successfully.",
@@ -79,12 +77,7 @@ class SignIn extends Component<any, SignInState> {
 }
 
 const mapStateToProps = (state: AppState) => {
-    console.log('mapStateToProps SignIn', state.signIn);
-    const { signIn } = state;
-
-    return {
-        signIn,
-    }
+    return state;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

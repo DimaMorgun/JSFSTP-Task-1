@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 
 import { AppState } from "../reducers";
 
-import { IndependentProps } from "../types/independent.types";
-
-const Independent: FunctionComponent<IndependentProps> = (props) => {
+const Independent: FunctionComponent<AppState> = (props) => {
     const { userInfo } = props.signIn;
 
     let roleElement = <span>not logged in</span>;
@@ -21,12 +19,7 @@ const Independent: FunctionComponent<IndependentProps> = (props) => {
 }
 
 const mapStateToProps = (state: AppState) => {
-    console.log('mapStateToProps Independent', state.signIn);
-    const { signIn } = state;
-
-    return {
-        signIn,
-    }
+    return state;
 }
 
 export default connect(mapStateToProps, {})(Independent);
