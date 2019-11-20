@@ -1,0 +1,2 @@
+### Objects in JavaScript
+are collections of key/value pairs. The values can consist of properties and methods, and may contain all other JavaScript data types, such as strings, numbers, and Booleans. All objects in JavaScript descend from the parent Object constructor.
