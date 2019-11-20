@@ -8,7 +8,7 @@ const LOGIN_ACTION_PATH = "login";
 const LOGGED_IN_USER_INFORMATION_ACTION_PATH = "me";
 
 export class SignInForm extends Component<SignInFormProps, SignInFormState> {
-    state = {
+    state: SignInFormState = {
         username: "",
         password: "",
     };
@@ -61,6 +61,9 @@ export class SignInForm extends Component<SignInFormProps, SignInFormState> {
             .catch(error => {
                 onSignInError("Some error occured.", error);
             })
+            .finally(() => {
+                this.setState({ password: "" });
+            })
     }
 
     handleClick = (): void => {
@@ -84,9 +87,9 @@ export class SignInForm extends Component<SignInFormProps, SignInFormState> {
             <div>
                 <p>SignIn - Form</p>
                 <form onSubmit={this.handleSubmit}>
-                    <input type="username" id="username" onChange={this.handleUsernameChange} />
+                    <input type="username" id="username" value={this.state.username} onChange={this.handleUsernameChange} />
                     <br />
-                    <input type="password" id="password" onChange={this.handlePasswordChange} />
+                    <input type="password" id="password" value={this.state.password} onChange={this.handlePasswordChange} />
                     <br />
                     <input type="submit" value="Submit" />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

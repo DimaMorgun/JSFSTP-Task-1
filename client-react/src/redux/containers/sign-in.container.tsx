@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import { Title } from "../../../components/layout/title.component";
-import { SignInForm } from "../../../components/auth/sign-in-form.component";
-import { ResponseBox } from "../../../components/common/response-box.component";
+import { Title } from "../../components/layout/title.component";
+import { SignInForm } from "../../components/auth/sign-in-form.component";
+import { ResponseBox } from "../../components/common/response-box.component";
 
-import { AppState, AppProps } from '../../reducers';
+import { AppState, AppProps } from '../reducers';
 
-import { signInAction, getUserInfoAction } from "../../actions/sign-in.actions";
+import { signInAction, getUserInfoAction } from "../actions/sign-in.actions";
 
-import { SignInState, SignInPayload, GetUserInfoPayload, } from "../../types/sign-in.types";
+import { SignInState, SignInPayload, GetUserInfoPayload, } from "../types/sign-in.types";
 
-import { UserInfoModel } from "../../../shared/models/index";
+import { UserInfoModel } from "../../shared/models/index";
 
 class SignIn extends Component<any, SignInState> {
     state: SignInState = {
@@ -63,6 +63,7 @@ class SignIn extends Component<any, SignInState> {
     }
 
     render() {
+        console.log('new render');
         const { handleSignInSuccess, handleSignInError, handleGetUserInformation } = this;
         const { username, token } = this.props.signIn;
         const { title, responseMessage } = this.state;
@@ -78,8 +79,11 @@ class SignIn extends Component<any, SignInState> {
 }
 
 const mapStateToProps = (state: AppState) => {
+    console.log('mapStateToProps SignIn', state.signIn);
+    const { signIn } = state;
+
     return {
-        signIn: state.signIn,
+        signIn,
     }
 }
 
