@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, ReactElement } from 'react';
+
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -6,9 +7,9 @@ import { Title } from "../../components/layout/title.component";
 import { SignInForm } from "../../components/auth/sign-in-form.component";
 import { ResponseBox } from "../../components/common/response-box.component";
 
-import { AppState, AppProps } from '../reducers';
-
 import { signInAction, getUserInfoAction } from "../actions/sign-in.actions";
+
+import { AppState, AppProps } from '../reducers';
 
 import { SignInState, SignInPayload, GetUserInfoPayload, } from "../types/sign-in.types";
 
@@ -28,20 +29,17 @@ class SignIn extends Component<AppProps, SignInState> {
 
         this.props.signInAction(signInPayload);
 
-        this.setState({
-            responseMessage: "Logged in successfully.",
-        });
+        const responseMessage: string = "Logged in successfully.";
+        this.setState({ responseMessage });
     }
 
     handleSignInError = (reason: string) => {
-        this.setState({
-            responseMessage: `Logged in failed. ${reason}`,
-        });
+        const responseMessage: string = `Logged in failed. ${reason}`;
+
+        this.setState({ responseMessage });
     }
 
     handleGetUserInformation = (userInfo: UserInfoModel) => {
-        const { getUserInfoAction } = this.props;
-
         const { id, username, userRole, createdDate, updatedDate, isDeleted }: UserInfoModel = userInfo;
 
         const userInfoPayload: GetUserInfoPayload = {
@@ -53,15 +51,13 @@ class SignIn extends Component<AppProps, SignInState> {
             isDeleted,
         }
 
-        getUserInfoAction(userInfoPayload);
+        this.props.getUserInfoAction(userInfoPayload);
 
-        this.setState({
-            responseMessage: JSON.stringify(userInfo),
-        });
+        const responseMessage: string = JSON.stringify(userInfo);
+        this.setState({ responseMessage });
     }
 
-    render() {
-        console.log('new render');
+    render(): ReactElement {
         const { handleSignInSuccess, handleSignInError, handleGetUserInformation } = this;
         const { username, token } = this.props.signIn;
         const { title, responseMessage } = this.state;
@@ -76,7 +72,7 @@ class SignIn extends Component<AppProps, SignInState> {
     }
 }
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: AppState): AppState => {
     return state;
 }
 
@@ -85,5 +81,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     getUserInfoAction: (payload: GetUserInfoPayload) => dispatch(getUserInfoAction(payload)),
 })
 
-//connect function takes 'mapStateToProps' and 'mapDispatchToProps' function
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

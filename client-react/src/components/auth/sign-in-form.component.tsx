@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, ReactElement } from "react";
 
-import { SignInFormProps, SignInFormState } from "../../types/index"
+import { SignInFormProps, SignInFormState, SignInModel } from "../../types/index"
 
 const API_ENDPOINT = "https://localhost";
 const AUTH_CONTROLLER_PATH = "auth";
@@ -14,21 +14,15 @@ export class SignInForm extends Component<SignInFormProps, SignInFormState> {
     };
 
     handleUsernameChange = (event: React.FormEvent<HTMLInputElement>): void => {
-        const { value } = event.currentTarget;
-        const currentState: SignInFormState = this.state;
+        const username: string = event.currentTarget.value;
 
-        currentState.username = value;
-
-        this.setState(currentState);
+        this.setState({ username });
     }
 
     handlePasswordChange = (event: React.FormEvent<HTMLInputElement>): void => {
-        const { value } = event.currentTarget;
-        const currentState: SignInFormState = this.state;
+        const password: string = event.currentTarget.value;
 
-        currentState.password = value;
-
-        this.setState(currentState);
+        this.setState({ password });
     }
 
     handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
@@ -37,7 +31,7 @@ export class SignInForm extends Component<SignInFormProps, SignInFormState> {
         const { onSignInSuccess, onSignInError } = this.props;
         const { username, password } = this.state;
 
-        const singInModel = {
+        const singInModel: SignInModel = {
             username,
             password,
         };
@@ -62,7 +56,9 @@ export class SignInForm extends Component<SignInFormProps, SignInFormState> {
                 onSignInError("Some error occured.", error);
             })
             .finally(() => {
-                this.setState({ password: "" });
+                const password: string = "";
+
+                this.setState({ password });
             })
     }
 
@@ -82,7 +78,7 @@ export class SignInForm extends Component<SignInFormProps, SignInFormState> {
             })
     }
 
-    render() {
+    render(): ReactElement {
         return (
             <div>
                 <p>SignIn - Form</p>
