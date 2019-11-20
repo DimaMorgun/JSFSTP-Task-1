@@ -1,19 +1,38 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Table, Column, Model, DataType, BelongsToMany } from 'sequelize-typescript';
 
-@Entity()
-export class BookEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
-    @Column({ length: 100 })
+import { AuthorEntity, BookInAuthorEntity } from 'src/entities';
+
+import uuid = require('uuid/v4');
+
+@Table
+export class BookEntity extends Model<BookEntity> {
+    @Column({
+        type: DataType.UUID,
+        primaryKey: true,
+        unique: true,
+        allowNull: false,
+        defaultValue: uuid(),
+    })
+    id: string;
+
+    @Column
     name: string;
-    @Column('int')
+
+    @Column
     price: number;
-    @Column({ length: 50 })
+
+    @Column
     type: string;
-    @Column()
+
+    @BelongsToMany(() => AuthorEntity, () => BookInAuthorEntity)
+    authors: AuthorEntity[];
+
+    @Column
     createdDate: Date;
-    @Column()
+
+    @Column
     updatedDate: Date;
-    @Column()
+
+    @Column
     isDeleted: boolean;
 }

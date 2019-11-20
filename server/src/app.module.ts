@@ -46,6 +46,7 @@ import {
   BookTypeRepository,
   UserRoleRepository,
 } from 'src/repositories';
+import { databaseProviders, bookProvider, authorProvider } from 'src/providers';
 
 @Module({
   imports: [
@@ -83,6 +84,9 @@ import {
     BookTypeRepository,
     UserRoleService,
     UserRoleRepository,
+    ...databaseProviders,
+    ...bookProvider,
+    ...authorProvider,
   ],
 })
 export class AppModule implements NestModule {

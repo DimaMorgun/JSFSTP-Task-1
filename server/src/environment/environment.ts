@@ -8,6 +8,11 @@ export interface Environment {
     databaseMongoConnectionUrl?: string;
     jwtSecretKey?: string;
     tokenExpireTime?: number;
+    mysqlHost?: string;
+    mysqlPort?: number;
+    mysqlUsername?: string;
+    mysqlPassword?: string;
+    mysqlDatabaseName?: string;
 }
 
 export const environment = () => {
