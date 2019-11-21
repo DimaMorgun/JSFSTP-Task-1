@@ -11,6 +11,7 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AuthModule } from 'src/app/auth/auth.module';
 import { LibraryModule } from 'src/app/library/library.module';
 import { ProfileModule } from 'src/app/profile/profile.module';
+import { VncTestModule } from './vnc-test/vnc-test.module';
 
 import { AppComponent } from 'src/app/app.component';
 import {
@@ -31,6 +32,7 @@ import {
 } from 'src/app/services';
 
 import { JwtInterceptor, ErrorInterceptor } from 'src/app/core';
+import { VncTestLayoutComponent } from './shared/components/vnc-test-layout/vnc-test-layout.component'
 
 
 @NgModule({
@@ -42,6 +44,7 @@ import { JwtInterceptor, ErrorInterceptor } from 'src/app/core';
     AuthModule,
     LibraryModule,
     ProfileModule,
+    VncTestModule,
   ],
   declarations: [
     AppComponent,
@@ -52,6 +55,7 @@ import { JwtInterceptor, ErrorInterceptor } from 'src/app/core';
     NavHeaderComponent,
     FooterComponent,
     PageNotFoundComponent,
+    VncTestLayoutComponent,
 
   ],
   providers: [

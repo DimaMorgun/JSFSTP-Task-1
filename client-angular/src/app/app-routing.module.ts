@@ -8,6 +8,7 @@ import {
     LayoutGeneralComponent,
     PageNotFoundComponent,
 } from 'src/app/shared/components';
+import { VncTestLayoutComponent } from './shared/components/vnc-test-layout/vnc-test-layout.component';
 
 const routes: Routes = [
     {
@@ -24,6 +25,11 @@ const routes: Routes = [
         path: 'library',
         component: LayoutGeneralComponent,
         loadChildren: () => import('src/app/library/library.module').then(mod => mod.LibraryModule),
+    },
+    {
+        path: 'vnc-test',
+        component: VncTestLayoutComponent,
+        loadChildren: () => import('src/app/vnc-test/vnc-test.module').then(mod => mod.VncTestModule),
     },
     {
         path: '',
