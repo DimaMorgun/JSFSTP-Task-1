@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { timer } from 'rxjs'
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-task1',
@@ -12,6 +12,20 @@ export class Task1Component implements OnInit {
     constructor() { }
 
     ngOnInit() {
+        this.method1('123')
+            .switchMap(res => this.callMethod2EverySecond(res.id))
+            .subscribe(
+                res => {
+                    if (!res.success && res.errors) {
+                        console.error(res);
+                    } else {
+                        console.log('subscription processing', res);
+                    }
+                },
+                (err) => console.log(err),
+                () => console.log('finished')
+            );
+
         this.pollUntilTaskFinished('51');
     }
 
@@ -24,7 +38,7 @@ export class Task1Component implements OnInit {
         setTimeout(() => {
             fetchResponse = {
                 processing: false,
-                status: 'IDI NAHUI',
+                status: 'Test',
             };
         }, 5000);
 
@@ -33,5 +47,28 @@ export class Task1Component implements OnInit {
         } else {
             console.log('pollingFinishedFor', taskId);
         }
+    }
+
+    callMethod2EverySecond(id) {
+        return Observable.interval(10)
+            .mergeMap(data => this.method2(id, data))
+            .do(resp => console.log('resp', resp))
+            .filter(resp => resp !== null)
+            .take(1)
+    }
+
+    method1(data: string) {
+        return Observable.of({ id: data });
+    }
+
+    method2(id: string, interval: number) {
+        const ret = this.randomIntInc(0, 1) === 0 ? null : { success: true, errors: null, interval, id };
+        return Observable
+            .of(ret)
+            .delay(this.randomIntInc(0, 2000));
+    }
+
+    randomIntInc(low, high) {
+        return Math.floor(Math.random() * (high - low + 1) + low);
     }
 }
