@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+
+import { timer, from, Observable, of } from 'rxjs';
+
 import { TaskModel } from './task.model';
+import { concatMap, filter, take } from 'rxjs/operators';
 
 @Component({
     selector: 'app-task1',
@@ -26,24 +30,21 @@ export class Task1Component implements OnInit {
         setTimeout(() => {
             this.pollUntilTaskFinished('4'); // 2
         }, 2500);
-
     }
 
-    private async pollUntilTaskFinished(taskId: string): Promise<void> {
-        const response = await this.fetch(taskId);
-        console.log(
-            `new pool with id ${taskId}.`, this.tasks,
-            `${new Date().getMinutes()}:${new Date().getSeconds()}:${new Date().getMilliseconds()}`,
-        );
+    private pollUntilTaskFinished(taskId: string): void {
+        timer(0, 500)
+            .pipe(concatMap(() => {
+                this.consoleLog(`new pool with id ${taskId}.`, this.getCurrentTaskState());
 
-        if (!response.processing) {
-            setTimeout(() => this.pollUntilTaskFinished(taskId), 500);
-        } else {
-            this.pollingFinishedFor(taskId);
-        }
+                return from(this.fetch(taskId));
+            }))
+            .pipe(filter((task: TaskModel) => task.processing))
+            .pipe(take(1))
+            .subscribe(() => this.pollingFinishedFor(taskId));
     }
 
-    private fetch(taskId: string): TaskModel {
+    private fetch(taskId: string): Observable<TaskModel> {
         let requiredTask: TaskModel = this.tasks.find(task => task.taskId === taskId);
         if (!requiredTask) {
             const task: TaskModel = {
@@ -59,12 +60,25 @@ export class Task1Component implements OnInit {
             requiredTask.processing = true;
         }, 5000);
 
-        return requiredTask;
+        return of(requiredTask);
     }
 
     private pollingFinishedFor(taskId: string): void {
+        this.consoleLog(`task with id ${taskId} has been finished.`, this.getCurrentTaskState());
+    }
+
+    private getCurrentTaskState = (): TaskModel[] => {
+        const currentTaskState: TaskModel[] = [];
+        for (const task of this.tasks) {
+            currentTaskState.push({ ...task });
+        }
+
+        return currentTaskState;
+    }
+
+    private consoleLog(...messages: any[]): void {
         console.log(
-            `task with id ${taskId} has been finished.`,
+            ...messages,
             `${new Date().getMinutes()}:${new Date().getSeconds()}:${new Date().getMilliseconds()}`,
         );
     }
