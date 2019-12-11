@@ -2,16 +2,14 @@ import React, { Component, ReactElement } from "react";
 
 import { SignInFormProps, SignInFormState, SignInModel } from "../../types/index"
 
-const API_ENDPOINT = "https://localhost";
-const AUTH_CONTROLLER_PATH = "auth";
-const LOGIN_ACTION_PATH = "login";
-const LOGGED_IN_USER_INFORMATION_ACTION_PATH = "me";
-
 export class SignInForm extends Component<SignInFormProps, SignInFormState> {
     state: SignInFormState = {
         username: "",
         password: "",
+        isPasswordHidden: true,
     };
+
+    test: boolean = true;
 
     handleUsernameChange = (event: React.FormEvent<HTMLInputElement>): void => {
         const username: string = event.currentTarget.value;
@@ -25,57 +23,26 @@ export class SignInForm extends Component<SignInFormProps, SignInFormState> {
         this.setState({ password });
     }
 
+    handleChangePasswordView = (): void => {
+        const { isPasswordHidden }: SignInFormState = this.state;
+
+        this.setState({ isPasswordHidden: !isPasswordHidden });
+    }
+
     handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
 
-        const { onSignInSuccess, onSignInError } = this.props;
         const { username, password } = this.state;
 
-        const singInModel: SignInModel = {
-            username,
-            password,
-        };
-        const requestJsonData = JSON.stringify(singInModel);
+        const isCompleted: boolean = this.props.onSignIn(username, password);
 
-        const loginRoute = `${API_ENDPOINT}/${AUTH_CONTROLLER_PATH}/${LOGIN_ACTION_PATH}`;
-        fetch(loginRoute, {
-            method: "post",
-            headers: { "Content-Type": "application/json" },
-            body: requestJsonData,
-        })
-            .then(response => response.json())
-            .then(({ token }) => {
-                if (token) {
-                    onSignInSuccess(username, token);
-                }
-                if (!token) {
-                    onSignInError("Invalid credentials.");
-                }
-            })
-            .catch(error => {
-                onSignInError("Some error occured.", error);
-            })
-            .finally(() => {
-                const password: string = "";
-
-                this.setState({ password });
-            })
+        if (isCompleted) {
+            this.setState({ password: "" });
+        }
     }
 
     handleClick = (): void => {
-        const { token, onGetUserInformation, onSignInError } = this.props;
-
-        const getMeRoute = `${API_ENDPOINT}/${AUTH_CONTROLLER_PATH}/${LOGGED_IN_USER_INFORMATION_ACTION_PATH}`;
-        fetch(getMeRoute, {
-            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-        })
-            .then(response => response.json())
-            .then(response => {
-                onGetUserInformation(response);
-            })
-            .catch(error => {
-                onSignInError("Some error occured.", error);
-            })
+        this.props.onGetUserInformation();
     }
 
     render(): ReactElement {
@@ -85,7 +52,10 @@ export class SignInForm extends Component<SignInFormProps, SignInFormState> {
                 <form onSubmit={this.handleSubmit}>
                     <input type="username" id="username" value={this.state.username} onChange={this.handleUsernameChange} />
                     <br />
-                    <input type="password" id="password" value={this.state.password} onChange={this.handlePasswordChange} />
+                    <input type={this.state.isPasswordHidden ? "password" : "text"} id="password" value={this.state.password} onChange={this.handlePasswordChange} />
+                    <button type="button" onClick={this.handleChangePasswordView}>
+                        {this.state.isPasswordHidden ? "\u229A" : "\u2297"}
+                    </button>
                     <br />
                     <input type="submit" value="Submit" />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

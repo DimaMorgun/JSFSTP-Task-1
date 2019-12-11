@@ -1,13 +1,13 @@
 export interface SignInFormProps {
     token: string;
-    onSignInSuccess: Function;
-    onSignInError: Function;
-    onGetUserInformation: Function;
+    onSignIn: (username: string, password: string) => boolean;
+    onGetUserInformation: () => boolean;
 }
 
 export interface SignInFormState {
     username: string;
     password: string;
+    isPasswordHidden: boolean;
 }
 
 export interface SignInModel {
