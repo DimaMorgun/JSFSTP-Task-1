@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 import { AppState } from "../reducers";
 
+import { CounterBox } from "../../components/common/counter-box.component";
+
 const Independent: FunctionComponent<AppState> = (props): ReactElement => {
     const { username, userRole } = props.signIn.userInfo;
 
@@ -15,7 +17,12 @@ const Independent: FunctionComponent<AppState> = (props): ReactElement => {
         roleElement = <span style={{ backgroundColor: "green", color: "red" }}>{userRole}</span>;
     }
 
-    return <h4>Hello dear {username ? username : "user"}. You'r {roleElement}.</h4>
+    return (
+        <>
+            <h4>Hello dear {username ? username : "user"}. You'r {roleElement}.</h4>
+            <CounterBox />
+        </>
+    )
 }
 
 const mapStateToProps = (state: AppState): AppState => {
